@@ -49,16 +49,18 @@ class _PantallainiciosesinregistroWidgetState
                               MediaQuery.of(context).size.height)),
                         ))),
                 Positioned(
-                    top: 195,
-                    left: 103,
+                    top: MediaQuery.of(context).size.height * 0.25,
+                    left: MediaQuery.of(context).size.width * 0.3,
                     child: SvgPicture.asset(
                       'assets/images/user-circle.svg',
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.height,
                       semanticsLabel: 'User',
                       color: const Color.fromRGBO(227, 0, 53, 1),
                     )),
                 Positioned(
-                    top: 409,
-                    left: 48,
+                    top: MediaQuery.of(context).size.height * 0.50,
+                    left: MediaQuery.of(context).size.width * 0.15,
                     child: Container(
                         width: 264,
                         height: 39,
@@ -74,30 +76,34 @@ class _PantallainiciosesinregistroWidgetState
                             width: 2,
                           ),
                         ),
-                        child: const TextField(
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'ejemplo@correo.ugr.es',
-                                hintStyle: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 1),
-                                    fontFamily: 'Inter',
-                                    fontSize: 15,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1))))),
-                const Positioned(
-                    top: 385,
-                    left: 49,
-                    child: Text(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.02),
+                          child: const TextField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'ejemplo@correo.ugr.es',
+                                  hintStyle: TextStyle(
+                                      color: Color.fromRGBO(0, 0, 0, 1),
+                                      fontFamily: 'Inter',
+                                      fontSize: 15,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.normal,
+                                      height: 1))),
+                        ))),
+                Positioned(
+                    top: MediaQuery.of(context).size.height * 0.47,
+                    left: MediaQuery.of(context).size.width * 0.15,
+                    child: const Text(
                       'Correo electrónico',
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 1),
                           fontFamily: 'Inter',
-                          fontSize: 15,
+                          fontSize: 20,
                           letterSpacing:
                               0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.bold,
                           height: 1),
                     )),
                 Positioned(
@@ -118,19 +124,24 @@ class _PantallainiciosesinregistroWidgetState
                             width: 2,
                           ),
                         ),
-                        child: const TextField(
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: '* * * * * *',
-                                hintStyle: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 1),
-                                    fontFamily: 'Inter',
-                                    fontSize: 15,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1))))),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.02),
+                          child: const TextField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: '* * * * * * *',
+                                  hintStyle: TextStyle(
+                                      color: Color.fromRGBO(0, 0, 0, 1),
+                                      fontFamily: 'Inter',
+                                      fontSize: 15,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.normal,
+                                      height: 1))),
+                        ))),
                 Positioned(
-                    top: MediaQuery.of(context).size.height * 0.55,
+                    top: MediaQuery.of(context).size.height * 0.57,
                     left: MediaQuery.of(context).size.width * 0.15,
                     child: const Text(
                       'Contraseña',
@@ -138,10 +149,10 @@ class _PantallainiciosesinregistroWidgetState
                       style: TextStyle(
                           color: Color.fromRGBO(0, 0, 0, 1),
                           fontFamily: 'Inter',
-                          fontSize: 15,
+                          fontSize: 20,
                           letterSpacing:
                               0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.bold,
                           height: 1),
                     )),
                 Positioned(
@@ -152,8 +163,8 @@ class _PantallainiciosesinregistroWidgetState
                           // Acciones que deseas realizar al hacer clic en el botón
                         },
                         child: Container(
-                            width: 264,
-                            height: 39,
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: MediaQuery.of(context).size.height * 0.07,
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(65),
@@ -163,30 +174,27 @@ class _PantallainiciosesinregistroWidgetState
                               ),
                               color: Color.fromRGBO(227, 0, 53, 1),
                             ),
-                            child: const Positioned(
-                                top: 565,
-                                left: 74,
-                                child: Center(
-                                    child: Text(
-                                  'Iniciar Sesión',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(255, 255, 255, 1),
-                                      fontFamily: 'Inter',
-                                      fontSize: 15,
-                                      letterSpacing:
-                                          0 /*percentages not used in flutter. defaulting to zero*/,
-                                      fontWeight: FontWeight.normal,
-                                      height: 1),
-                                )))))),
+                            child: const Center(
+                                child: Text(
+                              'Iniciar Sesión',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Color.fromRGBO(255, 255, 255, 1),
+                                  fontFamily: 'Inter',
+                                  fontSize: 20,
+                                  letterSpacing:
+                                      0 /*percentages not used in flutter. defaulting to zero*/,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1),
+                            ))))),
                 Positioned(
                     top: MediaQuery.of(context).size.height * 0.8,
                     left: MediaQuery.of(context).size.width * 0.15,
                     child: GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: 264,
-                        height: 39,
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        height: MediaQuery.of(context).size.height * 0.07,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(65),
@@ -200,22 +208,19 @@ class _PantallainiciosesinregistroWidgetState
                             width: 2,
                           ),
                         ),
-                        child: const Positioned(
-                            top: 635,
-                            left: 74,
-                            child: Center(
-                                child: Text(
-                              'Registrar',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Color.fromRGBO(227, 0, 53, 1),
-                                  fontFamily: 'Inter',
-                                  fontSize: 15,
-                                  letterSpacing:
-                                      0 /*percentages not used in flutter. defaulting to zero*/,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1),
-                            ))),
+                        child: const Center(
+                            child: Text(
+                          'Registrar',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color.fromRGBO(227, 0, 53, 1),
+                              fontFamily: 'Inter',
+                              fontSize: 20,
+                              letterSpacing:
+                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              fontWeight: FontWeight.bold,
+                              height: 1),
+                        )),
                       ),
                     )),
               ]))),
