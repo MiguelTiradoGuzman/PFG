@@ -7,7 +7,8 @@ import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
-import 'package:pfg_app/login.dart';
+import 'package:pfg_app/vistas/login.dart';
+import 'package:pfg_app/vistas/pantallaInicio.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -64,8 +65,7 @@ class MyApp extends StatelessWidget {
           themeMode: settingsController.themeMode,
           initialRoute: '/', // Ruta inicial
           routes: {
-            '/': (context) =>
-                PantallainiciosesinregistroWidget(), // Ruta de la pantalla principal
+            '/': (context) => PantallaInicio(), // Ruta de la pantalla principal
           },
         );
       },

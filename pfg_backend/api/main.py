@@ -56,13 +56,3 @@ async def login(username: str, password: str):
 @app.get("/protected")
 def protected_route(user=Depends(manager)):
     return {"user": user}
-
-# Rutas existentes en tu código
-@app.get("/assets")
-def get_assets():
-    symbols = "Prueba simbolos"
-    return symbols
-
-@app.get("/strategies")
-def get_strategies():
-    return {"strategies": "Prueba estrategias"}

@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter_svg/flutter_svg.dart';
-import './api.dart';
+import '../controlador/controlador.dart';
+import '../constants/color.dart';
 
-class PantallainiciosesinregistroWidget extends StatefulWidget {
-  const PantallainiciosesinregistroWidget({super.key});
+class PaginaLogin extends StatefulWidget {
+  const PaginaLogin({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _PantallainiciosesinregistroWidgetState createState() =>
-      _PantallainiciosesinregistroWidgetState();
+  _PaginaLoginState createState() => _PaginaLoginState();
 }
 
-class _PantallainiciosesinregistroWidgetState
-    extends State<PantallainiciosesinregistroWidget> {
+class _PaginaLoginState extends State<PaginaLogin> {
   final TextEditingController _correoController = TextEditingController();
   final TextEditingController _contrasenaController = TextEditingController();
-  final API _api = API();
+  final Controlador _controlador = Controlador();
   Future<void> _iniciarSesion() async {
     String correo = _correoController.text;
     String contrasena = _contrasenaController.text;
 
     try {
-      await _api.login(correo, contrasena);
-      // Inicio de sesión exitoso, puedes hacer algo aquí si es necesario
+      await _controlador.login(correo, contrasena);
     } catch (e) {
       // Error al iniciar sesión, muestra un SnackBar con el mensaje de error
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Inicio de sesión fallido. Verifica tus credenciales.'),
         ),
       );
@@ -36,13 +35,13 @@ class _PantallainiciosesinregistroWidgetState
 
   @override
   Widget build(BuildContext context) {
-    // Figma Flutter Generator PantallainiciosesinregistroWidget - FRAME
+    // Figma Flutter Generator PaginaLogin - FRAME
     return Scaffold(
         body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
-              color: Color.fromRGBO(255, 255, 255, 1),
+              color: ColoresAplicacion.colorFondo,
             ),
             child: Stack(children: <Widget>[
               Positioned(
@@ -63,7 +62,7 @@ class _PantallainiciosesinregistroWidgetState
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height,
                       decoration: BoxDecoration(
-                        color: const Color.fromRGBO(255, 252, 252, 1),
+                        color: ColoresAplicacion.colorFondo,
                         borderRadius: BorderRadius.all(Radius.elliptical(
                             MediaQuery.of(context).size.width * 1.7,
                             MediaQuery.of(context).size.height)),
@@ -76,7 +75,7 @@ class _PantallainiciosesinregistroWidgetState
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.height,
                     semanticsLabel: 'User',
-                    color: const Color.fromRGBO(227, 0, 53, 1),
+                    color: ColoresAplicacion.colorPrimario,
                   )),
               Positioned(
                   top: MediaQuery.of(context).size.height * 0.50,
@@ -92,7 +91,7 @@ class _PantallainiciosesinregistroWidgetState
                           bottomRight: Radius.circular(10),
                         ),
                         border: Border.all(
-                          color: const Color.fromRGBO(0, 0, 0, 1),
+                          color: ColoresAplicacion.colorLetrasPrincipal,
                           width: 2,
                         ),
                       ),
@@ -105,7 +104,8 @@ class _PantallainiciosesinregistroWidgetState
                                 border: InputBorder.none,
                                 hintText: 'ejemplo@correo.ugr.es',
                                 hintStyle: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    color:
+                                        ColoresAplicacion.colorLetrasPrincipal,
                                     fontFamily: 'Inter',
                                     fontSize: 15,
                                     letterSpacing: 0,
@@ -119,7 +119,7 @@ class _PantallainiciosesinregistroWidgetState
                     'Correo electrónico',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color: Color.fromRGBO(0, 0, 0, 1),
+                        color: ColoresAplicacion.colorLetrasPrincipal,
                         fontFamily: 'Inter',
                         fontSize: 20,
                         letterSpacing:
@@ -141,7 +141,7 @@ class _PantallainiciosesinregistroWidgetState
                           bottomRight: Radius.circular(10),
                         ),
                         border: Border.all(
-                          color: const Color.fromRGBO(0, 0, 0, 1),
+                          color: ColoresAplicacion.colorLetrasPrincipal,
                           width: 2,
                         ),
                       ),
@@ -155,7 +155,8 @@ class _PantallainiciosesinregistroWidgetState
                                 border: InputBorder.none,
                                 hintText: '* * * * * * *',
                                 hintStyle: TextStyle(
-                                    color: Color.fromRGBO(0, 0, 0, 1),
+                                    color:
+                                        ColoresAplicacion.colorLetrasPrincipal,
                                     fontFamily: 'Inter',
                                     fontSize: 15,
                                     letterSpacing: 0,
@@ -169,7 +170,7 @@ class _PantallainiciosesinregistroWidgetState
                     'Contraseña',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color: Color.fromRGBO(0, 0, 0, 1),
+                        color: ColoresAplicacion.colorLetrasPrincipal,
                         fontFamily: 'Inter',
                         fontSize: 20,
                         letterSpacing:
@@ -192,14 +193,14 @@ class _PantallainiciosesinregistroWidgetState
                               bottomLeft: Radius.circular(65),
                               bottomRight: Radius.circular(65),
                             ),
-                            color: Color.fromRGBO(227, 0, 53, 1),
+                            color: ColoresAplicacion.colorPrimario,
                           ),
                           child: const Center(
                               child: Text(
                             'Iniciar Sesión',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Color.fromRGBO(255, 255, 255, 1),
+                                color: ColoresAplicacion.colorFondo,
                                 fontFamily: 'Inter',
                                 fontSize: 20,
                                 letterSpacing:
@@ -222,9 +223,9 @@ class _PantallainiciosesinregistroWidgetState
                           bottomLeft: Radius.circular(65),
                           bottomRight: Radius.circular(65),
                         ),
-                        color: const Color.fromRGBO(255, 255, 255, 1),
+                        color: ColoresAplicacion.colorFondo,
                         border: Border.all(
-                          color: const Color.fromRGBO(227, 0, 53, 1),
+                          color: ColoresAplicacion.colorPrimario,
                           width: 2,
                         ),
                       ),
@@ -233,7 +234,7 @@ class _PantallainiciosesinregistroWidgetState
                         'Registrar',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Color.fromRGBO(227, 0, 53, 1),
+                            color: ColoresAplicacion.colorPrimario,
                             fontFamily: 'Inter',
                             fontSize: 20,
                             letterSpacing:

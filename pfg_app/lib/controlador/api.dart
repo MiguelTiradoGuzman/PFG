@@ -12,6 +12,7 @@ class API {
   String _token = '';
 
   String get token => _token;
+
   String _hashPassword(String password) {
     var bytes = utf8.encode(password); // Convierte la contraseña a bytes.
     var digest = sha256.convert(bytes); // Calcula el hash SHA-256.
