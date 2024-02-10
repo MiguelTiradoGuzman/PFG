@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:pfg_app/vistas/ubicacionMapa.dart';
 import '../controlador/controlador.dart';
 import '../modelo/usuario.dart';
 import 'dart:math' as math;
@@ -76,11 +78,9 @@ class _PantallaInicioState extends State<PantallaInicio> {
                       blurRadius: 4,
                     )
                   ],
-                  // image: DecorationImage(
-                  //   image: AssetImage('assets/images/Capturamapa1.png'),
-                  //   fit: BoxFit.fitWidth,
-                  // ),
                 ),
+                clipBehavior: Clip.hardEdge,
+                child: UbicacionMapa(),
               ),
             ),
             Padding(
