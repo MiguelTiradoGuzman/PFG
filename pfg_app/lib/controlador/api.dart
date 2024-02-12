@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
+import '../modelo/usuario.dart';
 
 class API {
   static final API _instance = API._internal();
@@ -8,7 +9,7 @@ class API {
 
   API._internal();
 
-  final String _baseUrl = 'http://192.168.1.135:8080';
+  final String _baseUrl = 'http://192.168.1.140:8080';
   String _token = '';
 
   String get token => _token;
@@ -19,7 +20,7 @@ class API {
     return digest.toString();
   }
 
-  Future<void> login(String username, String password) async {
+  Future<Usuario> login(String username, String password) async {
     print(_baseUrl);
 
     final hashedPassword = _hashPassword(password);
@@ -32,7 +33,8 @@ class API {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       _token = data['access_token'];
-      print('Inicio de sesión exitoso. Token: $_token');
+      final Usuario usuario = Usuario.fromJson(data['user_info']);
+      return usuario;
     } else {
       throw Exception('Contraseña o Usuario incorrecto');
     }

@@ -13,8 +13,8 @@ class PantallaInicio extends StatefulWidget {
   // final Controlador controlador;
   // final Usuario usuario;
   //final RutaTuristica rutaTuristica;
-
-  PantallaInicio(
+  final List<RutaTuristica> rutas;
+  PantallaInicio({required this.rutas}
       //   {
       //   required this.controlador,
       //   required this.usuario,
@@ -39,23 +39,6 @@ class _PantallaInicioState extends State<PantallaInicio> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.1,
-                left: MediaQuery.of(context).size.width * 0.05,
-              ),
-              child: const Text(
-                'Descubre Granada',
-                style: TextStyle(
-                  color: ColoresAplicacion.colorLetrasPrincipal,
-                  fontFamily: 'Inter',
-                  fontSize: 28,
-                  letterSpacing: 0,
-                  fontWeight: FontWeight.bold,
-                  height: 1,
-                ),
-              ),
-            ),
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.02,
@@ -109,71 +92,15 @@ class _PantallaInicioState extends State<PantallaInicio> {
                   width: MediaQuery.of(context).size.width *
                       0.9, // Ancho total del 90%
                   height: MediaQuery.of(context).size.height * 0.52,
-                  child: ListView(
+                  child: ListView.builder(
                     padding: const EdgeInsets.only(top: 0.1),
                     scrollDirection: Axis.vertical,
-                    children: <Widget>[
-                      TarjetaRuta(
-                        rutaTuristica: RutaTuristica(
-                          nombre: 'Alhambra test',
-                          descripcion: 'Descripción de Alhambra',
-                          distancia:
-                              1.5, // Distancia en km (cambia según tu necesidad)
-                          duracion: '1:45',
-                          rutaImagen: 'assets/images/alhambra.jpeg',
-                        ),
-                      ),
-                      TarjetaRuta(
-                        rutaTuristica: RutaTuristica(
-                          nombre: 'Alhambra test',
-                          descripcion: 'Descripción de Alhambra',
-                          distancia:
-                              1.5, // Distancia en km (cambia según tu necesidad)
-                          duracion: '1:45',
-                          rutaImagen: 'assets/images/alhambra.jpeg',
-                        ),
-                      ),
-                      TarjetaRuta(
-                        rutaTuristica: RutaTuristica(
-                          nombre: 'Alhambra test',
-                          descripcion: 'Descripción de Alhambra',
-                          distancia:
-                              1.5, // Distancia en km (cambia según tu necesidad)
-                          duracion: '1:45',
-                          rutaImagen: 'assets/images/alhambra.jpeg',
-                        ),
-                      ),
-                      TarjetaRuta(
-                        rutaTuristica: RutaTuristica(
-                          nombre: 'Alhambra test',
-                          descripcion: 'Descripción de Alhambra',
-                          distancia:
-                              1.5, // Distancia en km (cambia según tu necesidad)
-                          duracion: '1:45',
-                          rutaImagen: 'assets/images/alhambra.jpeg',
-                        ),
-                      ),
-                      TarjetaRuta(
-                        rutaTuristica: RutaTuristica(
-                          nombre: 'Alhambra test',
-                          descripcion: 'Descripción de Alhambra',
-                          distancia:
-                              1.5, // Distancia en km (cambia según tu necesidad)
-                          duracion: '1:45',
-                          rutaImagen: 'assets/images/alhambra.jpeg',
-                        ),
-                      ),
-                      TarjetaRuta(
-                        rutaTuristica: RutaTuristica(
-                          nombre: 'Alhambra test',
-                          descripcion: 'Descripción de Alhambra',
-                          distancia:
-                              1.5, // Distancia en km (cambia según tu necesidad)
-                          duracion: '1:45',
-                          rutaImagen: 'assets/images/alhambra.jpeg',
-                        ),
-                      ),
-                    ],
+                    itemCount: widget.rutas.length,
+                    itemBuilder: (context, index) {
+                      RutaTuristica ruta = widget.rutas[index];
+
+                      return TarjetaRuta(rutaTuristica: ruta);
+                    },
                   ),
                 )),
           ],

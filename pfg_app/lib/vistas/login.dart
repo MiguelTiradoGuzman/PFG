@@ -21,7 +21,7 @@ class _PaginaLoginState extends State<PaginaLogin> {
     String contrasena = _contrasenaController.text;
 
     try {
-      await _controlador.login(correo, contrasena);
+      await _controlador.login(correo, contrasena, context);
     } catch (e) {
       // Error al iniciar sesión, muestra un SnackBar con el mensaje de error
       // ignore: use_build_context_synchronously

@@ -48,8 +48,10 @@ async def login(username: str, password: str):
     user = fake_users_db.get(username)
 
     if user and user["password_hash"] == password:
+        user_info = {key: value for key, value in user.items() if key != "password_hash"}
         token = manager.create_access_token(data={"sub": username})
-        return {"access_token": token, "token_type": "bearer"}
+        print(user_info)
+        return {"access_token": token, "token_type": "bearer", "user_info":user_info}
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
 # Ruta protegida que requiere inicio de sesión
