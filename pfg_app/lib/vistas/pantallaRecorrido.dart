@@ -72,7 +72,7 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.57,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
@@ -246,6 +246,59 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                                 )))),
                       )
               ]),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.02,
+                  left: MediaQuery.of(context).size.width * 0.05),
+              child: GestureDetector(
+                onTap: () {
+                  Controlador().cargaPaginaLugarInteres(
+                      context, getLugarActual(), widget.ruta);
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    color: ColoresAplicacion.colorFondo,
+                    border: Border.all(
+                      color: ColoresAplicacion.colorPrimario,
+                      width: 2,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.05,
+                            right: MediaQuery.of(context).size.width * 0.15),
+                        child: Icon(Icons.info,
+                            color: ColoresAplicacion.colorPrimario),
+                      ),
+                      const Center(
+                          child: Text(
+                        'He llegado',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: ColoresAplicacion.colorPrimario,
+                            fontFamily: 'Inter',
+                            fontSize: 25,
+                            letterSpacing:
+                                0 /*percentages not used in flutter. defaulting to zero*/,
+                            fontWeight: FontWeight.bold,
+                            height: 1),
+                      ))
+                    ],
+                  ),
+                ),
+              ),
             )
           ],
         ),

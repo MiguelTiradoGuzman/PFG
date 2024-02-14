@@ -40,4 +40,10 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/images/alhambra.jpeg
     - assets/images/user-circle.svg
-    - assets/images/
+    - assets/images/carrera_del_darro2.jpeg
+    #  - assets/images/carrera_del_darro.jpg
+    - assets/images/calle_navas.jpg
+    - assets/images/calle_reyes_catolicos.jpeg
+    - assets/images/calle_reyes_catolicos2.jpeg
+    - assets/images/plaza_nueva.jpg
+    - assets/images/plaza_nueva2.jpg

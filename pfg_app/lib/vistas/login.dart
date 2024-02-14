@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import 'package:flutter_svg/flutter_svg.dart';
 import '../controlador/controlador.dart';
 import '../constants/color.dart';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pfg_app/modelo/lugarInteres.dart';
+import 'package:pfg_app/vistas/pantallaLugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaRecorrido.dart';
 
 import 'api.dart';
@@ -27,9 +29,9 @@ class Controlador {
     //try {
     _usuario = await _api.login(username, password);
     //rutas = _api.get_rutas();
-
-    //TODO: Completar con la lista de rutas de pruebas
     List<RutaTuristica> rutas = [];
+    //TODO: Completar con la lista de rutas de pruebas
+    rutas = [ClaseTest().ruta];
     // Navega a la siguiente pantalla y reemplaza la actual
     Navigator.pushReplacement(
       context,
@@ -49,7 +51,7 @@ class Controlador {
 
   void loadPaginaRuta(RutaTuristica rutaTuristica, BuildContext context) {
     // Navega a la siguiente pantalla y reemplaza la actual
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TemplateApp(
@@ -62,12 +64,26 @@ class Controlador {
   }
 
   void iniciarRuta(RutaTuristica rutaTuristica, BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => TemplateApp(
           titulo: "Ruta test",
           body: PantallaRecorrido(ruta: rutaTuristica),
+          usuario: _usuario,
+        ),
+      ),
+    );
+  }
+
+  void cargaPaginaLugarInteres(
+      BuildContext context, LugarInteres lugar, RutaTuristica ruta) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TemplateApp(
+          titulo: ruta.nombre,
+          body: PantallaLugarInteres(lugar: lugar),
           usuario: _usuario,
         ),
       ),

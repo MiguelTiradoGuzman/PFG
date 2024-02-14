@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pfg_app/modelo/rutaTuristica.dart';
 import 'package:pfg_app/modelo/usuario.dart';
+import 'package:pfg_app/vistas/pantallaLugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaRecorrido.dart';
 import 'package:pfg_app/vistas/pantallaRuta.dart';
 import 'package:pfg_app/vistas/elementos/template.dart';
@@ -71,13 +72,7 @@ class MyApp extends StatelessWidget {
           themeMode: settingsController.themeMode,
           initialRoute: '/', // Ruta inicial
           routes: {
-            '/': (context) => TemplateApp(
-                  titulo: "Ruta test",
-                  body: PantallaRecorrido(
-                    ruta: ClaseTest().ruta,
-                  ),
-                  usuario: ClaseTest().user,
-                )
+            '/': (context) => PaginaLogin()
             // Ruta de la pantalla principal
           },
         );
