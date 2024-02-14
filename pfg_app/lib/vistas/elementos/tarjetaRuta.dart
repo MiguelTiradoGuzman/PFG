@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../constants/color.dart';
-import '../modelo/rutaTuristica.dart';
-import '../controlador/controlador.dart';
+import '../../constants/color.dart';
+import '../../modelo/rutaTuristica.dart';
+import '../../controlador/controlador.dart';
 
 class TarjetaRuta extends StatelessWidget {
   final RutaTuristica rutaTuristica;

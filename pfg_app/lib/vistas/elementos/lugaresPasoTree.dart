@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
-import '../constants/color.dart';
+import '../../constants/color.dart';
 
 class ListaLugares extends StatelessWidget {
   final List<LugarInteres> lugares;

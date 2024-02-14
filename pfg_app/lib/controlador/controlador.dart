@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pfg_app/vistas/pantallaRecorrido.dart';
 
 import 'api.dart';
 import '../modelo/usuario.dart';
 import '../modelo/rutaTuristica.dart';
 import '../vistas/pantallaInicio.dart';
-import '../vistas/template.dart';
+import '../vistas/elementos/template.dart';
 import '../vistas/pantallaRuta.dart';
+import '../constants/test_const.dart';
 
 class Controlador {
   static final Controlador _instance = Controlador._internal();
@@ -53,6 +55,35 @@ class Controlador {
         builder: (context) => TemplateApp(
           titulo: "Ruta test",
           body: PantallaRuta(ruta: rutaTuristica),
+          usuario: _usuario,
+        ),
+      ),
+    );
+  }
+
+  void iniciarRuta(RutaTuristica rutaTuristica, BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TemplateApp(
+          titulo: "Ruta test",
+          body: PantallaRecorrido(ruta: rutaTuristica),
+          usuario: _usuario,
+        ),
+      ),
+    );
+  }
+
+  void cargaPaginaInicial(BuildContext context) {
+    List<RutaTuristica> rutas = [];
+    rutas.insert(0, ClaseTest().ruta);
+    _usuario = ClaseTest().user;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TemplateApp(
+          titulo: "Descubre",
+          body: PantallaInicio(rutas: rutas),
           usuario: _usuario,
         ),
       ),

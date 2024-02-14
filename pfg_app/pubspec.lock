@@ -99,6 +99,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_polyline_points:
+    dependency: "direct main"
+    description:
+      name: flutter_polyline_points
+      sha256: "02699e69142f51a248d784b6e3eec524194467fca5f7c4da19699ce2368b6980"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -205,6 +213,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  mapbox_api:
+    dependency: "direct main"
+    description:
+      name: mapbox_api
+      sha256: "2e5b38bf10bdeed6a30b77475b07d5627dbd535386b43c1626ecfd0b538e2caa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   mapbox_gl:
     dependency: "direct main"
     description:

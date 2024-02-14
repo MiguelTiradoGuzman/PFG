@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:geolocator/geolocator.dart';
-import '../private_config.dart';
+import '../../private_config.dart';
 
 class UbicacionMapa extends StatefulWidget {
   @override

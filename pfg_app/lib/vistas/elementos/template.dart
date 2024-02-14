@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants/color.dart';
-import '../modelo/usuario.dart';
+import '../../constants/color.dart';
+import '../../modelo/usuario.dart';
 
 class TemplateApp extends StatelessWidget {
   final Widget body;
@@ -17,9 +17,9 @@ class TemplateApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Descubre Granada',
-          style: TextStyle(
+        title: Text(
+          titulo,
+          style: const TextStyle(
             color: ColoresAplicacion.colorLetrasPrincipal,
             fontFamily: 'Inter',
             fontSize: 28,
@@ -145,7 +145,7 @@ class TemplateApp extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: const Text('Cerrar Menú',
+                title: const Text('Cerrar Sesión',
                     style: TextStyle(
                       color: ColoresAplicacion.colorFondo,
                       fontFamily: 'Inter',

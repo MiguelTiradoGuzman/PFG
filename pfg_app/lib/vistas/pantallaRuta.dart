@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:pfg_app/vistas/lugaresPasoTree.dart';
-import 'package:pfg_app/vistas/ubicacionMapa.dart';
-import '../controlador/controlador.dart';
-import '../modelo/usuario.dart';
-import 'dart:math' as math;
+import 'package:pfg_app/controlador/controlador.dart';
+import 'package:pfg_app/vistas/elementos/lugaresPasoTree.dart';
 import '../constants/color.dart';
-import '../vistas/tarjetaRuta.dart';
 import '../modelo/rutaTuristica.dart';
 
 class PantallaRuta extends StatefulWidget {
   final RutaTuristica ruta;
-  PantallaRuta({required this.ruta});
+  const PantallaRuta({required this.ruta});
 
   @override
   _PantallaRutaState createState() => _PantallaRutaState();
@@ -182,9 +177,19 @@ class _PantallaRutaState extends State<PantallaRuta> {
                       right: BorderSide(width: 1),
                       top: BorderSide(width: 1),
                     )),
-                child: ListView(
-                    children: [Text("${widget.ruta.descripcion}")],
-                    padding: EdgeInsets.all(10)),
+                child: ListView(padding: EdgeInsets.all(10), children: [
+                  Text(
+                    "${widget.ruta.descripcion}",
+                    style: TextStyle(
+                      color: ColoresAplicacion.colorLetrasPrincipal,
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      letterSpacing: 0,
+                      fontWeight: FontWeight.normal,
+                      height: 1,
+                    ),
+                  )
+                ]),
               ),
             ),
             Padding(
@@ -230,7 +235,9 @@ class _PantallaRutaState extends State<PantallaRuta> {
                   top: MediaQuery.of(context).size.height * 0.02,
                   left: MediaQuery.of(context).size.width * 0.05),
               child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Controlador().iniciarRuta(this.widget.ruta, context);
+                  },
                   child: Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.07,

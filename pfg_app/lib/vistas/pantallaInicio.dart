@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:pfg_app/vistas/ubicacionMapa.dart';
+import 'package:pfg_app/vistas/elementos/ubicacionMapa.dart';
 import '../controlador/controlador.dart';
 import '../modelo/usuario.dart';
 import 'dart:math' as math;
 import '../constants/color.dart';
-import '../vistas/tarjetaRuta.dart';
+import 'elementos/tarjetaRuta.dart';
 import '../modelo/rutaTuristica.dart';
 
 class PantallaInicio extends StatefulWidget {
