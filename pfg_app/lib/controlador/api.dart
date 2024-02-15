@@ -26,8 +26,9 @@ class API {
     final hashedPassword = _hashPassword(password);
 
     final response = await http.post(
-      Uri.parse('$_baseUrl/login?username=$username&password=$hashedPassword'),
-      headers: {'Content-Type': 'application/json'},
+      Uri.parse('$_baseUrl/login'),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: {'username': username, 'password': hashedPassword},
     );
 
     if (response.statusCode == 200) {

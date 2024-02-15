@@ -2,7 +2,9 @@ import os
 import importlib
 from typing import List
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import Request, FastAPI, Depends, HTTPException, Form
+
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_login import LoginManager
 from datetime import timedelta
 import hashlib
@@ -43,8 +45,13 @@ def load_user(username: str):
     return fake_users_db.get(username)
 
 # Ruta para el inicio de sesión
+
+# async def login(data: OAuth2PasswordRequestForm = Depends()):
+#     username = data.username
+#     password = data.password
 @app.post("/login")
-async def login(username: str, password: str):
+async def login(username: str = Form(...), password: str = Form(...)):
+
     user = fake_users_db.get(username)
 
     if user and user["password_hash"] == password:
