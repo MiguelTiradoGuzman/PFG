@@ -10,3 +10,13 @@ services:
     #   - ./frontend:/app/frontend
     ports:
       - 8080:8000
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/certs
+    depends_on:
+      - fastapi

@@ -32,6 +32,7 @@ fake_users_db = {
     "user1": {
         "username": "user1",
         "password_hash": hash_password("password1"),
+        #"password_hash": "password1",
     },
     "user2": {
         "username": "user2",
