@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaLugarInteres.dart';
@@ -28,10 +31,9 @@ class Controlador {
       String username, String password, BuildContext context) async {
     //try {
     _usuario = await _api.login(username, password);
-    //rutas = _api.get_rutas();
-    List<RutaTuristica> rutas = [];
+    List<RutaTuristica> rutas = await _api.getRutas();
     //TODO: Completar con la lista de rutas de pruebas
-    rutas = [ClaseTest().ruta];
+    //rutas = [ClaseTest().ruta];
     // Navega a la siguiente pantalla y reemplaza la actual
     Navigator.pushReplacement(
       context,
@@ -105,4 +107,16 @@ class Controlador {
       ),
     );
   }
+
+  // Future<Image> obtenerImagen(String url) async {
+  //   // return _api.getImagen(url);
+
+  //   ui.Image imagen = await _api.getImagen(url);
+
+  //   // Convierte ui.Image a Image
+  //   ByteData? byteData =
+  //       await imagen.toByteData(format: ui.ImageByteFormat.png);
+  //   Uint8List pngBytes = byteData!.buffer.asUint8List();
+  //   return Image.memory(Uint8List.fromList(pngBytes));
+  // }
 }

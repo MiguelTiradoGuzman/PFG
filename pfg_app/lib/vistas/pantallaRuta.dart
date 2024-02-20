@@ -50,7 +50,7 @@ class _PantallaRutaState extends State<PantallaRuta> {
                   ],
                 ),
                 clipBehavior: Clip.hardEdge,
-                child: Image.asset(
+                child: Image.network(
                   widget.ruta
                       .rutaImagen, // Assuming rutaImagen is a path to an asset
                   fit: BoxFit

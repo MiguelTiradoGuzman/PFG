@@ -48,7 +48,7 @@ class TarjetaRuta extends StatelessWidget {
                     bottomLeft: Radius.circular(30),
                   ),
                   image: DecorationImage(
-                    image: AssetImage(rutaTuristica.rutaImagen),
+                    image: NetworkImage(rutaTuristica.rutaImagen),
                     fit: BoxFit.cover,
                   ),
                 ),

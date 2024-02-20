@@ -3,3 +3,5 @@ uvicorn[standard]
 pytest
 httpx
 python-multipart
+python-dotenv
+mysql-connector-python

@@ -80,7 +80,7 @@ class _PantallaLugarInteresState extends State<PantallaLugarInteres> {
                   ],
                 ),
                 clipBehavior: Clip.hardEdge,
-                child: Image.asset(widget.lugar.getFotos.elementAt(indice)),
+                child: Image.network(widget.lugar.getFotos.elementAt(indice)),
               ),
             ),
             Padding(
