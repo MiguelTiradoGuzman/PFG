@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../constants/color.dart';
-import '../../modelo/usuario.dart';
+import 'package:pfg_app/constants/color.dart';
+import 'package:pfg_app/modelo/usuario.dart';
 
 class TemplateApp extends StatelessWidget {
   final Widget body;

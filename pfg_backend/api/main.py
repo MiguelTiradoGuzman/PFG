@@ -166,6 +166,6 @@ def obtener_rutas_desde_bd():
 
 # Ahora, en tu ruta FastAPI, puedes llamar a esta función y devolver las rutas
 @app.get("/rutas")
-def obtener_rutas():
+def obtener_rutas(user=Depends(manager)):
     rutas_desde_bd = obtener_rutas_desde_bd()
     return {"rutas":rutas_desde_bd}

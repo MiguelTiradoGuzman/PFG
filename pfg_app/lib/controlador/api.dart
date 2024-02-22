@@ -5,8 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/adapter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pfg_app/constants/network_const.dart';
-import 'package:pfg_app/modelo/rutaTuristica.dart';
-import '../modelo/usuario.dart';
+import 'package:pfg_app/modelo/usuario.dart';
 import 'package:dio/dio.dart';
 import 'dart:typed_data';
 
@@ -28,45 +27,11 @@ class API {
     return digest.toString();
   }
 
-  // Future<Image> getImagen(String url) async {
-  //   final fullUrl = '$_baseUrl/$url';
-
-  //   final response = await http.get(Uri.parse(fullUrl));
-
-  //   if (response.statusCode == 200) {
-  //     final List<int> bytes = response.bodyBytes;
-  //     final Uint8List uint8List = Uint8List.fromList(bytes);
-  //     final ByteData byteData = ByteData.sublistView(uint8List);
-  //     final codec = await instantiateImageCodec(byteData.buffer.asUint8List());
-  //     final frameInfo = await codec.getNextFrame();
-  //     return frameInfo.image;
-  //   } else {
-  //     throw Exception('Error al cargar la imagen: ${response.statusCode}');
-  //   }
-  // }
-
   Future<Usuario> login(String username, String password) async {
-    // print(_baseUrl);
-
-    // final hashedPassword = _hashPassword(password);
-
-    // final response = await http.post(
-    //   Uri.parse('$_baseUrl/login'),
-    //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    //   body: {'username': username, 'password': hashedPassword},
-    // );
-
-    // if (response.statusCode == 200) {
-    //   final Map<String, dynamic> data = jsonDecode(response.body);
-    //   _token = data['access_token'];
-    //   final Usuario usuario = Usuario.fromJson(data['user_info']);
-    //   return usuario;
-    // } else {
-    //   throw Exception('Contraseña o Usuario incorrecto');
-    // }
-
+    print("Antes peticion");
     Dio dio = Dio(BaseOptions(validateStatus: (status) => true))
       ..interceptors.add(LogInterceptor(responseBody: true));
+    print("Despues peticion");
 
     //IMPORTANTE: Se desactivan ciertas opciones para poder usar certificados SSH autofirmados
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -74,6 +39,8 @@ class API {
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
     };
+
+    print("Despues desactivar");
 
     var data = {'username': username, 'password': _hashPassword(password)};
 
@@ -86,8 +53,11 @@ class API {
         ),
         data: FormData.fromMap(data),
       );
+      print("Despues respuesta");
 
       Usuario usuario = Usuario.fromJson(response.data['user_info']);
+      _token = response.data['access_token']!;
+      print(_token);
       // Imprimir la respuesta del servidor
       //print('Response status: ${response.statusCode}');
       //print('Response body: ${response.data}');
@@ -100,7 +70,7 @@ class API {
     // Cerrar el cliente
   }
 
-  Future<List<RutaTuristica>> getRutas() async {
+  Future<Map<String, dynamic>> getRutas() async {
     Dio dio = Dio(BaseOptions(validateStatus: (status) => true))
       ..interceptors.add(LogInterceptor(responseBody: true));
 
@@ -111,6 +81,14 @@ class API {
           (X509Certificate cert, String host, int port) => true;
     };
 
+    // Verificar si el token está presente
+    if (_token.isEmpty) {
+      throw Exception("No se ha iniciado sesión. Primero realiza el login.");
+    }
+    print("Antes de  petición 3");
+    // Configurar el encabezado de autorización con el token
+    dio.options.headers['Authorization'] = 'Bearer $_token';
+
     // Realizar la solicitud POST
     try {
       Response response = await dio.get(
@@ -120,15 +98,13 @@ class API {
         ),
       );
 
-      if (response.statusCode == 200) {
-        // Parsear la lista de rutas desde el JSON
-        List<dynamic> data = response.data['rutas'];
-        List<RutaTuristica> rutas = data.map((rutaJson) {
-          return RutaTuristica.fromJson(rutaJson);
-        }).toList();
+      print("Despues de  petición");
 
+      if (response.statusCode == 200) {
         dio.close();
-        return rutas;
+        print("Respuesta de servidor");
+        print(response.data);
+        return response.data;
       } else {
         throw Exception('Error al obtener las rutas: ${response.statusCode}');
       }

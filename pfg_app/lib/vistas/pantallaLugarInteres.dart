@@ -1,8 +1,8 @@
 // TODO: Bug cuando pulsas 2 veces seguidas boton anterior o siguiente
 import 'package:flutter/material.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
-import '../constants/color.dart';
-import '../controlador/controlador.dart';
+import 'package:pfg_app/constants/color.dart';
+import 'package:pfg_app/controlador/controlador.dart';
 
 class PantallaLugarInteres extends StatefulWidget {
   LugarInteres lugar;

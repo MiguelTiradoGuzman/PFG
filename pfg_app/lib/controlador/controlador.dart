@@ -7,34 +7,71 @@ import 'package:pfg_app/vistas/pantallaLugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaRecorrido.dart';
 
 import 'api.dart';
-import '../modelo/usuario.dart';
-import '../modelo/rutaTuristica.dart';
-import '../vistas/pantallaInicio.dart';
-import '../vistas/elementos/template.dart';
-import '../vistas/pantallaRuta.dart';
-import '../constants/test_const.dart';
+import 'package:pfg_app/modelo/usuario.dart';
+import 'package:pfg_app/modelo/rutaTuristica.dart';
+import 'package:pfg_app/vistas/pantallaInicio.dart';
+import 'package:pfg_app/vistas/elementos/template.dart';
+import 'package:pfg_app/vistas/pantallaRuta.dart';
+import 'package:pfg_app/test/test_const.dart';
+import 'package:pfg_app/test/apiMockup.dart';
 
 class Controlador {
   static final Controlador _instance = Controlador._internal();
   Controlador._internal();
   factory Controlador() => _instance;
-
-  final API _api = API();
+  //API _api = MockAPI();
+  API _api = API();
+  //late var _api;
   late Usuario _usuario;
-  API get api => _api;
+  //var get api => _api;
+
+  set api(var apiParam) {
+    _api = apiParam;
+  }
 
   set user(String username) {
     _usuario = Usuario(username: username);
   }
 
+  List<RutaTuristica> _rutasDesdeJson(Map<String, dynamic> rutasJson) {
+    print(rutasJson);
+    List<dynamic> data = rutasJson['rutas'];
+    print("Despues de coger Data");
+
+    List<RutaTuristica> rutas = data.map((rutaJson) {
+      return RutaTuristica.fromJson(rutaJson);
+    }).toList();
+    print("Convertiar a lista de rutas");
+
+    return rutas;
+  }
+
+  Future<List<RutaTuristica>> _obtenerRutas() async {
+    print("Obtener json de rutas");
+    Map<String, dynamic> rutasJson = await _api.getRutas();
+    print(rutasJson);
+
+    print("Despues de obtener json de rutas");
+
+    List<RutaTuristica> rutas = _rutasDesdeJson(rutasJson);
+    print("Despues de obtener RUTAS");
+    print(rutas);
+    return rutas;
+  }
+
   Future<void> login(
       String username, String password, BuildContext context) async {
     //try {
+    print("------------INICIO_SESION");
     _usuario = await _api.login(username, password);
-    List<RutaTuristica> rutas = await _api.getRutas();
-    //TODO: Completar con la lista de rutas de pruebas
-    //rutas = [ClaseTest().ruta];
+    print("------------FIN_SESION");
+    List<RutaTuristica> rutas = await _obtenerRutas();
+    print("------------OBTENER RUTAS");
+
+    // Parsear la lista de rutas desde el JSON
+
     // Navega a la siguiente pantalla y reemplaza la actual
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -45,10 +82,6 @@ class Controlador {
         ),
       ),
     );
-    // } catch (e) {
-    //   // Manejar excepciones o mostrar mensajes de error según sea necesario
-    //   print('Error de inicio de sesión: $e');
-    // }
   }
 
   void loadPaginaRuta(RutaTuristica rutaTuristica, BuildContext context) {
@@ -92,10 +125,9 @@ class Controlador {
     );
   }
 
-  void cargaPaginaInicial(BuildContext context) {
-    List<RutaTuristica> rutas = [];
-    rutas.insert(0, ClaseTest().ruta);
-    _usuario = ClaseTest().user;
+  void cargaPaginaInicial(BuildContext context) async {
+    List<RutaTuristica> rutas = await _obtenerRutas();
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -107,16 +139,4 @@ class Controlador {
       ),
     );
   }
-
-  // Future<Image> obtenerImagen(String url) async {
-  //   // return _api.getImagen(url);
-
-  //   ui.Image imagen = await _api.getImagen(url);
-
-  //   // Convierte ui.Image a Image
-  //   ByteData? byteData =
-  //       await imagen.toByteData(format: ui.ImageByteFormat.png);
-  //   Uint8List pngBytes = byteData!.buffer.asUint8List();
-  //   return Image.memory(Uint8List.fromList(pngBytes));
-  // }
 }

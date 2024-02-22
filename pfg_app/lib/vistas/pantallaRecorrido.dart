@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
 import 'package:pfg_app/vistas/elementos/mapaRuta.dart';
-import '../constants/color.dart';
-import '../modelo/rutaTuristica.dart';
-import '../controlador/controlador.dart';
+import 'package:pfg_app/constants/color.dart';
+import 'package:pfg_app/modelo/rutaTuristica.dart';
+import 'package:pfg_app/controlador/controlador.dart';
 
 class PantallaRecorrido extends StatefulWidget {
   RutaTuristica ruta;

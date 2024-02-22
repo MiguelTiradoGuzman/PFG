@@ -15,7 +15,7 @@ import 'settings/settings_view.dart';
 
 import 'package:pfg_app/vistas/login.dart';
 import 'package:pfg_app/vistas/pantallaInicio.dart';
-import '../constants/test_const.dart';
+import '../test/test_const.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {

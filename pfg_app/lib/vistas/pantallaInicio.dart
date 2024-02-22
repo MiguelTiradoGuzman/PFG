@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:pfg_app/vistas/elementos/ubicacionMapa.dart';
-import '../controlador/controlador.dart';
-import '../modelo/usuario.dart';
+import 'package:pfg_app/controlador/controlador.dart';
+import 'package:pfg_app/modelo/usuario.dart';
 import 'dart:math' as math;
-import '../constants/color.dart';
+import 'package:pfg_app/constants/color.dart';
 import 'elementos/tarjetaRuta.dart';
-import '../modelo/rutaTuristica.dart';
+import 'package:pfg_app/modelo/rutaTuristica.dart';
 
 class PantallaInicio extends StatefulWidget {
   // final Controlador controlador;

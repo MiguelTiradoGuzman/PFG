@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../constants/color.dart';
-import '../../modelo/rutaTuristica.dart';
-import '../../controlador/controlador.dart';
+import 'package:pfg_app/constants/color.dart';
+import 'package:pfg_app/modelo/rutaTuristica.dart';
+import 'package:pfg_app/controlador/controlador.dart';
 
 class TarjetaRuta extends StatelessWidget {
   final RutaTuristica rutaTuristica;
@@ -55,7 +55,8 @@ class TarjetaRuta extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:
+                      const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[

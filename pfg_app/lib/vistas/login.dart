@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../controlador/controlador.dart';
-import '../constants/color.dart';
+import 'package:pfg_app/controlador/controlador.dart';
+import 'package:pfg_app/constants/color.dart';
 
 class PaginaLogin extends StatefulWidget {
   const PaginaLogin({super.key});

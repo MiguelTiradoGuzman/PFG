@@ -1,6 +1,6 @@
-import '../modelo/lugarInteres.dart';
-import '../modelo/rutaTuristica.dart';
-import '../modelo/usuario.dart';
+import 'package:pfg_app/modelo/lugarInteres.dart';
+import 'package:pfg_app/modelo/rutaTuristica.dart';
+import 'package:pfg_app/modelo/usuario.dart';
 
 class ClaseTest {
   final List<LugarInteres> lugares = [

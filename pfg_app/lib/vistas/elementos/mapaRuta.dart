@@ -5,7 +5,7 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
-import '../../private_config.dart';
+import 'package:pfg_app/private_config.dart';
 import 'package:mapbox_api/mapbox_api.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
