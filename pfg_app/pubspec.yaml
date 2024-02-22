@@ -15,10 +15,21 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.9
+  http: ^0.13.3
+  crypto: ^3.0.1
+  mapbox_gl: ^0.14.0
+  geolocator: ^7.7.0
+  permission_handler: ^11.2.1
+  mapbox_api: ^1.0.0
+  flutter_polyline_points: ^1.0.0
+  dio: ^4.0.0
+  dcdg: ^3.0.0
+  #navigation_with_mapbox: ^0.0.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mocktail_image_network: ^1.1.0
 
   flutter_lints: ^2.0.0
 
@@ -31,4 +42,13 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/alhambra.jpeg
+    - assets/images/clock.svg
+    - assets/images/distance.svg
     - assets/images/user-circle.svg
+    - assets/images/carrera_del_darro2.jpeg
+    #  - assets/images/carrera_del_darro.jpg
+    - assets/images/calle_navas.jpg
+    - assets/images/calle_reyes_catolicos.jpeg
+    - assets/images/calle_reyes_catolicos2.jpeg
+    - assets/images/plaza_nueva.jpg
+    - assets/images/plaza_nueva2.jpg

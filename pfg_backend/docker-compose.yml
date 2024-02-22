@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  fastapi:
+    build:
+      context: .
+    command: uvicorn api.main:app --reload --host 0.0.0.0
+    volumes:
+      - ./api/:/app/api
+    env_file:
+      - .env
+    ports:
+      - 8080:8000
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/certs
+    depends_on:
+      - fastapi
+
+  mysql:
+    image: mysql:8.3
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
