@@ -8,6 +8,7 @@ from fastapi import Request, FastAPI, Depends, HTTPException, Form
 from api.modelo.usuario import Usuario
 from api.modelo.rutaTuristica import RutaTuristica
 from api.modelo.lugarInteres import LugarInteres
+from api.ManejadorBD import ManejadorBD
 
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_login import LoginManager
@@ -19,7 +20,11 @@ from fastapi.encoders import jsonable_encoder
 
 from datetime import timedelta
 import hashlib
+
 app = FastAPI()
+
+manejador_bd = ManejadorBD()
+manejador_bd.conectar_bd()
 
 # Directorio donde se encuentran las imágenes
 imagenes_dir = os.path.abspath("./api/api_mount")
@@ -95,16 +100,28 @@ def load_user(username: str):
 #     username = data.username
 #     password = data.password
 @app.post("/login")
-async def login(username: str = Form(...), password: str = Form(...)):
+async def login(email: str = Form(...), password: str = Form(...)):
 
-    user = fake_users_db.get(username)
+    user = Usuario(email = email, contrasenia = password)
 
-    if user and user["password_hash"] == password:
-        user_info = {key: value for key, value in user.items() if key != "password_hash"}
-        token = manager.create_access_token(data={"sub": username})
-        print(user_info)
-        return {"access_token": token, "token_type": "bearer", "user_info":user_info}
+    user = manejador_bd.login(user)
+
+    if user != None:
+        token = manager.create_access_token(data={"sub": user.nombre})
+        print(user)
+        return {"access_token": token, "token_type": "bearer", "user_info":user}
     raise HTTPException(status_code=401, detail="Invalid credentials")
+
+# async def login(username: str = Form(...), password: str = Form(...)):
+
+#     user = fake_users_db.get(username)
+
+#     if user and user["password_hash"] == password:
+#         user_info = {key: value for key, value in user.items() if key != "password_hash"}
+#         token = manager.create_access_token(data={"sub": username})
+#         print(user_info)
+#         return {"access_token": token, "token_type": "bearer", "user_info":user_info}
+#     raise HTTPException(status_code=401, detail="Invalid credentials")
 
 # Ruta protegida que requiere inicio de sesión
 @app.get("/protected")
@@ -148,7 +165,6 @@ def obtener_rutas_desde_bd():
         horas, minutos, segundos = duracionCompleta.split(":")
         duracionFormateada = f"{horas}:{minutos}"
         # Aquí asumes que ruta_bd es un diccionario que contiene los datos de la ruta
-        # Puedes adaptar esto según la estructura real de tus datos
         ruta = RutaTuristica(
             nombre=ruta_bd["nombre"],
             descripcion=ruta_bd["descripcion"],
@@ -164,8 +180,19 @@ def obtener_rutas_desde_bd():
 
     return rutas
 
-# Ahora, en tu ruta FastAPI, puedes llamar a esta función y devolver las rutas
 @app.get("/rutas")
 def obtener_rutas(user=Depends(manager)):
-    rutas_desde_bd = obtener_rutas_desde_bd()
+    rutas_desde_bd = manejador_bd.obtener_rutas()
     return {"rutas":rutas_desde_bd}
+
+@app.post("/signin")
+async def registro(username: str = Form(...), correo: str = Form(...), password: str = Form(...)):
+    try:
+        nuevo_usuario = Usuario(nombre=username, email=correo, contrasenia=password)
+        manejador_bd.registrar_usuario(nuevo_usuario)
+        return {"message": "Usuario registrado exitosamente"}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
