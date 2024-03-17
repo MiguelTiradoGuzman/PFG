@@ -22,7 +22,7 @@ class ManejadorBD:
     def conectar_bd(self):
         print(self.host)
         self.conexion = mysql.connector.connect(
-            host="mysql",
+            host=self.host,
             user=self.user,
             password=self.password,
             database=self.database
@@ -46,8 +46,11 @@ class ManejadorBD:
 
     def login(self, user: usuario):
         query = "SELECT * FROM Usuario WHERE email = %s AND contrasenia=%s"
-        self.cursor.execute(query,user.email, self.hash_password(user.contrasenia))
-        user = self.cursor.fetchone()
+        self.cursor.execute(query,(user.email, self.hash_password(user.contrasenia),))
+        userDevolver = self.cursor.fetchone()
+        print(userDevolver)
+        if(userDevolver != None):
+            user.nombre = userDevolver['nombreUsuario']
         return user
     
     def registrar_usuario(self, nuevo_usuario: usuario):
@@ -76,6 +79,16 @@ class ManejadorBD:
             return False
         else:
             return True
+        
+    def obtenerUsuario(self, nombre):
+        query = "SELECT * FROM Usuario WHERE nombreUsuario = %s"
+        self.cursor.execute(query,(nombre,))
+        userDevolver = self.cursor.fetchone()
+        print(userDevolver)
+        user = None
+        if(userDevolver != None):
+            user = usuario.Usuario(email = userDevolver['email'], nombre=userDevolver['nombreUsuario'], contrasenia = "") 
+        return user
         
     def existeEmail(self, user: usuario):
         query = "SELECT * FROM Usuario WHERE email = %s"
@@ -111,7 +124,7 @@ class ManejadorBD:
                 imagenes = [imagen_bd["lugarImagen"] for imagen_bd in imagenes_bd]
 
                 # Crea instancia de LugarInteres y agrega a la lista de lugares
-                lugar = LugarInteres(
+                lugar = lugarInteres.LugarInteres(
                     nombre=lugar_bd["nombre"],
                     descripcion=lugar_bd["descripcion"],
                     latitud=lugar_bd["latitud"],
@@ -124,7 +137,7 @@ class ManejadorBD:
             horas, minutos, segundos = duracionCompleta.split(":")
             duracionFormateada = f"{horas}:{minutos}"
             # Aquí asumes que ruta_bd es un diccionario que contiene los datos de la ruta
-            ruta = RutaTuristica(
+            ruta = rutaTuristica.RutaTuristica(
                 nombre=ruta_bd["nombre"],
                 descripcion=ruta_bd["descripcion"],
                 distancia=ruta_bd["distancia"],

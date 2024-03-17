@@ -27,7 +27,7 @@ class API {
     return digest.toString();
   }
 
-  Future<Usuario> login(String username, String password) async {
+  Future<Usuario> login(String email, String password) async {
     print("Antes peticion");
     Dio dio = Dio(BaseOptions(validateStatus: (status) => true))
       ..interceptors.add(LogInterceptor(responseBody: true));
@@ -43,7 +43,7 @@ class API {
     print("Despues desactivar");
 
     //var data = {'username': username, 'password': _hashPassword(password)};
-    var data = {'username': username, 'password': password};
+    var data = {'email': email, 'password': password};
 
     // Realizar la solicitud POST
     try {

@@ -64,7 +64,7 @@ SECRET_KEY = os.getenv("API_SECRET_KEY").encode('utf-8')
 TOKEN_URL = "./"
 
 # Configuración del LoginManager
-manager = LoginManager(SECRET_KEY, token_url=TOKEN_URL,default_expiry=timedelta(hours=12))
+manager = LoginManager(SECRET_KEY, token_url=TOKEN_URL,default_expiry=timedelta(hours=24))
 
 def hash_password(password):
     # Convierte la contraseña a bytes.
@@ -92,103 +92,43 @@ fake_users_db = {
 # Definir una función para obtener el usuario actual en función del token de sesión
 @manager.user_loader()
 def load_user(username: str):
-    return fake_users_db.get(username)
+    return manejador_bd.obtenerUsuario(username)
 
 # Ruta para el inicio de sesión
-
-# async def login(data: OAuth2PasswordRequestForm = Depends()):
-#     username = data.username
-#     password = data.password
 @app.post("/login")
 async def login(email: str = Form(...), password: str = Form(...)):
 
-    user = Usuario(email = email, contrasenia = password)
+    user = Usuario(email = email, nombre="", contrasenia = password)
 
     user = manejador_bd.login(user)
 
-    if user != None:
+    if user.nombre != '':
         token = manager.create_access_token(data={"sub": user.nombre})
         print(user)
+        print(token)
         return {"access_token": token, "token_type": "bearer", "user_info":user}
-    raise HTTPException(status_code=401, detail="Invalid credentials")
-
-# async def login(username: str = Form(...), password: str = Form(...)):
-
-#     user = fake_users_db.get(username)
-
-#     if user and user["password_hash"] == password:
-#         user_info = {key: value for key, value in user.items() if key != "password_hash"}
-#         token = manager.create_access_token(data={"sub": username})
-#         print(user_info)
-#         return {"access_token": token, "token_type": "bearer", "user_info":user_info}
-#     raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+    else:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
 # Ruta protegida que requiere inicio de sesión
 @app.get("/protected")
 def protected_route(user=Depends(manager)):
     return {"user": user}
 
-def obtener_rutas_desde_bd():
-    # Obtiene la conexión y el cursor desde la función de conexión
-    conexion, cursor = conectar_bd()
-
-    # Ejecuta la consulta para obtener todas las rutas
-    cursor.execute("SELECT * FROM RutaTuristica")
-
-    # Obtiene los resultados
-    rutas_bd = cursor.fetchall()
-    # Convierte los resultados de la base de datos a instancias de RutaTuristica
-    rutas = []
-    for ruta_bd in rutas_bd:
-        # Para cada ruta, busca los lugares asociados
-        cursor.execute("SELECT * FROM LugarInteres WHERE nombreRuta = %s", (ruta_bd["nombre"],))
-        lugares_bd = cursor.fetchall()
-        lugares = []
-
-        for lugar_bd in lugares_bd:
-            # Para cada lugar, busca las imágenes asociadas
-            cursor.execute("SELECT lugarImagen FROM ImagenLugar WHERE nombreLugar = %s", (lugar_bd["nombre"],))
-            imagenes_bd = cursor.fetchall()
-            imagenes = [imagen_bd["lugarImagen"] for imagen_bd in imagenes_bd]
-
-            # Crea instancia de LugarInteres y agrega a la lista de lugares
-            lugar = LugarInteres(
-                nombre=lugar_bd["nombre"],
-                descripcion=lugar_bd["descripcion"],
-                latitud=lugar_bd["latitud"],
-                longitud=lugar_bd["longitud"],
-                fotos=imagenes
-            )
-            lugares.append(lugar)
-
-        duracionCompleta = str(ruta_bd["duracion"])
-        horas, minutos, segundos = duracionCompleta.split(":")
-        duracionFormateada = f"{horas}:{minutos}"
-        # Aquí asumes que ruta_bd es un diccionario que contiene los datos de la ruta
-        ruta = RutaTuristica(
-            nombre=ruta_bd["nombre"],
-            descripcion=ruta_bd["descripcion"],
-            distancia=ruta_bd["distancia"],
-            duracion=duracionFormateada,
-            ruta_imagen=ruta_bd["imagenPortada"],
-            lugares=lugares
-        )
-        rutas.append(ruta)
-    # Cierra tanto el cursor como la conexión
-    cursor.close()
-    conexion.close()
-
-    return rutas
-
 @app.get("/rutas")
 def obtener_rutas(user=Depends(manager)):
+    print("Antes de manejador")
     rutas_desde_bd = manejador_bd.obtener_rutas()
+    print("Despues de manejador")
+
     return {"rutas":rutas_desde_bd}
 
 @app.post("/signin")
 async def registro(username: str = Form(...), correo: str = Form(...), password: str = Form(...)):
     try:
         nuevo_usuario = Usuario(nombre=username, email=correo, contrasenia=password)
+        print(nuevo_usuario)
         manejador_bd.registrar_usuario(nuevo_usuario)
         return {"message": "Usuario registrado exitosamente"}
     except ValueError as ve:

@@ -6,7 +6,7 @@ class Usuario {
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
     return Usuario(
-      username: json['username'],
+      username: json['nombre'],
     );
   }
 

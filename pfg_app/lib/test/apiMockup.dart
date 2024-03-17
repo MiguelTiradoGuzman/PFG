@@ -16,6 +16,12 @@ class MockAPI implements API {
     }
   }
 
+  @override
+  Future<void> registrarUsuario(
+      String username, String password, String correo) async {
+    // Simula una respuesta exitosa en lugar de realizar una solicitud real
+  }
+
   // Map<String, dynamic> deconstruirRutaTuristica(RutaTuristica ruta) {
   //   return {
   //     'nombre': ruta.getNombre,
