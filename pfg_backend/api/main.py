@@ -118,10 +118,7 @@ def protected_route(user=Depends(manager)):
 
 @app.get("/rutas")
 def obtener_rutas(user=Depends(manager)):
-    print("Antes de manejador")
-    rutas_desde_bd = manejador_bd.obtener_rutas()
-    print("Despues de manejador")
-
+    rutas_desde_bd = manejador_bd.obtenerRutas()
     return {"rutas":rutas_desde_bd}
 
 @app.post("/signin")
@@ -135,4 +132,15 @@ async def registro(username: str = Form(...), correo: str = Form(...), password:
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/logout")
+async def cerrar_sesion(user=Depends(manager)):
+    #Establecer el la fecha de expiración del token en el pasado para que se destruya
+    manager._token_expiry = manager.default_expiry
+    return {"message": "Logout exitoso"}
 
+@app.post("/delete/usuario/me")
+async def borrar_usuario(user=Depends):
+    usuario_borrar = Usuario(nombre=user.username, email="", contrasenia="")
+    mensaje = manejador_bd.eliminarUsuario(usuario_borrar)
+    return mensaje

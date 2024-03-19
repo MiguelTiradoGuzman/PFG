@@ -12,34 +12,20 @@ class MockAPI implements API {
     if (username != "user1" || password != "password1") {
       throw Exception("Error de usuario/contrasenia");
     } else {
-      return Usuario(username: 'mock_user');
+      return Usuario(username: 'mock_user', email: 'mock@gmail.com');
     }
   }
+
+  @override
+  Future<void> cerrarSesion() async {}
+
+  Future<void> borrarUsuario() async {}
 
   @override
   Future<void> registrarUsuario(
       String username, String password, String correo) async {
     // Simula una respuesta exitosa en lugar de realizar una solicitud real
   }
-
-  // Map<String, dynamic> deconstruirRutaTuristica(RutaTuristica ruta) {
-  //   return {
-  //     'nombre': ruta.getNombre,
-  //     'descripcion': ruta.getDescripcion,
-  //     'distancia': ruta.getDistancia,
-  //     'duracion': ruta.getDuracion,
-  //     'rutaImagen': ruta.getRutaImagen,
-  //     'lugares': ruta.getLugares.map((lugar) {
-  //       return {
-  //         'nombre': lugar.getNombre,
-  //         'descripcion': lugar.getDescripcion,
-  //         'latitud': lugar.getLatitud,
-  //         'longitud': lugar.getLongitud,
-  //         'fotos': lugar.getFotos,
-  //       };
-  //     }).toList(),
-  //   };
-  // }
 
   Map<String, dynamic> deconstruirRutaTuristica(RutaTuristica ruta) {
     return {
@@ -91,14 +77,6 @@ class MockAPI implements API {
   @override
   Future<Map<String, dynamic>> getRutas() async {
     List<RutaTuristica> rutas = [ClaseTest().ruta];
-
-    // List<Map<String, dynamic>> listaDeRutas = rutas.map((ruta) {
-    //   return deconstruirRutaTuristica(ruta);
-    // }).toList();
-
-    // Map<String, dynamic> jsonResultado = {'rutas': listaDeRutas};
-
-    //return jsonResultado;
 
     return deconstruirRutaTuristica(ClaseTest().ruta);
   }

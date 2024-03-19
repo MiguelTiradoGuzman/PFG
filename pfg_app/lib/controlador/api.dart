@@ -155,4 +155,88 @@ class API {
     }
     // Cerrar el cliente
   }
+
+  Future<void> cerrarSesion() async {
+    Dio dio = Dio(BaseOptions(validateStatus: (status) => true))
+      ..interceptors.add(LogInterceptor(responseBody: true));
+
+    //IMPORTANTE: Se desactivan ciertas opciones para poder usar certificados SSH autofirmados
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    };
+
+    // Verificar si el token está presente
+    if (_token.isEmpty) {
+      throw Exception("No se ha iniciado sesión. Primero realiza el login.");
+    }
+    // Configurar el encabezado de autorización con el token
+    dio.options.headers['Authorization'] = 'Bearer $_token';
+
+    // Realizar la solicitud POST
+    try {
+      Response response = await dio.post(
+        '$_baseUrl/logout',
+        options: Options(
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        ),
+      );
+
+      print("Despues de  petición");
+
+      if (response.statusCode == 200) {
+        dio.close();
+        print("Respuesta de servidor");
+        print(response.data);
+        return response.data;
+      } else {
+        throw Exception('Error al cerrar sesión: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw ('Error: $e');
+    }
+  }
+
+  Future<void> borrarUsuario() async {
+    Dio dio = Dio(BaseOptions(validateStatus: (status) => true))
+      ..interceptors.add(LogInterceptor(responseBody: true));
+
+    //IMPORTANTE: Se desactivan ciertas opciones para poder usar certificados SSH autofirmados
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    };
+
+    // Verificar si el token está presente
+    if (_token.isEmpty) {
+      throw Exception("No se ha iniciado sesión. Primero realiza el login.");
+    }
+    // Configurar el encabezado de autorización con el token
+    dio.options.headers['Authorization'] = 'Bearer $_token';
+
+    // Realizar la solicitud POST
+    try {
+      Response response = await dio.post(
+        '$_baseUrl/delete/usuario/me',
+        options: Options(
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        ),
+      );
+
+      print("Despues de  petición");
+
+      if (response.statusCode == 200) {
+        dio.close();
+        print("Respuesta de servidor");
+        print(response.data);
+        return response.data;
+      } else {
+        throw Exception('Error al cerrar sesión: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw ('Error: $e');
+    }
+  }
 }

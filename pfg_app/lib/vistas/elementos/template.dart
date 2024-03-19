@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'package:pfg_app/modelo/usuario.dart';
+import 'package:pfg_app/controlador/controlador.dart';
 
 class TemplateApp extends StatelessWidget {
   final Widget body;
@@ -158,7 +159,7 @@ class TemplateApp extends StatelessWidget {
                   color: ColoresAplicacion.colorFondo,
                 ),
                 onTap: () {
-                  Navigator.pop(context); // Cierra el Drawer
+                  Controlador().cerrarSesion(context); // Cierra el Drawer
                 },
               ),
             ],

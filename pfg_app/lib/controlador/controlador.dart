@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaLugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaRecorrido.dart';
+import 'package:pfg_app/vistas/login.dart';
 
 import 'api.dart';
 import 'package:pfg_app/modelo/usuario.dart';
@@ -30,8 +31,8 @@ class Controlador {
     _api = apiParam;
   }
 
-  set user(String username) {
-    _usuario = Usuario(username: username);
+  set user(Usuario user) {
+    _usuario = user;
   }
 
   List<RutaTuristica> _rutasDesdeJson(Map<String, dynamic> rutasJson) {
@@ -63,11 +64,8 @@ class Controlador {
   Future<void> login(
       String username, String password, BuildContext context) async {
     //try {
-    print("------------INICIO_SESION");
     _usuario = await _api.login(username, password);
-    print("------------FIN_SESION");
     List<RutaTuristica> rutas = await _obtenerRutas();
-    print("------------OBTENER RUTAS");
 
     // Parsear la lista de rutas desde el JSON
 
@@ -152,6 +150,26 @@ class Controlador {
           body: PantallaInicio(rutas: rutas),
           usuario: _usuario,
         ),
+      ),
+    );
+  }
+
+  void cerrarSesion(BuildContext context) async {
+    _api.cerrarSesion();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PaginaLogin(),
+      ),
+    );
+  }
+
+  void borrarUsuario(BuildContext context) async {
+    _api.borrarUsuario();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PaginaLogin(),
       ),
     );
   }

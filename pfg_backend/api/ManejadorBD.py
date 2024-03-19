@@ -99,7 +99,7 @@ class ManejadorBD:
         else:
             return True
 
-    def obtener_rutas(self):
+    def obtenerRutas(self):
         # Obtiene la conexión y el cursor desde la función de conexión
         # if(conexion == None or cursor == None):
         #     conexion, cursor = self.conectar_bd()
@@ -148,3 +148,20 @@ class ManejadorBD:
             rutas.append(ruta)
 
         return rutas
+def eliminarUsuario(self, usuario: usuario.Usuario):
+    try:
+        # Consulta SQL para eliminar un usuario por su nombre de usuario
+        query = "DELETE FROM Usuario WHERE nombreUsuario = %s"
+        
+        # Ejecuta la consulta con el nombre de usuario proporcionado
+        self.cursor.execute(query, (usuario.nombre,))
+        
+        # Confirma los cambios en la base de datos
+        self.conexion.commit()
+        
+        # Devuelve un mensaje de éxito
+        return {"message": f"Usuario '{usuario.nombre}' eliminado correctamente"}
+    
+    except Exception as e:
+        # En caso de error, se lanza una excepción HTTP con el detalle del error
+        raise HTTPException(status_code=500, detail=str(e))

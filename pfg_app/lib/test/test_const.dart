@@ -40,7 +40,7 @@ class ClaseTest {
   ];
   late RutaTuristica ruta;
 
-  Usuario user = Usuario(username: "test");
+  Usuario user = Usuario(username: "test", email: "test@gmail.com");
   ClaseTest() {
     ruta = RutaTuristica(
         nombre: 'Alhambra test',
