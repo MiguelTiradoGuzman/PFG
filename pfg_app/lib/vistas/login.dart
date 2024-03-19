@@ -211,7 +211,9 @@ class _PaginaLoginState extends State<PaginaLogin> {
                   top: MediaQuery.of(context).size.height * 0.8,
                   left: MediaQuery.of(context).size.width * 0.15,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Controlador().loadPaginaRegistro(context);
+                    },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.7,
                       height: MediaQuery.of(context).size.height * 0.07,
@@ -230,7 +232,7 @@ class _PaginaLoginState extends State<PaginaLogin> {
                       ),
                       child: const Center(
                           child: Text(
-                        'Registrar',
+                        'Registrame',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: ColoresAplicacion.colorPrimario,

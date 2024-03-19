@@ -14,6 +14,7 @@ import 'package:pfg_app/vistas/elementos/template.dart';
 import 'package:pfg_app/vistas/pantallaRuta.dart';
 import 'package:pfg_app/test/test_const.dart';
 import 'package:pfg_app/test/apiMockup.dart';
+import 'package:pfg_app/vistas/pantallaRegistro.dart';
 
 class Controlador {
   static final Controlador _instance = Controlador._internal();
@@ -84,6 +85,11 @@ class Controlador {
     );
   }
 
+  Future<void> registrarUsuario(String username, String password, String correo,
+      BuildContext context) async {
+    await _api.registrarUsuario(username, password, correo);
+  }
+
   void loadPaginaRuta(RutaTuristica rutaTuristica, BuildContext context) {
     // Navega a la siguiente pantalla y reemplaza la actual
     Navigator.push(
@@ -94,6 +100,16 @@ class Controlador {
           body: PantallaRuta(ruta: rutaTuristica),
           usuario: _usuario,
         ),
+      ),
+    );
+  }
+
+  void loadPaginaRegistro(BuildContext context) {
+// Navega a la siguiente pantalla y reemplaza la actual
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PaginaRegistro(),
       ),
     );
   }
