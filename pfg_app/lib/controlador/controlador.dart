@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
+import 'package:pfg_app/vistas/pantallaAjustes.dart';
 import 'package:pfg_app/vistas/pantallaLugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaRecorrido.dart';
 import 'package:pfg_app/vistas/login.dart';
@@ -102,12 +103,12 @@ class Controlador {
     );
   }
 
-  void loadPaginaRegistro(BuildContext context) {
+  void loadPantallaRegistro(BuildContext context) {
 // Navega a la siguiente pantalla y reemplaza la actual
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PaginaRegistro(),
+        builder: (context) => PantallaRegistro(),
       ),
     );
   }
@@ -170,6 +171,15 @@ class Controlador {
       context,
       MaterialPageRoute(
         builder: (context) => PaginaLogin(),
+      ),
+    );
+  }
+
+  void loadAjustes(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PantallaAjustes(),
       ),
     );
   }

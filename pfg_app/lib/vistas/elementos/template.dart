@@ -141,8 +141,7 @@ class TemplateApp extends StatelessWidget {
                   color: ColoresAplicacion.colorFondo,
                 ),
                 onTap: () {
-                  // Acciones cuando se presiona "Ajustes"
-                  Navigator.pop(context); // Cierra el Drawer
+                  Controlador().loadAjustes(context);
                 },
               ),
               ListTile(

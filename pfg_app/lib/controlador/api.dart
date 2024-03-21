@@ -182,9 +182,7 @@ class API {
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         ),
       );
-
-      print("Despues de  petición");
-
+      _token = '';
       if (response.statusCode == 200) {
         dio.close();
         print("Respuesta de servidor");
@@ -225,7 +223,7 @@ class API {
         ),
       );
 
-      print("Despues de  petición");
+      _token = '';
 
       if (response.statusCode == 200) {
         dio.close();

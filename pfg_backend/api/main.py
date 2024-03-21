@@ -140,7 +140,6 @@ async def cerrar_sesion(user=Depends(manager)):
     return {"message": "Logout exitoso"}
 
 @app.post("/delete/usuario/me")
-async def borrar_usuario(user=Depends):
-    usuario_borrar = Usuario(nombre=user.username, email="", contrasenia="")
-    mensaje = manejador_bd.eliminarUsuario(usuario_borrar)
+async def borrar_usuario(user=Depends(manager)):
+    mensaje = manejador_bd.eliminarUsuario(user)
     return mensaje

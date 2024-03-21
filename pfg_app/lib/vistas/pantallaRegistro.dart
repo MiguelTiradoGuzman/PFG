@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:pfg_app/controlador/controlador.dart';
 import 'package:pfg_app/constants/color.dart';
 
-class PaginaRegistro extends StatefulWidget {
-  const PaginaRegistro({super.key});
+class PantallaRegistro extends StatefulWidget {
+  const PantallaRegistro({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _PaginaRegistroState createState() => _PaginaRegistroState();
+  _PantallaRegistroState createState() => _PantallaRegistroState();
 }
 
-class _PaginaRegistroState extends State<PaginaRegistro> {
+class _PantallaRegistroState extends State<PantallaRegistro> {
   final TextEditingController _correoController = TextEditingController();
   final TextEditingController _contrasenaController = TextEditingController();
   final TextEditingController _usuarioController = TextEditingController();

@@ -148,20 +148,20 @@ class ManejadorBD:
             rutas.append(ruta)
 
         return rutas
-def eliminarUsuario(self, usuario: usuario.Usuario):
-    try:
-        # Consulta SQL para eliminar un usuario por su nombre de usuario
-        query = "DELETE FROM Usuario WHERE nombreUsuario = %s"
+    def eliminarUsuario(self, usuario: usuario.Usuario):
+        try:
+            # Consulta SQL para eliminar un usuario por su nombre de usuario
+            query = "DELETE FROM Usuario WHERE nombreUsuario = %s"
+            
+            # Ejecuta la consulta con el nombre de usuario proporcionado
+            self.cursor.execute(query, (usuario.nombre,))
+            
+            # Confirma los cambios en la base de datos
+            self.conexion.commit()
+            
+            # Devuelve un mensaje de éxito
+            return {"message": f"Usuario '{usuario.nombre}' eliminado correctamente"}
         
-        # Ejecuta la consulta con el nombre de usuario proporcionado
-        self.cursor.execute(query, (usuario.nombre,))
-        
-        # Confirma los cambios en la base de datos
-        self.conexion.commit()
-        
-        # Devuelve un mensaje de éxito
-        return {"message": f"Usuario '{usuario.nombre}' eliminado correctamente"}
-    
-    except Exception as e:
-        # En caso de error, se lanza una excepción HTTP con el detalle del error
-        raise HTTPException(status_code=500, detail=str(e))
+        except Exception as e:
+            # En caso de error, se lanza una excepción HTTP con el detalle del error
+            raise HTTPException(status_code=500, detail=str(e))

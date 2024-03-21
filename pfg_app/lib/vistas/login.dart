@@ -212,7 +212,7 @@ class _PaginaLoginState extends State<PaginaLogin> {
                   left: MediaQuery.of(context).size.width * 0.15,
                   child: GestureDetector(
                     onTap: () {
-                      Controlador().loadPaginaRegistro(context);
+                      Controlador().loadPantallaRegistro(context);
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.7,
