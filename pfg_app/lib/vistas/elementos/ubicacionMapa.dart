@@ -6,6 +6,11 @@ import 'package:pfg_app/private_config.dart';
 class UbicacionMapa extends StatefulWidget {
   @override
   _UbicacionMapaState createState() => _UbicacionMapaState();
+  CameraPosition? obtenerPosicion() {
+    print(
+        '-------------------: ${_UbicacionMapaState()._controller?.cameraPosition!.target.longitude.toString()}');
+    return _UbicacionMapaState()._controller?.cameraPosition!;
+  }
 }
 
 class _UbicacionMapaState extends State<UbicacionMapa> {
@@ -52,6 +57,7 @@ class _UbicacionMapaState extends State<UbicacionMapa> {
       myLocationEnabled: true,
       myLocationRenderMode: MyLocationRenderMode.GPS,
       myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
+      trackCameraPosition: true,
       //Url hacia el estilo elegido para los mapas
       styleString: Config.styleMapboxUrl,
     );

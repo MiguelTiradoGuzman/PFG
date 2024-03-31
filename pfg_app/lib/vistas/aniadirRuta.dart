@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pfg_app/controlador/controlador.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
+import 'package:pfg_app/modelo/rutaTuristica.dart';
 import 'package:pfg_app/modelo/usuario.dart';
 import 'package:pfg_app/vistas/elementos/tarjetaLugar.dart';
 import 'package:pfg_app/test/test_const.dart';
@@ -25,10 +26,11 @@ class AniadirRuta extends StatefulWidget {
 class _AniadirRutaState extends State<AniadirRuta> {
   final TextEditingController _nombreRuta = TextEditingController();
   final TextEditingController _descripcion = TextEditingController();
+  final TextEditingController _descripcionTmp = TextEditingController();
 
   String _contrasenaErrorText = '';
   late List<LugarInteres> lugaresInteres;
-
+  late List<List<File>> imagenesLugares = [];
   void _mostrarMenuEditarDescripcion(BuildContext context) {
     showDialog(
       context: context,
@@ -44,7 +46,7 @@ class _AniadirRutaState extends State<AniadirRuta> {
               initialValue: _descripcion.text,
               onChanged: (value) {
                 setState(() {
-                  _descripcion.text = value;
+                  _descripcionTmp.text = value;
                 });
               },
               decoration: InputDecoration(
@@ -56,15 +58,18 @@ class _AniadirRutaState extends State<AniadirRuta> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Cerrar el diálogo
+                setState(() {
+                  _descripcionTmp.text = _descripcion.text;
+                });
               },
               child: Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
-                // Aquí puedes realizar alguna acción con la nueva descripción
-                // Por ejemplo, enviarla a la API
-                print('Nueva descripción: $_descripcion');
                 Navigator.of(context).pop(); // Cerrar el diálogo
+                setState(() {
+                  _descripcion.text = _descripcionTmp.text;
+                });
               },
               child: Text('Guardar'),
             ),
@@ -74,6 +79,13 @@ class _AniadirRutaState extends State<AniadirRuta> {
     );
   }
 
+  late RutaTuristica _ruta = RutaTuristica(
+      nombre: '',
+      descripcion: '',
+      distancia: 0,
+      duracion: '',
+      rutaImagen: '',
+      lugares: <LugarInteres>[]);
   File? image;
   Future pickImage() async {
     try {
@@ -83,6 +95,33 @@ class _AniadirRutaState extends State<AniadirRuta> {
       setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
+    }
+  }
+
+  void _aniadirRuta() {
+    if (_descripcion.text.isEmpty ||
+        _nombreRuta.text.isEmpty ||
+        image == null) {
+      // Mostrar aviso de error si falta información
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text(
+                'Por favor, complete todos los campos y añada al menos una imagen.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
     }
   }
 
@@ -148,10 +187,7 @@ class _AniadirRutaState extends State<AniadirRuta> {
                         image!,
                         fit: BoxFit.cover,
                       )
-                    : Image.asset(
-                        'assets/images/alhambra.jpeg',
-                        fit: BoxFit.cover,
-                      ),
+                    : Icon(Icons.add_a_photo),
                 // You can adjust the fit based on your needs
               ),
             ),
@@ -263,7 +299,16 @@ class _AniadirRutaState extends State<AniadirRuta> {
                       color: ColoresAplicacion.colorPrimario,
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        List l = await Controlador()
+                            .aniadirModificarLugar(context, null, this._ruta);
+                        if (l != null) {
+                          setState(() {
+                            _ruta.lugares.add(l.elementAt(0));
+                            imagenesLugares.add(l.elementAt(1));
+                          });
+                        }
+                      },
                       icon: Icon(
                         Icons.add,
                         color: ColoresAplicacion.colorLetrasSecundario,
@@ -286,31 +331,35 @@ class _AniadirRutaState extends State<AniadirRuta> {
                   // TODO: El size height estaba a 52, lo cambio al no usar un listview builder
                   height: MediaQuery.of(context).size.height * 0.32,
 
-                  child: Column(
-                    children: [
-                      TarjetaLugarInteres(
-                          lugarInteres: ClaseTest().lugares.elementAt(0)),
-                      TarjetaLugarInteres(
-                          lugarInteres: ClaseTest().lugares.elementAt(1))
-                    ],
-                  ),
-                  // child: ListView.builder(
-                  //   padding: const EdgeInsets.only(top: 0.1),
-                  //   scrollDirection: Axis.vertical,
-                  //   // itemCount: widget.lugaresInteres.length,
-                  //   // itemBuilder: (context, index) {
-                  //   //   lugaresInteres ruta = widget.lugaresInteres[index];
-
-                  //   //   return TarjetaLugar(lugarInteres: ruta);
-                  //   // },
+                  // child: Column(
+                  //   children: [
+                  //     TarjetaLugarInteres(
+                  //         lugarInteres: ClaseTest().lugares.elementAt(0)),
+                  //     TarjetaLugarInteres(
+                  //         lugarInteres: ClaseTest().lugares.elementAt(1))
+                  //   ],
                   // ),
+                  child: _ruta.lugares.length != 0
+                      ? ListView.builder(
+                          padding: const EdgeInsets.only(top: 0.1),
+                          scrollDirection: Axis.vertical,
+                          itemCount: _ruta.lugares.length,
+                          itemBuilder: (context, index) {
+                            LugarInteres lugar = _ruta.lugares.elementAt(index);
+
+                            return TarjetaLugarInteres(
+                                lugarInteres: lugar,
+                                img: imagenesLugares.elementAt(index).first);
+                          },
+                        )
+                      : Container(),
                 )),
             Padding(
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.03,
                   left: MediaQuery.of(context).size.width * 0.05),
               child: GestureDetector(
-                  onTap: () {},
+                  //onTap: _AniadirRuta,
                   child: Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.1,

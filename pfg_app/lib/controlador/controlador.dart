@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
+import 'package:pfg_app/vistas/aniadirModificarLugar.dart';
 import 'package:pfg_app/vistas/pantallaAjustes.dart';
 import 'package:pfg_app/vistas/pantallaLugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaRecorrido.dart';
@@ -215,4 +216,16 @@ class Controlador {
               titulo: "Crea tu Ruta"),
         ));
   }
+
+  Future<List> aniadirModificarLugar(
+      BuildContext context, LugarInteres? l, RutaTuristica r) async {
+    List dev = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AniadirModificarLugar(context, l, r)));
+    return dev;
+  }
+/*
+  Future<RutaTuristica> getRuta() async {}
+  */
 }

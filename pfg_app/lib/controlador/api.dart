@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/adapter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pfg_app/constants/network_const.dart';
+import 'package:pfg_app/modelo/rutaTuristica.dart';
 import 'package:pfg_app/modelo/usuario.dart';
 import 'package:dio/dio.dart';
 import 'dart:typed_data';
@@ -28,10 +29,8 @@ class API {
   }
 
   Future<Usuario> login(String email, String password) async {
-    print("Antes peticion");
     Dio dio = Dio(BaseOptions(validateStatus: (status) => true))
       ..interceptors.add(LogInterceptor(responseBody: true));
-    print("Despues peticion");
 
     //IMPORTANTE: Se desactivan ciertas opciones para poder usar certificados SSH autofirmados
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -39,8 +38,6 @@ class API {
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
     };
-
-    print("Despues desactivar");
 
     //var data = {'username': username, 'password': _hashPassword(password)};
     var data = {'email': email, 'password': password};
@@ -54,11 +51,8 @@ class API {
         ),
         data: FormData.fromMap(data),
       );
-      print("Despues respuesta");
-
       Usuario usuario = Usuario.fromJson(response.data['user_info']);
       _token = response.data['access_token']!;
-      print(_token);
       // Imprimir la respuesta del servidor
       //print('Response status: ${response.statusCode}');
       //print('Response body: ${response.data}');
@@ -156,6 +150,52 @@ class API {
     // Cerrar el cliente
   }
 
+/*
+  Future<RutaTuristica> getRuta(String nombre) async {
+    Dio dio = Dio(BaseOptions(validateStatus: (status) => true))
+      ..interceptors.add(LogInterceptor(responseBody: true));
+
+    //IMPORTANTE: Se desactivan ciertas opciones para poder usar certificados SSH autofirmados
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    };
+
+    //var data = {'username': username, 'password': _hashPassword(password)};
+    var data = {
+      'nombre': nombre,
+    };
+
+    // Configurar el encabezado de autorización con el token
+    dio.options.headers['Authorization'] = 'Bearer $_token';
+
+    // Realizar la solicitud POST
+    try {
+      Response response = await dio.get(
+        '$_baseUrl/ruta',
+        options: Options(
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        ),
+        data: FormData.fromMap(data),
+      );
+      print("Despues respuesta");
+
+      Usuario usuario = Usuario.fromJson(response.data['user_info']);
+      _token = response.data['access_token']!;
+      print(_token);
+      // Imprimir la respuesta del servidor
+      //print('Response status: ${response.statusCode}');
+      //print('Response body: ${response.data}');
+
+      dio.close();
+      return usuario;
+    } catch (e) {
+      throw ('Error: $e');
+    }
+    // Cerrar el cliente
+  }
+*/
   Future<void> cerrarSesion() async {
     Dio dio = Dio(BaseOptions(validateStatus: (status) => true))
       ..interceptors.add(LogInterceptor(responseBody: true));
