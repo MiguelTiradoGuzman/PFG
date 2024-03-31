@@ -11,4 +11,5 @@ class Usuario {
   }
 
   String get getUsername => username;
+  String get getCorreo => email;
 }

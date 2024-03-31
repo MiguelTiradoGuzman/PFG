@@ -74,22 +74,22 @@ class _PantallaAjustesState extends State<PantallaAjustes> {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.1,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text(
-                  'Ajustes',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: ColoresAplicacion.colorLetrasPrincipal,
-                      fontFamily: 'Inter',
-                      fontSize: 40,
-                      letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.bold,
-                      height: 1),
-                )),
+            // Padding(
+            //     padding: EdgeInsets.only(
+            //         top: MediaQuery.of(context).size.height * 0.1,
+            //         left: MediaQuery.of(context).size.width * 0.05),
+            //     child: const Text(
+            //       'Ajustes',
+            //       textAlign: TextAlign.left,
+            //       style: TextStyle(
+            //           color: ColoresAplicacion.colorLetrasPrincipal,
+            //           fontFamily: 'Inter',
+            //           fontSize: 40,
+            //           letterSpacing:
+            //               0 /*percentages not used in flutter. defaulting to zero*/,
+            //           fontWeight: FontWeight.bold,
+            //           height: 1),
+            //     )),
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.05,

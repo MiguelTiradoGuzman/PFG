@@ -17,6 +17,8 @@ import 'package:pfg_app/vistas/pantallaRuta.dart';
 import 'package:pfg_app/test/test_const.dart';
 import 'package:pfg_app/test/apiMockup.dart';
 import 'package:pfg_app/vistas/pantallaRegistro.dart';
+import 'package:pfg_app/vistas/miCuenta.dart';
+import 'package:pfg_app/vistas/aniadirRuta.dart';
 
 class Controlador {
   static final Controlador _instance = Controlador._internal();
@@ -108,7 +110,7 @@ class Controlador {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PantallaRegistro(),
+        builder: (context) => const PantallaRegistro(),
       ),
     );
   }
@@ -160,7 +162,7 @@ class Controlador {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => PaginaLogin(),
+        builder: (context) => const PaginaLogin(),
       ),
     );
   }
@@ -170,7 +172,7 @@ class Controlador {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => PaginaLogin(),
+        builder: (context) => const PaginaLogin(),
       ),
     );
   }
@@ -179,8 +181,38 @@ class Controlador {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PantallaAjustes(),
+        builder: (context) => TemplateApp(
+          titulo: "Ajustes",
+          body: const PantallaAjustes(),
+          usuario: _usuario,
+        ),
       ),
     );
+  }
+
+  void loadMiCuenta(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TemplateApp(
+              body: MiCuenta(
+                usuario: _usuario,
+              ),
+              usuario: _usuario,
+              titulo: "Mi Cuenta"),
+        ));
+  }
+
+  void loadAniadirRuta(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TemplateApp(
+              body: AniadirRuta(
+                usuario: _usuario,
+              ),
+              usuario: _usuario,
+              titulo: "Crea tu Ruta"),
+        ));
   }
 }

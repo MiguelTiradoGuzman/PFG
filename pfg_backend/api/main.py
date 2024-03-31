@@ -111,11 +111,6 @@ async def login(email: str = Form(...), password: str = Form(...)):
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-# Ruta protegida que requiere inicio de sesión
-@app.get("/protected")
-def protected_route(user=Depends(manager)):
-    return {"user": user}
-
 @app.get("/rutas")
 def obtener_rutas(user=Depends(manager)):
     rutas_desde_bd = manejador_bd.obtenerRutas()

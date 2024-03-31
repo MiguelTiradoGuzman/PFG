@@ -4,7 +4,6 @@ services:
   mysql:
     image: mysql:8.3
     restart: always
-
     env_file:
       - .env
     ports:
