@@ -38,26 +38,35 @@ class TarjetaLugarInteres extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Container(
-                width: MediaQuery.of(context).size.width * 0.2,
-                height: MediaQuery.of(context).size.height * 0.12,
-                // decoration: BoxDecoration(
-                //   borderRadius: const BorderRadius.only(
-                //     topLeft: Radius.circular(30),
-                //     bottomLeft: Radius.circular(30),
-                //   ),
-                //   //image: ,
-                // ),
-                // clipBehavior: Clip.hardEdge,
-                child: Image.file(this.img)
-                // CachedNetworkImage(
-                //   imageUrl: lugarInteres.fotos.elementAt(0), // URL de la imagen
-                //   fit: BoxFit.cover,
-                //   placeholder: (context, url) => CircularProgressIndicator(
-                //       strokeWidth: 3), // Widget de carga
-                //   errorWidget: (context, url, error) =>
-                //       Icon(Icons.error), // Widget de error
-                // ),
+              width: MediaQuery.of(context).size.width * 0.2,
+              height: MediaQuery.of(context).size.height * 0.12,
+              // decoration: BoxDecoration(
+              //   borderRadius: const BorderRadius.only(
+              //     topLeft: Radius.circular(30),
+              //     bottomLeft: Radius.circular(30),
+              //   ),
+              //   //image: ,
+              // ),
+              // clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  bottomLeft: Radius.circular(30),
                 ),
+                image: DecorationImage(
+                  image: FileImage(img),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              // CachedNetworkImage(
+              //   imageUrl: lugarInteres.fotos.elementAt(0), // URL de la imagen
+              //   fit: BoxFit.cover,
+              //   placeholder: (context, url) => CircularProgressIndicator(
+              //       strokeWidth: 3), // Widget de carga
+              //   errorWidget: (context, url, error) =>
+              //       Icon(Icons.error), // Widget de error
+              // ),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),

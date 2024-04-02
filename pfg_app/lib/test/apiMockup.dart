@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:pfg_app/modelo/rutaTuristica.dart';
 import 'package:pfg_app/modelo/usuario.dart';
 import 'package:pfg_app/controlador/api.dart';
@@ -81,6 +83,13 @@ class MockAPI implements API {
     return deconstruirRutaTuristica(ClaseTest().ruta);
   }
 
+  Future<RutaTuristica> getRuta(String nombre) async {
+    return ClaseTest().ruta;
+  }
+
+  @override
+  void insertarRuta(RutaTuristica ruta, List<List<File>> imagenes,
+      File imagenPortada) async {}
   @override
   // TODO: implement token
   String get token => throw UnimplementedError();

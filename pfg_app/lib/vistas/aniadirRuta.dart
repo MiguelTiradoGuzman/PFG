@@ -98,7 +98,10 @@ class _AniadirRutaState extends State<AniadirRuta> {
     }
   }
 
-  void _aniadirRuta() {
+  Future<void> _aniadirRuta() async {
+    print(_descripcion.text);
+    print(_nombreRuta.text);
+
     if (_descripcion.text.isEmpty ||
         _nombreRuta.text.isEmpty ||
         image == null) {
@@ -109,7 +112,7 @@ class _AniadirRutaState extends State<AniadirRuta> {
           return AlertDialog(
             title: const Text('Error'),
             content: const Text(
-                'Por favor, complete todos los campos y añada al menos una imagen.'),
+                'Por favor, complete todos los campos y añada una imagen.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -123,6 +126,34 @@ class _AniadirRutaState extends State<AniadirRuta> {
       );
       return;
     }
+
+    RutaTuristica? r = await Controlador().getRuta(_nombreRuta.text);
+    print(r);
+    if (r != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text(
+                'Ya existe una ruta con ese nombre, por favor pruebe con otro nombre'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+    _ruta.nombre = _nombreRuta.text;
+    _ruta.descripcion = _descripcion.text;
+    Controlador()
+        .insertarRuta(context, this._ruta, this.imagenesLugares, image!);
   }
 
   @override
@@ -138,6 +169,11 @@ class _AniadirRutaState extends State<AniadirRuta> {
                 left: MediaQuery.of(context).size.width * 0.05,
               ),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    _nombreRuta.text = value;
+                  });
+                },
                 style: TextStyle(
                     color: ColoresAplicacion.colorLetrasPrincipal,
                     fontFamily: 'Inter',
@@ -359,7 +395,7 @@ class _AniadirRutaState extends State<AniadirRuta> {
                   top: MediaQuery.of(context).size.height * 0.03,
                   left: MediaQuery.of(context).size.width * 0.05),
               child: GestureDetector(
-                  //onTap: _AniadirRuta,
+                  onTap: _aniadirRuta,
                   child: Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.1,

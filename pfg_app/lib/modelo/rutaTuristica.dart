@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:pfg_app/constants/network_const.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
 
@@ -25,12 +27,6 @@ class RutaTuristica {
   List<LugarInteres> get getLugares => lugares;
 
   factory RutaTuristica.fromJson(Map<String, dynamic> json) {
-    // Convierte la duración de String a Duration
-    // final durationParts = json['duracion'].split(':');
-    // // final duration = Duration(
-    // //   hours: int.parse(durationParts[0]),
-    // //   minutes: int.parse(durationParts[1]),
-    // // );
     String img = json['ruta_imagen'];
     // Construye y devuelve una instancia de RutaTuristica
     return RutaTuristica(
@@ -43,5 +39,16 @@ class RutaTuristica {
         json['lugares'].map((lugarJson) => LugarInteres.fromJson(lugarJson)),
       ),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['nombre'] = this.nombre;
+    data['descripcion'] = this.descripcion;
+    data['distancia'] = this.distancia;
+    data['duracion'] = this.duracion;
+    data['ruta_imagen'] = this.rutaImagen;
+    data['lugares'] = this.lugares.map((lugar) => lugar.toJson()).toList();
+    return data;
   }
 }

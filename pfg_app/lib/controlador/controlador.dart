@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -61,7 +62,7 @@ class Controlador {
 
     List<RutaTuristica> rutas = _rutasDesdeJson(rutasJson);
     print("Despues de obtener RUTAS");
-    print(rutas);
+    //print(rutas);
     return rutas;
   }
 
@@ -225,7 +226,26 @@ class Controlador {
             builder: (context) => AniadirModificarLugar(context, l, r)));
     return dev;
   }
-/*
-  Future<RutaTuristica> getRuta() async {}
-  */
+
+  Future<RutaTuristica?> getRuta(String nombreRuta) async {
+    Future<RutaTuristica?> r = _api.getRuta(nombreRuta);
+    try {
+      RutaTuristica? ruta = await r;
+      if (ruta == null) {
+        print("DEVUELVE NULO");
+      } else {
+        print(ruta);
+      }
+      return ruta;
+    } catch (e) {
+      print("Error al obtener la ruta: $e");
+      return null;
+    }
+  }
+
+  void insertarRuta(BuildContext context, RutaTuristica ruta,
+      List<List<File>> imagenes, File imagenPortada) {
+    _api.insertarRuta(ruta, imagenes, imagenPortada);
+    cargaPaginaInicial(context);
+  }
 }
