@@ -24,6 +24,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   dio: ^4.0.0
   dcdg: ^3.0.0
+  image_picker: ^1.0.7
   #navigation_with_mapbox: ^0.0.7
 
 dev_dependencies:

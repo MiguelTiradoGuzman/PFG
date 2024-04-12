@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from api.modelo.lugarInteres import LugarInteres
-from typing import List
+from typing import List, Optional
 
 
 class RutaTuristica (BaseModel):
@@ -8,5 +8,5 @@ class RutaTuristica (BaseModel):
     descripcion: str
     distancia: float
     duracion: str
-    ruta_imagen: str
+    ruta_imagen: Optional[str]
     lugares: List[LugarInteres]

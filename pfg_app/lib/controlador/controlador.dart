@@ -1,10 +1,14 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
+import 'package:pfg_app/vistas/aniadirModificarLugar.dart';
+import 'package:pfg_app/vistas/pantallaAjustes.dart';
 import 'package:pfg_app/vistas/pantallaLugarInteres.dart';
 import 'package:pfg_app/vistas/pantallaRecorrido.dart';
+import 'package:pfg_app/vistas/login.dart';
 
 import 'api.dart';
 import 'package:pfg_app/modelo/usuario.dart';
@@ -15,6 +19,8 @@ import 'package:pfg_app/vistas/pantallaRuta.dart';
 import 'package:pfg_app/test/test_const.dart';
 import 'package:pfg_app/test/apiMockup.dart';
 import 'package:pfg_app/vistas/pantallaRegistro.dart';
+import 'package:pfg_app/vistas/miCuenta.dart';
+import 'package:pfg_app/vistas/aniadirRuta.dart';
 
 class Controlador {
   static final Controlador _instance = Controlador._internal();
@@ -30,8 +36,8 @@ class Controlador {
     _api = apiParam;
   }
 
-  set user(String username) {
-    _usuario = Usuario(username: username);
+  set user(Usuario user) {
+    _usuario = user;
   }
 
   List<RutaTuristica> _rutasDesdeJson(Map<String, dynamic> rutasJson) {
@@ -56,18 +62,15 @@ class Controlador {
 
     List<RutaTuristica> rutas = _rutasDesdeJson(rutasJson);
     print("Despues de obtener RUTAS");
-    print(rutas);
+    //print(rutas);
     return rutas;
   }
 
   Future<void> login(
       String username, String password, BuildContext context) async {
     //try {
-    print("------------INICIO_SESION");
     _usuario = await _api.login(username, password);
-    print("------------FIN_SESION");
     List<RutaTuristica> rutas = await _obtenerRutas();
-    print("------------OBTENER RUTAS");
 
     // Parsear la lista de rutas desde el JSON
 
@@ -104,12 +107,12 @@ class Controlador {
     );
   }
 
-  void loadPaginaRegistro(BuildContext context) {
+  void loadPantallaRegistro(BuildContext context) {
 // Navega a la siguiente pantalla y reemplaza la actual
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PaginaRegistro(),
+        builder: (context) => const PantallaRegistro(),
       ),
     );
   }
@@ -154,5 +157,95 @@ class Controlador {
         ),
       ),
     );
+  }
+
+  void cerrarSesion(BuildContext context) async {
+    _api.cerrarSesion();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PaginaLogin(),
+      ),
+    );
+  }
+
+  void borrarUsuario(BuildContext context) async {
+    _api.borrarUsuario();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PaginaLogin(),
+      ),
+    );
+  }
+
+  void loadAjustes(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TemplateApp(
+          titulo: "Ajustes",
+          body: const PantallaAjustes(),
+          usuario: _usuario,
+        ),
+      ),
+    );
+  }
+
+  void loadMiCuenta(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TemplateApp(
+              body: MiCuenta(
+                usuario: _usuario,
+              ),
+              usuario: _usuario,
+              titulo: "Mi Cuenta"),
+        ));
+  }
+
+  void loadAniadirRuta(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TemplateApp(
+              body: AniadirRuta(
+                usuario: _usuario,
+              ),
+              usuario: _usuario,
+              titulo: "Crea tu Ruta"),
+        ));
+  }
+
+  Future<List> aniadirModificarLugar(
+      BuildContext context, LugarInteres? l, RutaTuristica r) async {
+    List dev = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AniadirModificarLugar(context, l, r)));
+    return dev;
+  }
+
+  Future<RutaTuristica?> getRuta(String nombreRuta) async {
+    Future<RutaTuristica?> r = _api.getRuta(nombreRuta);
+    try {
+      RutaTuristica? ruta = await r;
+      if (ruta == null) {
+        print("DEVUELVE NULO");
+      } else {
+        print(ruta);
+      }
+      return ruta;
+    } catch (e) {
+      print("Error al obtener la ruta: $e");
+      return null;
+    }
+  }
+
+  void insertarRuta(BuildContext context, RutaTuristica ruta,
+      List<List<File>> imagenes, File imagenPortada) {
+    _api.insertarRuta(ruta, imagenes, imagenPortada);
+    cargaPaginaInicial(context);
   }
 }

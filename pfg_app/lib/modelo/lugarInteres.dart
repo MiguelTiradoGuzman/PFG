@@ -33,4 +33,14 @@ class LugarInteres {
       fotos: fotos,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['nombre'] = this.nombre;
+    data['descripcion'] = this.descripcion;
+    data['latitud'] = this.latitud;
+    data['longitud'] = this.longitud;
+    data['fotos'] = this.fotos;
+    return data;
+  }
 }

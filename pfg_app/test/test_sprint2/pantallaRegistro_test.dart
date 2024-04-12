@@ -6,7 +6,7 @@ void main() {
   group('PaginaRegistro', () {
     testWidgets('Introducir todos los datos correctos',
         (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: PaginaRegistro()));
+      await tester.pumpWidget(MaterialApp(home: PantallaRegistro()));
 
       // Ingresa datos válidos en todos los campos
       await tester.enterText(
@@ -28,7 +28,7 @@ void main() {
     });
 
     testWidgets('Introducir correo no válido', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: PaginaRegistro()));
+      await tester.pumpWidget(MaterialApp(home: PantallaRegistro()));
 
       // Ingresa un correo inválido en el campo de correo electrónico
       await tester.enterText(find.byType(TextField).at(0), 'correo_invalido');
@@ -50,7 +50,7 @@ void main() {
 
     testWidgets('Introducir contraseña demasiado corta',
         (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: PaginaRegistro()));
+      await tester.pumpWidget(MaterialApp(home: PantallaRegistro()));
 
       await tester.enterText(
           find.byType(TextField).at(0), 'correo_valido@ejemplo.com');
@@ -74,7 +74,7 @@ void main() {
 
     testWidgets('Introducir contraseñas que no sean iguales',
         (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: PaginaRegistro()));
+      await tester.pumpWidget(MaterialApp(home: PantallaRegistro()));
 
       await tester.enterText(
           find.byType(TextField).at(0), 'correo_valido@ejemplo.com');

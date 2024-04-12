@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'package:pfg_app/modelo/usuario.dart';
+import 'package:pfg_app/controlador/controlador.dart';
 
 class TemplateApp extends StatelessWidget {
   final Widget body;
@@ -87,7 +88,7 @@ class TemplateApp extends StatelessWidget {
                             // Cambia el CircleAvatar por un Icon temporalmente
                             const Icon(
                               Icons.person,
-                              size: 80,
+                              size: 75,
                               color: ColoresAplicacion.colorPrimario,
                             ),
                             const SizedBox(height: 10),
@@ -108,6 +109,28 @@ class TemplateApp extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: 1.0),
                 child: ListTile(
+                  title: const Text('Inicio',
+                      style: TextStyle(
+                        color: ColoresAplicacion.colorFondo,
+                        fontFamily: 'Inter',
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  leading: const Icon(
+                    Icons.home,
+                    size: 40,
+                    color: ColoresAplicacion.colorFondo,
+                  ),
+                  onTap: () {
+                    // Acciones cuando se presiona "Inicio"
+                    Controlador()
+                        .cargaPaginaInicial(context); // Cierra el Drawer
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 1.0),
+                child: ListTile(
                   title: const Text('Mi Cuenta',
                       style: TextStyle(
                         color: ColoresAplicacion.colorFondo,
@@ -122,7 +145,7 @@ class TemplateApp extends StatelessWidget {
                   ),
                   onTap: () {
                     // Acciones cuando se presiona "Mi Cuenta"
-                    Navigator.pop(context); // Cierra el Drawer
+                    Controlador().loadMiCuenta(context);
                   },
                 ),
               ),
@@ -140,8 +163,24 @@ class TemplateApp extends StatelessWidget {
                   color: ColoresAplicacion.colorFondo,
                 ),
                 onTap: () {
-                  // Acciones cuando se presiona "Ajustes"
-                  Navigator.pop(context); // Cierra el Drawer
+                  Controlador().loadAjustes(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Añadir Ruta',
+                    style: TextStyle(
+                      color: ColoresAplicacion.colorFondo,
+                      fontFamily: 'Inter',
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    )),
+                leading: const Icon(
+                  Icons.add_box,
+                  size: 40,
+                  color: ColoresAplicacion.colorFondo,
+                ),
+                onTap: () {
+                  Controlador().loadAniadirRuta(context); // Cierra el Drawer
                 },
               ),
               ListTile(
@@ -158,7 +197,7 @@ class TemplateApp extends StatelessWidget {
                   color: ColoresAplicacion.colorFondo,
                 ),
                 onTap: () {
-                  Navigator.pop(context); // Cierra el Drawer
+                  Controlador().cerrarSesion(context); // Cierra el Drawer
                 },
               ),
             ],

@@ -64,23 +64,27 @@ class _PantallaLugarInteresState extends State<PantallaLugarInteres> {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.30,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30),
                   ),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Color.fromRGBO(0, 0, 0, 0.25),
                       offset: Offset(0, 4),
                       blurRadius: 4,
                     )
                   ],
+                  image: DecorationImage(
+                    image:
+                        NetworkImage(widget.lugar.getFotos.elementAt(indice)),
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 clipBehavior: Clip.hardEdge,
-                child: Image.network(widget.lugar.getFotos.elementAt(indice)),
               ),
             ),
             Padding(

@@ -1,3 +1,4 @@
+from http.client import HTTPException
 import os
 import importlib
 from typing import List
@@ -5,6 +6,7 @@ from dotenv import load_dotenv
 import mysql.connector
 import hashlib
 from api.modelo import lugarInteres, rutaTuristica, usuario
+from functools import wraps
 
 
 # Carga las variables de entorno desde el archivo .env
@@ -28,6 +30,32 @@ class ManejadorBD:
             database=self.database
         )
         self.cursor = self.conexion.cursor(dictionary=True)
+
+    # def manejar_cursor(func):
+    #     @wraps(func)
+    #     def wrapper(self, *args, **kwargs):
+    #         try:
+    #             # Verificar si la conexión está abierta
+    #             if self.conexion is None or not self.conexion.is_connected():
+    #                 self.conectar_bd()  # Reconectar si la conexión no está abierta
+    
+    #             # Crear un nuevo cursor
+    #             self.cursor = self.conexion.cursor(dictionary=True)
+    
+    #             # Ejecutar la función con el cursor
+    #             result = func(self, *args, **kwargs)
+    
+    #             # Confirmar los cambios en la base de datos
+    #             self.conexion.commit()
+    
+    #             return result
+    #         finally:
+    #             # Cerrar el cursor después de ejecutar la función
+    #             if self.cursor is not None:
+    #                 self.cursor.fetchall
+    #                 self.cursor.close()
+    
+    #     return wrapper
 
     def hash_password(self,password):
         # Convierte la contraseña a bytes.
@@ -80,6 +108,7 @@ class ManejadorBD:
         else:
             return True
         
+    #@manejar_cursor
     def obtenerUsuario(self, nombre):
         query = "SELECT * FROM Usuario WHERE nombreUsuario = %s"
         self.cursor.execute(query,(nombre,))
@@ -98,8 +127,57 @@ class ManejadorBD:
             return False
         else:
             return True
+    #@manejar_cursor   
+    def obtenerRuta(self, nombre):
+        print(nombre)
+        # Ejecuta la consulta para obtener todas las rutas
+        self.cursor.execute("SELECT * FROM RutaTuristica WHERE nombre = %s",(nombre,) )
+        # Obtiene los resultados
+        ruta= self.cursor.fetchall()
+        rutaDev=None
+        print(ruta)
+        if(len(ruta)!=0):
+            
+            # Para cada ruta, busca los lugares asociados
+            self.cursor.execute("SELECT * FROM LugarInteres WHERE nombreRuta = %s", (ruta[0]["nombre"],))
+            lugares_bd = self.cursor.fetchall()
+            lugares = []
 
-    def obtener_rutas(self):
+            for lugar_bd in lugares_bd:
+                # Para cada lugar, busca las imágenes asociadas
+                self.cursor.execute("SELECT lugarImagen FROM ImagenLugar WHERE nombreLugar = %s", (lugar_bd["nombre"],))
+                imagenes_bd = self.cursor.fetchall()
+                imagenes = [imagen_bd["lugarImagen"] for imagen_bd in imagenes_bd]
+
+                # Crea instancia de LugarInteres y agrega a la lista de lugares
+                lugar = lugarInteres.LugarInteres(
+                    nombre=lugar_bd["nombre"],
+                    descripcion=lugar_bd["descripcion"],
+                    latitud=lugar_bd["latitud"],
+                    longitud=lugar_bd["longitud"],
+                    fotos=imagenes
+                )
+                lugares.append(lugar)
+
+            duracionCompleta = str(ruta[0]["duracion"])
+            horas, minutos, segundos = duracionCompleta.split(":")
+            duracionFormateada = f"{horas}:{minutos}"
+            img = None
+            if(ruta[0]["imagenPortada"] is not None):
+                img = ruta[0]["imagenPortada"]
+            # Aquí asumes que ruta_bd es un diccionario que contiene los datos de la ruta
+            rutaDev = rutaTuristica.RutaTuristica(
+                nombre=ruta[0]["nombre"],
+                descripcion=ruta[0]["descripcion"],
+                distancia=ruta[0]["distancia"],
+                duracion=duracionFormateada,
+                ruta_imagen=img,
+                lugares=lugares
+            )
+        return rutaDev
+        
+
+    def obtenerRutas(self):
         # Obtiene la conexión y el cursor desde la función de conexión
         # if(conexion == None or cursor == None):
         #     conexion, cursor = self.conectar_bd()
@@ -112,6 +190,7 @@ class ManejadorBD:
         # Convierte los resultados de la base de datos a instancias de RutaTuristica
         rutas = []
         for ruta_bd in rutas_bd:
+            print(ruta_bd["nombre"])
             # Para cada ruta, busca los lugares asociados
             self.cursor.execute("SELECT * FROM LugarInteres WHERE nombreRuta = %s", (ruta_bd["nombre"],))
             lugares_bd = self.cursor.fetchall()
@@ -132,19 +211,109 @@ class ManejadorBD:
                     fotos=imagenes
                 )
                 lugares.append(lugar)
+                
 
             duracionCompleta = str(ruta_bd["duracion"])
             horas, minutos, segundos = duracionCompleta.split(":")
             duracionFormateada = f"{horas}:{minutos}"
+            img = ""
+            if(ruta_bd["imagenPortada"]is not None):
+                img = ruta_bd["imagenPortada"]
             # Aquí asumes que ruta_bd es un diccionario que contiene los datos de la ruta
             ruta = rutaTuristica.RutaTuristica(
                 nombre=ruta_bd["nombre"],
                 descripcion=ruta_bd["descripcion"],
                 distancia=ruta_bd["distancia"],
                 duracion=duracionFormateada,
-                ruta_imagen=ruta_bd["imagenPortada"],
+                ruta_imagen=img,
                 lugares=lugares
             )
             rutas.append(ruta)
 
         return rutas
+    def eliminarUsuario(self, usuario: usuario.Usuario):
+        try:
+            # Consulta SQL para eliminar un usuario por su nombre de usuario
+            query = "DELETE FROM Usuario WHERE nombreUsuario = %s"
+            
+            # Ejecuta la consulta con el nombre de usuario proporcionado
+            self.cursor.execute(query, (usuario.nombre,))
+            
+            # Confirma los cambios en la base de datos
+            self.conexion.commit()
+            
+            # Devuelve un mensaje de éxito
+            return {"message": f"Usuario '{usuario.nombre}' eliminado correctamente"}
+        
+        except Exception as e:
+            # En caso de error, se lanza una excepción HTTP con el detalle del error
+            raise HTTPException(status_code=500, detail=str(e))
+        
+    def insertarRuta(self, nueva_ruta: rutaTuristica.RutaTuristica):
+        try:
+            # Insertar la nueva ruta en la tabla RutaTuristica
+            query_ruta = "INSERT INTO RutaTuristica (nombre, descripcion, distancia, duracion) VALUES (%s, %s, %s, %s)"
+            values_ruta = (nueva_ruta.nombre, nueva_ruta.descripcion, nueva_ruta.distancia, nueva_ruta.duracion)
+            self.cursor.execute(query_ruta, values_ruta)
+
+            # Insertar los lugares asociados a la ruta en la tabla LugarInteres
+            for lugar in nueva_ruta.lugares:
+                query_lugar = "INSERT INTO LugarInteres (nombre, descripcion, latitud, longitud, nombreRuta) VALUES (%s, %s, %s, %s, %s)"
+                values_lugar = (lugar.nombre, lugar.descripcion, lugar.latitud, lugar.longitud, nueva_ruta.nombre)
+                self.cursor.execute(query_lugar, values_lugar)
+
+                # # Insertar las imágenes asociadas al lugar en la tabla ImagenLugar
+                # for foto in lugar.fotos:
+                #     query_imagen = "INSERT INTO ImagenLugar (lugarImagen, nombreLugar) VALUES (%s, %s)"
+                #     values_imagen = (foto, lugar.nombre)
+                #     self.cursor.execute(query_imagen, values_imagen)
+
+            # Confirmar los cambios en la base de datos
+            self.conexion.commit()
+
+            return {"message": "Ruta insertada correctamente"}
+        
+        except Exception as e:
+            # En caso de error, se lanza una excepción HTTP con el detalle del error
+            raise HTTPException(status_code=500, detail=str(e))
+        
+    def insertarImagenRuta(self, nueva_ruta: rutaTuristica.RutaTuristica):
+        try:
+            # Actualizar la imagen de la ruta turística
+            self.cursor.execute(
+                """
+                UPDATE RutaTuristica
+                SET imagenPortada = %s
+                WHERE nombre = %s
+                """,
+                (nueva_ruta.ruta_imagen, nueva_ruta.nombre)
+            )
+            for lugar in nueva_ruta.lugares:
+            # Insertar las imágenes asociadas al lugar en la tabla ImagenLugar
+                for foto in lugar.fotos:
+                    query_imagen = "INSERT INTO ImagenLugar (lugarImagen, nombreLugar) VALUES (%s, %s)"
+                    values_imagen = (foto, lugar.nombre)
+                    self.cursor.execute(query_imagen, values_imagen)
+
+            # Confirmar los cambios en la base de datos
+            self.conexion.commit()
+
+        except Exception as e:
+            # Si hay algún error, revertir cambios y lanzar una excepción
+            self.conexion.rollback()
+            raise HTTPException(status_code=500, detail=str(e))
+        
+    def insertarImagenLugar(self, nuevo_lugar: str, dir_img : str):
+        try:
+            
+            query_imagen = "INSERT INTO ImagenLugar (lugarImagen, nombreLugar) VALUES (%s, %s)"
+            values_imagen = (dir_img,nuevo_lugar )
+            self.cursor.execute(query_imagen, values_imagen)
+
+            # Confirmar los cambios en la base de datos
+            self.conexion.commit()
+
+        except Exception as e:
+            # Si hay algún error, revertir cambios y lanzar una excepción
+            self.conexion.rollback()
+            raise HTTPException(status_code=500, detail=str(e))

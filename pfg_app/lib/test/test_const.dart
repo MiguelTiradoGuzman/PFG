@@ -10,7 +10,7 @@ class ClaseTest {
         latitud: 37.1783098,
         longitud: -3.5928579,
         fotos: [
-          "assets/images/carrera_del_darro.jpg",
+          "http://localhost:8080/recursos/rutas/alhambra_test/carrera_del_darro/carrera_del_darro.jpg",
           "assets/images/carrera_del_darro2.jpeg"
         ]),
     LugarInteres(
@@ -18,7 +18,9 @@ class ClaseTest {
         descripcion: "Descripcion de prueba de la calle Navas",
         latitud: 37.1734542,
         longitud: -3.6003842,
-        fotos: ["assets/images/calle_navas.jpg"]),
+        fotos: [
+          "http://localhost:8080/recursos/rutas/alhambra_test/navas/calle_navas.jpg"
+        ]),
     LugarInteres(
         nombre: "C/ Reyes Católicos",
         descripcion: "Descripcion de prueba de la calle Reyes Católicos",
@@ -40,14 +42,15 @@ class ClaseTest {
   ];
   late RutaTuristica ruta;
 
-  Usuario user = Usuario(username: "test");
+  Usuario user = Usuario(username: "test", email: "test@gmail.com");
   ClaseTest() {
     ruta = RutaTuristica(
         nombre: 'Alhambra test',
         descripcion: 'Descripción de Alhambra',
         distancia: 1.5, // Distancia en km (cambia según tu necesidad)
         duracion: '1:45',
-        rutaImagen: 'assets/images/alhambra.jpeg',
+        rutaImagen:
+            'http://localhost:8080/recursos/rutas/alhambra_test/alhambra.jpeg',
         lugares: lugares);
   }
 }
