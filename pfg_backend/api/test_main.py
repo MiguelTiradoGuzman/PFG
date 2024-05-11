@@ -19,17 +19,22 @@ def test_login(test_client):
     assert response.status_code == 200
     assert "access_token" in response.json()
 
-def test_invalid_username_login(test_client):
+def test_correo_invalido_login(test_client):
     # Simula un inicio de sesión no válido por nombre de usuario erróneo
     response = test_client.post("/login", data={"email": "noExisteUsuario", "password": "password1"})
     assert response.status_code == 401
 
-def test_invalid_password_login(test_client):
+def test_contrasenia_incorrecta_login(test_client):
     # Simula un inicio de sesión no válido por contraseña errónea
     response = test_client.post("/login", data={"email": "test@gmail.com", "password": "test"})
     assert response.status_code == 401
 
-def test_obtener_rutas_authenticated(test_client):
+def test_contrasenia_correo_incorrectos_login(test_client):
+    # Simula un inicio de sesión no válido por contraseña y correo electrónico erróneos
+    response = test_client.post("/login", data={"email": "noExisteUsuario", "password": "test"})
+    assert response.status_code == 401
+
+def test_obtener_rutas_autentificado(test_client):
     # Simula un inicio de sesión válido
     login_response = test_client.post("/login", data={"email": "test@gmail.com", "password": "12345"})
     access_token = login_response.json()["access_token"]
@@ -39,7 +44,7 @@ def test_obtener_rutas_authenticated(test_client):
     assert response.status_code == 200
     assert "rutas" in response.json()
 
-def test_obtener_rutas_unauthenticated(test_client):
+def test_obtener_rutas_sin_autentificar(test_client):
     # Intenta acceder a la ruta de obtener rutas sin un token de acceso
     response = test_client.get("/rutas")
     assert response.status_code == 401

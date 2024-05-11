@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pfg_app/controlador/controlador.dart';
 import 'package:pfg_app/constants/color.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// Pantalla de registro del usuario.
 class PantallaRegistro extends StatefulWidget {
   const PantallaRegistro({super.key});
 
@@ -11,21 +13,32 @@ class PantallaRegistro extends StatefulWidget {
 }
 
 class _PantallaRegistroState extends State<PantallaRegistro> {
-  final TextEditingController _correoController = TextEditingController();
-  final TextEditingController _contrasenaController = TextEditingController();
-  final TextEditingController _usuarioController = TextEditingController();
-  final TextEditingController _contrasenaRepController =
+  // Controlador del campo de texto del correo del usuario
+  final TextEditingController _correoControlador = TextEditingController();
+
+  // Controlador del campo de contraseña del usuario
+  final TextEditingController _contraseniaControlador = TextEditingController();
+
+  // Controlador del campo de nombre de usuario
+  final TextEditingController _usuarioControlador = TextEditingController();
+
+  // Controlador del campo de repetición de contraseña
+  final TextEditingController _contraseniaRepControlador =
       TextEditingController();
+
+  // Error al comprobar la contraseña
   String _contrasenaErrorText = '';
 
-  final Controlador _controlador = Controlador();
   Future<void> _registrarUsuario() async {
-    String correo = _correoController.text;
-    String contrasena = _contrasenaController.text;
-    String contrasenaRep = _contrasenaRepController.text;
-    String nombreUsuario = _usuarioController.text;
+    String correo = _correoControlador.text;
+    String contrasena = _contraseniaControlador.text;
+    String contrasenaRep = _contraseniaRepControlador.text;
+    String nombreUsuario = _usuarioControlador.text;
 
+    // Expresión regular para comprobar que el correo es válido
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
+    // Si no es un correo válido, se muestra error
     if (!emailRegex.hasMatch(correo)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -33,11 +46,11 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Row(
                 children: [
-                  Icon(Icons.error, color: Colors.white, size: 30),
-                  SizedBox(width: 10),
+                  const Icon(Icons.error, color: Colors.white, size: 30),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'Correo no válido!',
+                      AppLocalizations.of(context)!.correoInvalido,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: MediaQuery.of(context).size.width *
@@ -49,7 +62,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               )),
           backgroundColor: Colors.red,
           action: SnackBarAction(
-            label: 'Cerrar',
+            label: AppLocalizations.of(context)!.cerrar,
             textColor: Colors.white,
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -58,6 +71,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
         ),
       );
       return;
+      // Si las contraseñas no coinciden, se muestra error
     } else if (contrasena != contrasenaRep) {
 // Error al iniciar sesión, muestra un SnackBar con el mensaje de error
       // ignore: use_build_context_synchronously
@@ -67,11 +81,11 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Row(
                 children: [
-                  Icon(Icons.error, color: Colors.white, size: 30),
-                  SizedBox(width: 10),
+                  const Icon(Icons.error, color: Colors.white, size: 30),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'Las contraseñas no coinciden',
+                      AppLocalizations.of(context)!.contrasenaNoCoincide,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: MediaQuery.of(context).size.width *
@@ -83,7 +97,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               )),
           backgroundColor: Colors.red,
           action: SnackBarAction(
-            label: 'Cerrar',
+            label: AppLocalizations.of(context)!.cerrar,
             textColor: Colors.white,
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -92,6 +106,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
         ),
       );
       return;
+      // Si la longitud de la contraseña es menos de 5 caracteres, se muestra error
     } else if (contrasena.length < 5) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -99,11 +114,11 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Row(
                 children: [
-                  Icon(Icons.error, color: Colors.white, size: 30),
-                  SizedBox(width: 10),
+                  const Icon(Icons.error, color: Colors.white, size: 30),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'Contraseña demasiado corta',
+                      AppLocalizations.of(context)!.contrasenaDemasiadoCorta,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: MediaQuery.of(context).size.width *
@@ -115,7 +130,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               )),
           backgroundColor: Colors.red,
           action: SnackBarAction(
-            label: 'Cerrar',
+            label: AppLocalizations.of(context)!.cerrar,
             textColor: Colors.white,
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -126,9 +141,11 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
       return;
     } else {
       try {
+        // Si no hay ningún fallo, se prueba a registrar el usuario
         await Controlador()
             .registrarUsuario(nombreUsuario, contrasena, correo, context);
-        await Controlador().login(correo, contrasena, context);
+        // Si se ha registrado correctamente, se inicia sesión
+        await Controlador().iniciarSesion(correo, contrasena, context);
       } catch (e) {
         // Error al iniciar sesión, muestra un SnackBar con el mensaje de error
         ScaffoldMessenger.of(context).showSnackBar(
@@ -137,8 +154,8 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Row(
                 children: [
-                  Icon(Icons.error, color: Colors.white, size: 30),
-                  SizedBox(width: 10),
+                  const Icon(Icons.error, color: Colors.white, size: 30),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       e.toString(),
@@ -154,7 +171,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
             ),
             backgroundColor: Colors.red,
             action: SnackBarAction(
-              label: 'Cerrar',
+              label: AppLocalizations.of(context)!.cerrar,
               textColor: Colors.white,
               onPressed: () {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -170,7 +187,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
   void _validarContrasena(String value) {
     if (value.length < 5) {
       setState(() {
-        _contrasenaErrorText = 'La contraseña debe tener al menos 5 caracteres';
+        _contrasenaErrorText = AppLocalizations.of(context)!.contrasenaTooShort;
       });
     } else {
       setState(() {
@@ -183,9 +200,9 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
   void initState() {
     super.initState();
     // Agregar un listener al controlador de la contraseña para validar dinámicamente
-    _contrasenaController.addListener(() {
-      _validarContrasena(_contrasenaController.text);
-    });
+    // _contraseniaControlador.addListener(() {
+    //   _validarContrasena(_contraseniaControlador.text);
+    // });
   }
 
   @override
@@ -195,14 +212,15 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            // Etiqueta bienvenidos
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.1,
                     left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text(
-                  'Bienvenid@!',
+                child: Text(
+                  AppLocalizations.of(context)!.bienvenido,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ColoresAplicacion.colorLetrasPrincipal,
                       fontFamily: 'Inter',
                       fontSize: 40,
@@ -211,14 +229,16 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                       fontWeight: FontWeight.bold,
                       height: 1),
                 )),
+
+            // Etiqueta correo electrónico
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.05,
                     left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text(
-                  'Correo electrónico',
+                child: Text(
+                  AppLocalizations.of(context)!.correoElectronico,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ColoresAplicacion.colorLetrasPrincipal,
                       fontFamily: 'Inter',
                       fontSize: 20,
@@ -227,6 +247,8 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                       fontWeight: FontWeight.bold,
                       height: 1),
                 )),
+
+            //Campo de texto de correo del usuario
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.01,
@@ -250,7 +272,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                       padding: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width * 0.02),
                       child: TextField(
-                          controller: _correoController,
+                          controller: _correoControlador,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'ejemplo@correo.ugr.es',
@@ -262,14 +284,15 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                                   fontWeight: FontWeight.normal,
                                   height: 1))),
                     ))),
+            // Etiqueta nombre de usuario
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.03,
                     left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text(
-                  'Nombre de usuario',
+                child: Text(
+                  AppLocalizations.of(context)!.nombreDeUsuario,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ColoresAplicacion.colorLetrasPrincipal,
                       fontFamily: 'Inter',
                       fontSize: 20,
@@ -278,6 +301,8 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                       fontWeight: FontWeight.bold,
                       height: 1),
                 )),
+
+            // Campo de texto del nombre de usuario
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.01,
@@ -301,7 +326,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                       padding: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width * 0.02),
                       child: TextField(
-                          controller: _usuarioController,
+                          controller: _usuarioControlador,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'NombreUsuario',
@@ -313,14 +338,16 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                                   fontWeight: FontWeight.normal,
                                   height: 1))),
                     ))),
+
+            // Campo de texto contraseña
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.03,
                     left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text(
-                  'Contraseña',
+                child: Text(
+                  AppLocalizations.of(context)!.contrasena,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ColoresAplicacion.colorLetrasPrincipal,
                       fontFamily: 'Inter',
                       fontSize: 20,
@@ -329,6 +356,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                       fontWeight: FontWeight.bold,
                       height: 1),
                 )),
+            // Campo de repetición de contraseña
             Column(
               children: [
                 if (_contrasenaErrorText.isNotEmpty)
@@ -338,7 +366,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                         left: MediaQuery.of(context).size.width * 0.04),
                     child: Text(
                       _contrasenaErrorText,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.red,
                         fontSize: 16,
                       ),
@@ -367,8 +395,11 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                           padding: EdgeInsets.only(
                               left: MediaQuery.of(context).size.width * 0.02),
                           child: TextField(
-                            controller: _contrasenaController,
+                            controller: _contraseniaControlador,
                             obscureText: true,
+                            // onSubmitted: (_) {
+                            //   FocusScope.of(context).nextFocus();
+                            // },
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: '* * * * * * *',
@@ -380,28 +411,31 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.normal,
                                     height: 1)),
-                            onChanged: (text) {
-                              setState(() {
-                                if (text.length < 5) {
-                                  _contrasenaErrorText =
-                                      'La contraseña debe tener al menos 5 caracteres';
-                                } else {
-                                  _contrasenaErrorText = '';
-                                }
-                              });
-                            },
+                            // onChanged: (text) {
+                            //   // Si la contraseña tiene menos de 5 caracteres se muestra error
+                            //   setState(() {
+                            //     if (text.length < 5) {
+                            //       _contrasenaErrorText =
+                            //           AppLocalizations.of(context)!
+                            //               .contrasenaTooShort;
+                            //     } else {
+                            //       _contrasenaErrorText = '';
+                            //     }
+                            //   });
+                            // },
                           ),
                         )))
               ],
             ),
+            // Etiqueta repetir contraseña
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.03,
                     left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text(
-                  'Repetir Contraseña',
+                child: Text(
+                  AppLocalizations.of(context)!.repetirContrasena,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ColoresAplicacion.colorLetrasPrincipal,
                       fontFamily: 'Inter',
                       fontSize: 20,
@@ -410,6 +444,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                       fontWeight: FontWeight.bold,
                       height: 1),
                 )),
+            // Campo repetir contraseña
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.01,
@@ -433,7 +468,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                       padding: EdgeInsets.only(
                           left: MediaQuery.of(context).size.width * 0.02),
                       child: TextField(
-                          controller: _contrasenaRepController,
+                          controller: _contraseniaRepControlador,
                           obscureText: true,
                           decoration: const InputDecoration(
                               border: InputBorder.none,
@@ -446,6 +481,7 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                                   fontWeight: FontWeight.normal,
                                   height: 1))),
                     ))),
+            // Botón de registro de usuario
             Padding(
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.1,
@@ -464,18 +500,30 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                         ),
                         color: ColoresAplicacion.colorPrimario,
                       ),
-                      child: const Center(
-                          child: Text(
-                        'Registrarme',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColoresAplicacion.colorFondo,
-                            fontFamily: 'Inter',
-                            fontSize: 30,
-                            letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
-                            fontWeight: FontWeight.bold,
-                            height: 1),
+                      child: Center(
+                          child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.15,
+                                right:
+                                    MediaQuery.of(context).size.width * 0.02),
+                            child: Icon(Icons.create,
+                                color: ColoresAplicacion.colorFondo, size: 30),
+                          ),
+                          Text(
+                            AppLocalizations.of(context)!.botonRegistrarme,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColoresAplicacion.colorFondo,
+                                fontFamily: 'Inter',
+                                fontSize: 30,
+                                letterSpacing:
+                                    0 /*percentages not used in flutter. defaulting to zero*/,
+                                fontWeight: FontWeight.bold,
+                                height: 1),
+                          )
+                        ],
                       )))),
             ),
           ]),

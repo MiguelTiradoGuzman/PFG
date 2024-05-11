@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:pfg_app/modelo/rutaTuristica.dart';
 import 'package:pfg_app/modelo/usuario.dart';
-import 'package:pfg_app/controlador/api.dart';
+import 'package:pfg_app/controlador/clienteAPI.dart';
 import 'package:pfg_app/test/test_const.dart';
 
-class MockAPI implements API {
+class MockAPI implements ClienteAPI {
   //MockAPI() : super(); // Llamar al constructor de la superclase
   @override
   Future<Usuario> login(String username, String password) async {
@@ -14,7 +14,7 @@ class MockAPI implements API {
     if (username != "user1" || password != "password1") {
       throw Exception("Error de usuario/contrasenia");
     } else {
-      return Usuario(username: 'mock_user', email: 'mock@gmail.com');
+      return Usuario(nombreUsuario: 'mock_user', correo: 'mock@gmail.com');
     }
   }
 
@@ -76,16 +76,38 @@ class MockAPI implements API {
     };
   }
 
+  Future<void> modificarContrasenia(String contrasenia) async {}
   @override
-  Future<Map<String, dynamic>> getRutas() async {
+  Future<List<RutaTuristica>> getRutas() async {
     List<RutaTuristica> rutas = [ClaseTest().ruta];
 
-    return deconstruirRutaTuristica(ClaseTest().ruta);
+    return rutas;
+  }
+
+  @override
+  Future<List<RutaTuristica>> getMisRutas() async {
+    List<RutaTuristica> rutas = [ClaseTest().ruta];
+
+    return rutas;
+  }
+
+  @override
+  Future<List<RutaTuristica>> getRutasFavoritas() async {
+    List<RutaTuristica> rutas = [ClaseTest().ruta];
+
+    return rutas;
   }
 
   Future<RutaTuristica> getRuta(String nombre) async {
     return ClaseTest().ruta;
   }
+
+  Future<File?> fileDesdeURLImagen(String url) async {
+    return null;
+  }
+
+  void modificarRuta(
+      RutaTuristica ruta, List<List<File>> imagenes, File imagenPortada) {}
 
   @override
   void insertarRuta(RutaTuristica ruta, List<List<File>> imagenes,
@@ -93,4 +115,8 @@ class MockAPI implements API {
   @override
   // TODO: implement token
   String get token => throw UnimplementedError();
+
+  Future<void> marcarFavorita(RutaTuristica ruta) async {}
+
+  Future<void> desmarcarFavorita(RutaTuristica ruta) async {}
 }

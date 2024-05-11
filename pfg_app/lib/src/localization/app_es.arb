@@ -1,7 +1,549 @@
 {
-    "appTitle": "pfg_app",
-    "@appTitle": {
-      "description": "The title of the application"
-    }
-  }
+  "@appTitle": {
+    "description": "El título de la aplicación"
+  },
+  "appTitle": "pfg_app",
+
+  "@idioma": {
+    "description": "Idioma actual"
+  },
+  "idioma": "Español",
+
+  "@etiquetaCorreo": {
+    "description": "Etiqueta para el campo de correo electrónico"
+  },
+  "etiquetaCorreo": "Correo electrónico",
+
+  "@contrasenia": {
+    "description": "Texto para la contraseña"
+  },
+  "contrasenia": "Contraseña",
+
+  "@errorInicioSesion": {
+    "description": "Mensaje de error al iniciar sesión"
+  },
+  "errorInicioSesion": "Contraseña o correo incorrecto",
+
+  "@botonIniciarSesion": {
+    "description": "Texto para el botón de iniciar sesión"
+  },
+  "botonIniciarSesion": "Iniciar Sesión",
+
+  "@botonRegistrarme": {
+    "description": "Texto para el botón de registrarme"
+  },
+  "botonRegistrarme": "Registrame",
+
+  "@cerrar": {
+    "description": "Cerrar"
+  },
+  "cerrar": "Cerrar",
+
+
+
+
+
+
+    "@nombreLugar": {
+    "description": "Campo para el nombre del lugar"
+  },
+  "nombreLugar": "Nombre del Lugar",
+
+  "@descripcion": {
+    "description": "Campo para la descripción del lugar"
+  },
+  "descripcion": "Descripción",
+
+  "@editarDescripcion": {
+    "description": "Texto para editar la descripción"
+  },
+  "editarDescripcion": "Editar Descripción",
+
+  "@anadirImagen": {
+    "description": "Texto para añadir una imagen"
+  },
+  "anadirImagen": "Añadir Imagen",
+
+  "@nombreLugarExiste": {
+    "description": "Mensaje de error para el nombre del lugar ya existente en la ruta"
+  },
+  "nombreLugarExiste": "El nombre del lugar ya existe en la ruta",
+
+  "@latitud": {
+    "description": "Campo para la latitud del lugar"
+  },
+  "latitud": "Latitud",
+
+  "@longitud": {
+    "description": "Campo para la longitud del lugar"
+  },
+  "longitud": "Longitud",
+
+  "@cancelar": {
+    "description": "Texto para cancelar"
+  },
+  "cancelar": "Cancelar",
+
+  "@guardar": {
+    "description": "Texto para guardar"
+  },
+  "guardar": "Guardar",
+
+  "@error": {
+    "description": "Mensaje de error genérico"
+  },
+  "error": "Error",
+
+  "@errorCamposVacios": {
+    "description": "Mensaje de error para campos vacíos"
+  },
+  "errorCamposVacios": "Por favor, complete todos los campos y añada al menos una imagen.",
+
+  "@errorFormatoCoordenadas": {
+    "description": "Mensaje de error para formato de coordenadas incorrecto"
+  },
+  "errorFormatoCoordenadas": "La latitud y la longitud deben ser valores numéricos.",
+
+  "@errorRangoLatitud": {
+    "description": "Mensaje de error para latitud fuera de rango"
+  },
+  "errorRangoLatitud": "La latitud debe estar en el rango [-90, 90].",
+
+  "@errorRangoLongitud": {
+    "description": "Mensaje de error para longitud fuera de rango"
+  },
+  "errorRangoLongitud": "La longitud debe estar en el rango [-180, 180].",
+
+  "@ingreseNuevaDescripcion": {
+    "description": "Mensaje que indica que ingrese la descripción"
+  },
+  "ingreseNuevaDescripcion": "Ingrese una nueva descripción",
+
+  "@avisoDobleTapBorraImagen": {
+    "description": "Mensaje que indica que dos taps sobre la imagen la borrar"
+  },
+  "avisoDobleTapBorraImagen": "* Doble tap en imagen para borrar",
+
+  "@establerUbicacion": {
+    "description": "Mensaje de etiqueta de establecer ubicación"
+  },
+  "establerUbicacion": "Establezca ubicación",
+
+
+
+  "@errorCamposVacios": {
+    "description": "Mensaje de error para campos vacíos"
+  },
+  "errorCamposVacios": "Por favor, complete todos los campos y añada al menos una imagen.",
+
   
+  "@anadirImagen": {
+    "description": "Texto para añadir una imagen"
+  },
+  "anadirImagen": "Añadir Imagen",
+
+  "@calcularDistanciaTiempo": {
+    "description": "Texto para calcular distancia y tiempo"
+  },
+  "calcularDistanciaTiempo": "Calcular Distancia y Tiempo",
+
+  "@introducirRuta": {
+    "description": "Texto para introducir una nueva ruta"
+  },
+  "introducirRuta": "Introducir Ruta",
+
+  "@errorCamposIncompletos": {
+    "description": "Mensaje de error para campos incompletos"
+  },
+  "errorCamposIncompletos": "Por favor, complete todos los campos y añada una imagen.",
+
+  "@errorRutaExistente": {
+    "description": "Mensaje de error para ruta ya existente"
+  },
+  "errorRutaExistente": "Ya existe una ruta con ese nombre, por favor pruebe con otro nombre.",
+
+  "@hintIntroduceNombre": {
+    "description": "Hint para introducir nombre"
+  },
+  "hintIntroduceNombre": "Introduce un nombre",
+
+    "@modificarImagen": {
+    "description": "Titulo de botón, modificar imagen"
+  },
+  "modificarImagen": "Modificar Imagen",
+
+  "@modificarDescripcion": {
+    "description": "Titulo de botón, modificar descripción"
+  },
+  "modificarDescripcion": "Modificar Descripción",
+
+  "@etiquetaLugaresDeInteres": {
+    "description": "Etiqueta de lugares de interés"
+  },
+  "etiquetaLugaresDeInteres": "Lugares de Interés",
+
+
+
+
+  "@contrasenaNoCoincide": {
+    "description": "Mensaje de error para contraseñas que no coinciden"
+  },
+  "contrasenaNoCoincide": "Las contraseñas no coinciden",
+
+  "@contrasenaDemasiadoCorta": {
+    "description": "Mensaje de error para contraseñas demasiado cortas"
+  },
+  "contrasenaDemasiadoCorta": "Contraseña demasiado corta",
+
+  "@introducirAntiguaContrasena": {
+    "description": "Texto para introducir la antigua contraseña"
+  },
+  "introducirAntiguaContrasena": "Introduzca la antigua contraseña",
+
+  "@cancelar": {
+    "description": "Texto para el botón de cancelar"
+  },
+  "cancelar": "Cancelar",
+
+  "@guardar": {
+    "description": "Texto para el botón de guardar"
+  },
+  "guardar": "Guardar",
+
+  "@modificarImagen": {
+    "description": "Texto para modificar la imagen"
+  },
+  "modificarImagen": "Modificar Imagen",
+
+  "@modificarContrasenia": {
+    "description": "Texto para modificar la contraseña"
+  },
+  "modificarContrasenia": "Modificar Contraseña",
+
+  "@repetirContrasenia": {
+    "description": "Texto para repetir la contraseña"
+  },
+  "repetirContrasenia": "Repetir Contraseña",
+
+  "@contrasenaTooShort": {
+    "description": "Mensaje de error para contraseña demasiado corta"
+  },
+  "contrasenaTooShort": "La contraseña debe tener al menos 5 caracteres",
+
+  "@cambiarPerfil": {
+    "description": "Texto para cambiar el perfil"
+  },
+  "cambiarPerfil": "Cambiar Perfil",
+
+  "@nombreDeUsuario": {
+    "description": "Texto para nombre de usuario"
+  },
+  "nombreDeUsuario": "Nombre de usuario",
+
+  "@modificarRutas": {
+    "description": "Titulo de botón, modificar rutas"
+  },
+  "modificarRutas": "Modificar Mis Rutas",
+
+
+
+
+
+ "@confirmarBorrado": {
+    "description": "Título del diálogo de confirmación de borrado"
+  },
+  "confirmarBorrado": "Confirmar borrado",
+
+  "@mensajeBorradoUsuario": {
+    "description": "Mensaje del diálogo de confirmación de borrado"
+  },
+  "mensajeBorradoUsuario": "¿Está seguro de que desea borrar el usuario?",
+
+  "@cancelar": {
+    "description": "Texto para el botón de cancelar"
+  },
+  "cancelar": "Cancelar",
+
+  "@aceptar": {
+    "description": "Texto para el botón de aceptar"
+  },
+  "aceptar": "Aceptar",
+
+  "@seleccioneIdioma": {
+    "description": "Texto para seleccionar el idioma"
+  },
+  "seleccioneIdioma": "Seleccione Idioma",
+
+  "@espanol": {
+    "description": "Opción de idioma español"
+  },
+  "espanol": "Español",
+
+  "@english": {
+    "description": "Opción de idioma inglés"
+  },
+  "english": "English",
+
+  "@tamanoLetra": {
+    "description": "Texto para seleccionar el tamaño de la letra"
+  },
+  "tamanoLetra": "Tamaño de la letra",
+
+  "@normal": {
+    "description": "Opción de tamaño de letra normal"
+  },
+  "normal": "Normal",
+
+  "@grande": {
+    "description": "Opción de tamaño de letra grande"
+  },
+  "grande": "Grande",
+
+  "@borrarUsuario": {
+    "description": "Texto para borrar el usuario"
+  },
+  "borrarUsuario": "Borrar Usuario",
+
+  "@seguroBorrar": {
+    "description": "Mensaje de borrar seguro"
+  },
+  "seguroBorrar": "¿Está seguro de que desea borrar el usuario?",
+
+
+
+
+
+  "@rutasDisponibles": {
+    "description": "Título para la sección de rutas disponibles"
+  },
+  "rutasDisponibles": "Rutas disponibles",
+
+  "@tituloRutaTuristica": {
+    "description": "Título de la tarjeta de una ruta turística"
+  },
+  "tituloRutaTuristica": "Ruta Turística",
+
+  "@cargarPaginaRuta": {
+    "description": "Texto para cargar la página de una ruta"
+  },
+  "cargarPaginaRuta": "Cargar Página de Ruta",
+
+  "@descubre": {
+    "description": "Palabra descubre"
+  },
+  "descubre": "Descubre",
+
+
+
+
+"@descripcion": {
+    "description": "Título para la sección de descripción"
+  },
+  "descripcion": "Descripción",
+
+  "@anteriorImagen": {
+    "description": "Texto para el botón de imagen anterior"
+  },
+  "anteriorImagen": "Anterior Imagen",
+
+  "@siguienteImagen": {
+    "description": "Texto para el botón de imagen siguiente"
+  },
+  "siguienteImagen": "Siguiente Imagen",
+
+  "@volverRuta": {
+    "description": "Texto para el botón de volver a la ruta"
+  },
+  "volverRuta": "Volver a la Ruta",
+
+
+
+
+
+  "@dirigeteHacia": {
+    "description": "Texto que indica que dirección tomar en la ruta"
+  },
+  "dirigeteHacia": "Dirígete hacia {nombreLugar}",
+
+  "@anteriorLugar": {
+    "description": "Texto para el botón de lugar anterior"
+  },
+  "anteriorLugar": "Anterior Lugar",
+
+  "@siguienteLugar": {
+    "description": "Texto para el botón de lugar siguiente"
+  },
+  "siguienteLugar": "Siguiente Lugar",
+
+  "@finalizar": {
+    "description": "Texto para el botón de finalizar la ruta"
+  },
+  "finalizar": "Finalizar",
+
+  "@heLlegado": {
+    "description": "Texto para el botón de indicar que se ha llegado al lugar"
+  },
+  "heLlegado": "He llegado",
+
+
+
+    "@bienvenido": {
+    "description": "Texto de bienvenida en la pantalla de registro"
+  },
+  "bienvenido": "Bienvenid@!",
+
+  "@correoElectronico": {
+    "description": "Texto que indica el campo de correo electrónico en la pantalla de registro"
+  },
+  "correoElectronico": "Correo electrónico",
+
+  "@nombreUsuario": {
+    "description": "Texto que indica el campo de nombre de usuario en la pantalla de registro"
+  },
+  "nombreUsuario": "Nombre de usuario",
+
+  "@contrasena": {
+    "description": "Texto que indica el campo de contraseña en la pantalla de registro"
+  },
+  "contrasena": "Contraseña",
+
+  "@repetirContrasena": {
+    "description": "Texto que indica el campo de repetir contraseña en la pantalla de registro"
+  },
+  "repetirContrasena": "Repetir Contraseña",
+
+  "@registrarme": {
+    "description": "Texto del botón para registrarse en la pantalla de registro"
+  },
+  "registrarme": "Registrarme",
+
+  "@correoInvalido": {
+    "description": "Mensaje de error para correo electrónico inválido"
+  },
+  "correoInvalido": "Correo no válido!",
+
+  "@contrasenasNoCoinciden": {
+    "description": "Mensaje de error para contraseñas que no coinciden"
+  },
+  "contrasenasNoCoinciden": "Las contraseñas no coinciden",
+
+  "@contrasenaCorta": {
+    "description": "Mensaje de error para contraseña demasiado corta"
+  },
+  "contrasenaCorta": "Contraseña demasiado corta",
+
+  "@mensajeError": {
+    "description": "Mensaje de error genérico para la pantalla de registro"
+  },
+  "mensajeError": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+
+
+
+  "@masInfo": {
+    "description": "Texto de más información"
+  },
+  "masInfo": "Más Información",
+
+  "@iniciar": {
+    "description": "Texto de iniciar"
+  },
+  "iniciar": "Iniciar",
+
+
+
+
+"@inicio": {
+    "description": "Texto para el botón 'Inicio' en el menú lateral"
+  },
+  "inicio": "Inicio",
+
+  "@miCuenta": {
+    "description": "Texto para el botón 'Mi Cuenta' en el menú lateral"
+  },
+  "miCuenta": "Mi Cuenta",
+
+  "@ajustes": {
+    "description": "Texto para el botón 'Ajustes' en el menú lateral"
+  },
+  "ajustes": "Ajustes",
+
+  "@anadirRuta": {
+    "description": "Texto para el botón 'Anadir Ruta' en el menú lateral"
+  },
+  "anadirRuta": "Añadir Ruta",
+
+  "@cerrarSesion": {
+    "description": "Texto para el botón 'Cerrar Sesión' en el menú lateral"
+  },
+  "cerrarSesion": "Cerrar Sesión",
+
+  "@descubre": {
+    "description": "Texto para el botón 'Cerrar Sesión' en el menú lateral"
+  },
+  "descubre": "Descubre",
+
+  "@seleccionaRuta": {
+    "description": "Selecciona la ruta a modificar"
+  },
+  "seleccionaRuta": "Selecciona la ruta a modificar",
+
+    "@mensajeBuscador": {
+    "description": "Mensaje del buscador"
+  },
+  "mensajeBuscador": "Escribe la ruta a buscar",
+
+  "@datosPersonales": {
+    "description": "Etiqueta de Datos Personales"
+  },
+  "datosPersonales": "Datos Personales",
+
+  "@misRutasFavoritas": {
+    "description": "Etiqueta de Mis Rutas Favoritas"
+  },
+  "misRutasFavoritas": "Mis Rutas Favoritas",
+
+  "@filtrosDeBusqueda": {
+    "description": "Etiqueta de Filtros de Búsqueda"
+  },
+  "filtrosDeBusqueda": "Filtros de búsqueda",
+
+  "@nombreDeLaRuta": {
+    "description": "Etiqueta del campo para añadir nombre de la ruta"
+  },
+  "nombreDeLaRuta": "Nombre de la ruta",
+
+  "@nombreDeLugar": {
+    "description": "Etiqueta del campo para añadir nombre del lugar de interes"
+  },
+  "nombreDeLugar": "Filtrar por lugar",
+
+  "@lugar": {
+    "description": "Palabra lugar"
+  },
+  "lugar": "Lugar",
+
+  "@duracionFormato": {
+    "description": "Duración"
+  },
+  "duracionFormato": "Duración (h:mm)",
+  
+  "@maxima": {
+    "description": "Máxima"
+  },
+  "maxima": "Máxima",
+
+  "@minima": {
+    "description": "Mínima"
+  },
+  "minima": "Mínima",
+
+  "@distanciaFormato": {
+    "description": "Distancia"
+  },
+  "distanciaFormato": "Distancia (km)",
+
+  "@aplicar": {
+    "description": "Aplicar"
+  },
+  "aplicar": "Aplicar"
+}

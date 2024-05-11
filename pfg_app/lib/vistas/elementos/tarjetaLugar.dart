@@ -3,11 +3,23 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
+import 'package:pfg_app/modelo/rutaTuristica.dart';
 
 class TarjetaLugarInteres extends StatelessWidget {
-  final LugarInteres lugarInteres;
-  final File img;
-  const TarjetaLugarInteres({required this.lugarInteres, required this.img});
+  final RutaTuristica _ruta;
+  final LugarInteres _lugarInteres;
+  final List<File> _imgs;
+  final Function(RutaTuristica, LugarInteres, List<File> imgs) onTapFuncion;
+  final Function(RutaTuristica, LugarInteres) onTapFuncion2;
+  const TarjetaLugarInteres(
+      {required LugarInteres lugarInteres,
+      required RutaTuristica ruta,
+      required List<File> imgs,
+      required this.onTapFuncion,
+      required this.onTapFuncion2})
+      : _imgs = imgs,
+        _lugarInteres = lugarInteres,
+        _ruta = ruta;
 
   @override
   Widget build(BuildContext context) {
@@ -40,32 +52,16 @@ class TarjetaLugarInteres extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width * 0.2,
               height: MediaQuery.of(context).size.height * 0.12,
-              // decoration: BoxDecoration(
-              //   borderRadius: const BorderRadius.only(
-              //     topLeft: Radius.circular(30),
-              //     bottomLeft: Radius.circular(30),
-              //   ),
-              //   //image: ,
-              // ),
-              // clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   bottomLeft: Radius.circular(30),
                 ),
                 image: DecorationImage(
-                  image: FileImage(img),
+                  image: FileImage(_imgs.elementAt(0)),
                   fit: BoxFit.cover,
                 ),
               ),
-              // CachedNetworkImage(
-              //   imageUrl: lugarInteres.fotos.elementAt(0), // URL de la imagen
-              //   fit: BoxFit.cover,
-              //   placeholder: (context, url) => CircularProgressIndicator(
-              //       strokeWidth: 3), // Widget de carga
-              //   errorWidget: (context, url, error) =>
-              //       Icon(Icons.error), // Widget de error
-              // ),
             ),
             Expanded(
               child: Padding(
@@ -74,7 +70,7 @@ class TarjetaLugarInteres extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      lugarInteres.nombre,
+                      _lugarInteres.nombre,
                       style: const TextStyle(
                         color: ColoresAplicacion.colorLetrasPrincipal,
                         fontFamily: 'Inter',
@@ -96,7 +92,8 @@ class TarjetaLugarInteres extends StatelessWidget {
                                 top: MediaQuery.of(context).size.height * 0.0,
                                 left: MediaQuery.of(context).size.width * 0.0),
                             child: GestureDetector(
-                                onTap: () {},
+                                onTap: () =>
+                                    onTapFuncion2(_ruta, _lugarInteres),
                                 child: Container(
                                     width:
                                         MediaQuery.of(context).size.width * 0.2,
@@ -118,7 +115,7 @@ class TarjetaLugarInteres extends StatelessWidget {
                                                   .size
                                                   .height *
                                               0.01),
-                                      child: Icon(Icons.arrow_downward,
+                                      child: Icon(Icons.delete,
                                           color: ColoresAplicacion.colorFondo,
                                           size: MediaQuery.of(context)
                                                   .size
@@ -126,41 +123,6 @@ class TarjetaLugarInteres extends StatelessWidget {
                                               0.03),
                                     )))),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height * 0.0,
-                                left: MediaQuery.of(context).size.width * 0.01),
-                            child: GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.2,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.05,
-                                    decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20),
-                                      ),
-                                      color: ColoresAplicacion.colorPrimario,
-                                    ),
-                                    child: Center(
-                                        child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01),
-                                      child: Icon(Icons.arrow_upward,
-                                          color: ColoresAplicacion.colorFondo,
-                                          size: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.03),
-                                    )))),
-                          )
                         ],
                       ),
                     ),
@@ -168,16 +130,18 @@ class TarjetaLugarInteres extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-                child: Icon(Icons.edit,
-                    color: ColoresAplicacion.colorLetrasPrincipal),
-                width: MediaQuery.of(context).size.width * 0.12,
-                height: MediaQuery.of(context).size.height * 0.12,
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(0, 0, 0, 0.5),
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(30),
-                        topRight: Radius.circular(30)))),
+            GestureDetector(
+                onTap: () => onTapFuncion(_ruta, _lugarInteres, _imgs),
+                child: Container(
+                    width: MediaQuery.of(context).size.width * 0.12,
+                    height: MediaQuery.of(context).size.height * 0.12,
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, 0.5),
+                        borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(30),
+                            topRight: Radius.circular(30))),
+                    child: const Icon(Icons.edit,
+                        color: ColoresAplicacion.colorLetrasPrincipal))),
           ],
         ),
       ),

@@ -1,16 +1,21 @@
 version: "3"
 
 services:
+  # Servicio de base de datos MySQL
   mysql:
     image: mysql:8.3
+    # Reinicio siempre que se caiga el contenedor
     restart: always
     env_file:
       - .env
+    # Mapeo de puerto estándar de máquina local a contenedor
     ports:
       - "3306:3306"
+    # Montaje de los datos en el contenedor
     volumes:
       - ./mysql_data:/var/lib/mysql
 
+  # Servicio PHPMyAdmin para manejo de la Base de Datos
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
@@ -21,28 +26,35 @@ services:
     depends_on:
       - mysql
 
+  # Contenedor de la API.
   fastapi:
     restart: always
     build:
       context: .
+    # Se inicializa con uvicorn
     command: uvicorn api.main:app --reload --host 0.0.0.0
+    # Copia del contenido de la carpeta api en el contenedor
     volumes:
       - ./api/:/app/api
     env_file:
       - .env
     ports:
       - 8080:8000
+    # Debe haberse lanzado previamente por completo el servicio MySQL
     depends_on:
       mysql:
         condition: service_completed_successfully
 
+  # Contenedor Nginx. Reverse proxy para utilizar HTTPS
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
       - "443:443"
+    # Copiar la configuración y certificados en el contenedor
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./certs:/etc/certs
+    # Requiere que previamente se haya lanzado el contenedor de la API
     depends_on:
       - fastapi

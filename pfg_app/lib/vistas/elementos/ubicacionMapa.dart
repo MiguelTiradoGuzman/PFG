@@ -3,12 +3,13 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:pfg_app/private_config.dart';
 
+// Widget Mapa con la ubicación del usuario
 class UbicacionMapa extends StatefulWidget {
+  final posicionActual;
+  UbicacionMapa({required this.posicionActual});
   @override
   _UbicacionMapaState createState() => _UbicacionMapaState();
   CameraPosition? obtenerPosicion() {
-    print(
-        '-------------------: ${_UbicacionMapaState()._controller?.cameraPosition!.target.longitude.toString()}');
     return _UbicacionMapaState()._controller?.cameraPosition!;
   }
 }
@@ -20,21 +21,22 @@ class _UbicacionMapaState extends State<UbicacionMapa> {
   @override
   void initState() {
     super.initState();
-    _initLocationService();
+    //_initLocationService();
+    _currentPosition = this.widget.posicionActual;
   }
 
-  Future<void> _initLocationService() async {
-    try {
-      var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      setState(() {
-        _currentPosition = position;
-      });
-    } catch (e) {
-      print("Error al obtener la ubicación: $e");
-    }
-  }
+  // Future<void> _initLocationService() async {
+  //   try {
+  //     var position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high,
+  //     );
+  //     setState(() {
+  //       _currentPosition = position;
+  //     });
+  //   } catch (e) {
+  //     print("Error al obtener la ubicación: $e");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -3,12 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pfg_app/controlador/controlador.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'package:pfg_app/modelo/usuario.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 double tamTitulos = 23;
 
+// Pantalla Mi Cuenta. El usuario puede observar su información personal en el sistema, modificar la contraseña, acceder a sus rutas favoritas y acceder a sus rutas creadas para modificarlas.
 class MiCuenta extends StatefulWidget {
-  final Usuario usuario;
-  const MiCuenta({required this.usuario});
+  const MiCuenta();
 
   @override
   // ignore: library_private_types_in_public_api
@@ -16,18 +17,96 @@ class MiCuenta extends StatefulWidget {
 }
 
 class _MiCuentaState extends State<MiCuenta> {
-  final TextEditingController _correoController = TextEditingController();
-  final TextEditingController _contrasenaController = TextEditingController();
-  final TextEditingController _usuarioController = TextEditingController();
-  final TextEditingController _contrasenaRepController =
+  // Controlador del campo de texto de modificación de la contraseña
+  final TextEditingController _controladorContrasenia = TextEditingController();
+  // Controlador del campo de texto de repetición de la contraseña
+  final TextEditingController _controladorRepeticionContrasenia =
       TextEditingController();
-  String _contrasenaErrorText = '';
-  Future<void> _registrarUsuario() async {
-    String contrasena = _contrasenaController.text;
-    String contrasenaRep = _contrasenaRepController.text;
+  // Contraseña antigua
+  String _contraseniaAntigua = '';
+  // Mensaje de error
+  String _contraseniaErrorText = '';
 
+// Método para validar la longitud mínima de la contraseña
+  void _validarContrasena(String value) {
+    if (value.length < 5) {
+      setState(() {
+        // Si es demasiado corta se rellena la variable de error.
+        _contraseniaErrorText =
+            AppLocalizations.of(context)!.contrasenaTooShort;
+      });
+    } else {
+      setState(() {
+        // Si se ha solucionado este problema, se vacía dicha variable
+        _contraseniaErrorText = '';
+      });
+    }
+  }
+
+  // Manejador del evento: Usuario pulsa el botón modiciar contraseña
+  void _mostrarMenuEditarContrasenia(BuildContext context) {
+    // Muestra diálogo para que el usuario introduzca la antigua contraseña
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 4),
+          // Etiqueta: Introduzca su antigua contraseña
+          title:
+              Text(AppLocalizations.of(context)!.introducirAntiguaContrasena),
+          content: SizedBox(
+            // Ajusta el tamaño del contenido del diálogo
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: TextFormField(
+              initialValue: '',
+              onChanged: (value) {
+                setState(() {
+                  _contraseniaAntigua = value;
+                });
+              },
+              decoration: const InputDecoration(
+                hintText: '* * * * * *',
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+              },
+              child: Text(AppLocalizations.of(context)!.cancelar),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el diálogo
+                manejarContrasenia();
+              },
+              child: Text(AppLocalizations.of(context)!.guardar),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Agregar un listener al controlador de la contraseña para validar dinámicamente
+    _controladorContrasenia.addListener(() {
+      _validarContrasena(_controladorContrasenia.text);
+    });
+  }
+
+  // Manejador de evento: Usuario pulsa botón guardar en menú de diálogo.
+  void manejarContrasenia() {
+    // Contraseña nueva
+    String contrasena = _controladorContrasenia.text;
+    // Repetición de la nueva contraseña
+    String contrasenaRep = _controladorRepeticionContrasenia.text;
     if (contrasena != contrasenaRep) {
-// Error al iniciar sesión, muestra un SnackBar con el mensaje de error
+      // Las contraseñas no son similares, muestra un SnackBar con el mensaje de error
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -35,11 +114,11 @@ class _MiCuentaState extends State<MiCuenta> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Row(
                 children: [
-                  Icon(Icons.error, color: Colors.white, size: 30),
-                  SizedBox(width: 10),
+                  const Icon(Icons.error, color: Colors.white, size: 30),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'Las contraseñas no coinciden',
+                      AppLocalizations.of(context)!.contrasenaNoCoincide,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: MediaQuery.of(context).size.width *
@@ -51,7 +130,7 @@ class _MiCuentaState extends State<MiCuenta> {
               )),
           backgroundColor: Colors.red,
           action: SnackBarAction(
-            label: 'Cerrar',
+            label: AppLocalizations.of(context)!.cerrar,
             textColor: Colors.white,
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -60,6 +139,7 @@ class _MiCuentaState extends State<MiCuenta> {
         ),
       );
       return;
+      // Las contraseñas son demasiado cortas, muestra el mensaje de error por pantalla
     } else if (contrasena.length < 5) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -67,11 +147,11 @@ class _MiCuentaState extends State<MiCuenta> {
               height: MediaQuery.of(context).size.height * 0.2,
               child: Row(
                 children: [
-                  Icon(Icons.error, color: Colors.white, size: 30),
-                  SizedBox(width: 10),
+                  const Icon(Icons.error, color: Colors.white, size: 30),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'Contraseña demasiado corta',
+                      AppLocalizations.of(context)!.contrasenaDemasiadoCorta,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: MediaQuery.of(context).size.width *
@@ -83,7 +163,7 @@ class _MiCuentaState extends State<MiCuenta> {
               )),
           backgroundColor: Colors.red,
           action: SnackBarAction(
-            label: 'Cerrar',
+            label: AppLocalizations.of(context)!.cerrar,
             textColor: Colors.white,
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -93,65 +173,10 @@ class _MiCuentaState extends State<MiCuenta> {
       );
       return;
     } else {
-      try {
-        //await Controlador().modificarUsuario( contrasena, context);
-      } catch (e) {
-        // Error al iniciar sesión, muestra un SnackBar con el mensaje de error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Container(
-              height: MediaQuery.of(context).size.height * 0.2,
-              child: Row(
-                children: [
-                  Icon(Icons.error, color: Colors.white, size: 30),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      e.toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: MediaQuery.of(context).size.width *
-                            0.07, // Tamaño de fuente proporcional al ancho de la pantalla
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            backgroundColor: Colors.red,
-            action: SnackBarAction(
-              label: 'Cerrar',
-              textColor: Colors.white,
-              onPressed: () {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              },
-            ),
-          ),
-        );
-      }
+      //Registra la nueva contraseña en el sistema
+      Controlador()
+          .modificarContrasenia(contrasena, _contraseniaAntigua, context);
     }
-  }
-
-// Método para validar la longitud mínima de la contraseña
-  void _validarContrasena(String value) {
-    if (value.length < 5) {
-      setState(() {
-        _contrasenaErrorText = 'La contraseña debe tener al menos 5 caracteres';
-      });
-    } else {
-      setState(() {
-        _contrasenaErrorText = '';
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // Agregar un listener al controlador de la contraseña para validar dinámicamente
-    _contrasenaController.addListener(() {
-      _validarContrasena(_contrasenaController.text);
-    });
   }
 
   @override
@@ -161,6 +186,7 @@ class _MiCuentaState extends State<MiCuenta> {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            // Imagen de icono de usuario
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.01,
@@ -172,211 +198,359 @@ class _MiCuentaState extends State<MiCuenta> {
                   semanticsLabel: 'User',
                   color: ColoresAplicacion.colorPrimario,
                 )),
+            // Etiqueta: Datos personales
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.01,
-                    left: MediaQuery.of(context).size.width * 0.15),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(65),
-                        topRight: Radius.circular(65),
-                        bottomLeft: Radius.circular(65),
-                        bottomRight: Radius.circular(65),
-                      ),
-                      color: ColoresAplicacion.colorFondo,
-                      border: Border.all(
-                        color: ColoresAplicacion.colorPrimario,
-                        width: 2,
-                      ),
-                    ),
-                    child: const Center(
+                    left: MediaQuery.of(context).size.width * 0.0),
+                child: ExpansionTile(
+                  title: Text(
+                    AppLocalizations.of(context)!.datosPersonales,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: ColoresAplicacion.colorLetrasPrincipal,
+                        fontFamily: 'Inter',
+                        fontSize: tamTitulos,
+                        letterSpacing:
+                            0 /*percentages not used in flutter. defaulting to zero*/,
+                        fontWeight: FontWeight.bold,
+                        height: 1),
+                  ),
+                  children: [
+                    // Padding(
+                    //     padding: EdgeInsets.only(
+                    //         top: MediaQuery.of(context).size.height * 0.01,
+                    //         left: MediaQuery.of(context).size.width * 0.05),
+                    //     child: GestureDetector(
+                    //       onTap: () {},
+                    //       child: Container(
+                    //         width: MediaQuery.of(context).size.width * 0.7,
+                    //         height: MediaQuery.of(context).size.height * 0.05,
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: const BorderRadius.only(
+                    //             topLeft: Radius.circular(65),
+                    //             topRight: Radius.circular(65),
+                    //             bottomLeft: Radius.circular(65),
+                    //             bottomRight: Radius.circular(65),
+                    //           ),
+                    //           color: ColoresAplicacion.colorFondo,
+                    //           border: Border.all(
+                    //             color: ColoresAplicacion.colorPrimario,
+                    //             width: 2,
+                    //           ),
+                    //         ),
+                    //         child: Center(
+                    //             child: Text(
+                    //           AppLocalizations.of(context)!.modificarImagen,
+                    //           textAlign: TextAlign.center,
+                    //           style: const TextStyle(
+                    //               color: ColoresAplicacion.colorPrimario,
+                    //               fontFamily: 'Inter',
+                    //               fontSize: 20,
+                    //               letterSpacing:
+                    //                   0 /*percentages not used in flutter. defaulting to zero*/,
+                    //               fontWeight: FontWeight.bold,
+                    //               height: 1),
+                    //         )),
+                    //       ),
+                    //     )),
+                    // Etiqueta: Correo electrónico
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.02,
+                            left: MediaQuery.of(context).size.width * 0.05),
                         child: Text(
-                      'Modificar Imagen',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: ColoresAplicacion.colorPrimario,
+                          AppLocalizations.of(context)!.etiquetaCorreo,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: ColoresAplicacion.colorLetrasPrincipal,
+                              fontFamily: 'Inter',
+                              fontSize: tamTitulos,
+                              letterSpacing:
+                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              fontWeight: FontWeight.bold,
+                              height: 1),
+                        )),
+                    // Muestra el correo electrónico del usuario
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.01,
+                          left: MediaQuery.of(context).size.width * 0.05),
+                      child: Text(
+                        Controlador().getUsuario().getCorreo,
+                        style: const TextStyle(
+                          color: ColoresAplicacion.colorLetrasPrincipal,
                           fontFamily: 'Inter',
                           fontSize: 20,
-                          letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.bold,
-                          height: 1),
-                    )),
-                  ),
+                          letterSpacing: 0,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                        ),
+                      ),
+                    ),
+                    // Etiqueta: Nombre de usuario
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.03,
+                            left: MediaQuery.of(context).size.width * 0.05),
+                        child: Text(
+                          AppLocalizations.of(context)!.nombreDeUsuario,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              color: ColoresAplicacion.colorLetrasPrincipal,
+                              fontFamily: 'Inter',
+                              fontSize: tamTitulos,
+                              letterSpacing:
+                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              fontWeight: FontWeight.bold,
+                              height: 1),
+                        )),
+                    // Muestra el nombre de usuario
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.01,
+                          left: MediaQuery.of(context).size.width * 0.05),
+                      child: Text(
+                        Controlador().getUsuario().getNombreUsuario,
+                        style: const TextStyle(
+                          color: ColoresAplicacion.colorLetrasPrincipal,
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                          letterSpacing: 0,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                        ),
+                      ),
+                    ),
+                    // Botón para abrir el menú de edición de contraseña
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.01,
+                            left: MediaQuery.of(context).size.width * 0.01),
+                        child: ExpansionTile(
+                          title: Text(
+                            AppLocalizations.of(context)!.modificarContrasenia,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                color: ColoresAplicacion.colorLetrasPrincipal,
+                                fontFamily: 'Inter',
+                                fontSize: tamTitulos,
+                                letterSpacing:
+                                    0 /*percentages not used in flutter. defaulting to zero*/,
+                                fontWeight: FontWeight.bold,
+                                height: 1),
+                          ),
+                          children: [
+                            Column(
+                              children: [
+                                if (_contraseniaErrorText.isNotEmpty)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
+                                        left:
+                                            MediaQuery.of(context).size.width *
+                                                0.04),
+                                    child: Text(
+                                      _contraseniaErrorText,
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                Padding(
+                                    padding: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.01,
+                                        left:
+                                            MediaQuery.of(context).size.width *
+                                                0.01),
+                                    child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.15,
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                          ),
+                                          border: Border.all(
+                                            color: ColoresAplicacion
+                                                .colorLetrasPrincipal,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.02),
+                                          child: TextField(
+                                            controller: _controladorContrasenia,
+                                            obscureText: true,
+                                            decoration: const InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: '* * * * * * *',
+                                                hintStyle: TextStyle(
+                                                    color: ColoresAplicacion
+                                                        .colorLetrasPrincipal,
+                                                    fontFamily: 'Inter',
+                                                    fontSize: 15,
+                                                    letterSpacing: 0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1)),
+                                            onChanged: (text) {
+                                              setState(() {
+                                                if (text.length < 5) {
+                                                  _contraseniaErrorText =
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .contrasenaTooShort;
+                                                } else {
+                                                  _contraseniaErrorText = '';
+                                                }
+                                              });
+                                            },
+                                          ),
+                                        )))
+                              ],
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.01,
+                                ),
+                                child: Text(
+                                  AppLocalizations.of(context)!
+                                      .repetirContrasenia,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      color: ColoresAplicacion
+                                          .colorLetrasPrincipal,
+                                      fontFamily: 'Inter',
+                                      fontSize: tamTitulos,
+                                      letterSpacing:
+                                          0 /*percentages not used in flutter. defaulting to zero*/,
+                                      fontWeight: FontWeight.bold,
+                                      height: 1),
+                                )),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    top: MediaQuery.of(context).size.height *
+                                        0.01,
+                                    left: MediaQuery.of(context).size.width *
+                                        0.01),
+                                child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.9,
+                                    height: MediaQuery.of(context).size.width *
+                                        0.15,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      ),
+                                      border: Border.all(
+                                        color: ColoresAplicacion
+                                            .colorLetrasPrincipal,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.02),
+                                      child: TextField(
+                                          controller:
+                                              _controladorRepeticionContrasenia,
+                                          obscureText: true,
+                                          decoration: const InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: '* * * * * * *',
+                                              hintStyle: TextStyle(
+                                                  color: ColoresAplicacion
+                                                      .colorLetrasPrincipal,
+                                                  fontFamily: 'Inter',
+                                                  fontSize: 15,
+                                                  letterSpacing: 0,
+                                                  fontWeight: FontWeight.normal,
+                                                  height: 1))),
+                                    ))),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    top: MediaQuery.of(context).size.height *
+                                        0.01,
+                                    left: MediaQuery.of(context).size.width * 0,
+                                    bottom: MediaQuery.of(context).size.height *
+                                        0.01),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _mostrarMenuEditarContrasenia(context);
+                                  },
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(65),
+                                        topRight: Radius.circular(65),
+                                        bottomLeft: Radius.circular(65),
+                                        bottomRight: Radius.circular(65),
+                                      ),
+                                      color: ColoresAplicacion.colorPrimario,
+                                      border: Border.all(
+                                        color: ColoresAplicacion.colorPrimario,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      AppLocalizations.of(context)!
+                                          .modificarContrasenia,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: ColoresAplicacion.colorFondo,
+                                          fontFamily: 'Inter',
+                                          fontSize: 20,
+                                          letterSpacing:
+                                              0 /*percentages not used in flutter. defaulting to zero*/,
+                                          fontWeight: FontWeight.bold,
+                                          height: 1),
+                                    )),
+                                  ),
+                                )),
+                          ],
+                        )),
+                  ],
                 )),
+            // Botón Mis rutas favoritas
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.02,
                     left: MediaQuery.of(context).size.width * 0.05),
-                child: Text(
-                  'Correo electrónico',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: ColoresAplicacion.colorLetrasPrincipal,
-                      fontFamily: 'Inter',
-                      fontSize: tamTitulos,
-                      letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.bold,
-                      height: 1),
-                )),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.01,
-                  left: MediaQuery.of(context).size.width * 0.05),
-              child: Text(
-                this.widget.usuario.getCorreo,
-                style: TextStyle(
-                  color: ColoresAplicacion.colorLetrasPrincipal,
-                  fontFamily: 'Inter',
-                  fontSize: 20,
-                  letterSpacing: 0,
-                  fontWeight: FontWeight.normal,
-                  height: 1,
-                ),
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.03,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: Text(
-                  'Nombre de usuario',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: ColoresAplicacion.colorLetrasPrincipal,
-                      fontFamily: 'Inter',
-                      fontSize: tamTitulos,
-                      letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.bold,
-                      height: 1),
-                )),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.01,
-                  left: MediaQuery.of(context).size.width * 0.05),
-              child: Text(
-                this.widget.usuario.getUsername,
-                style: TextStyle(
-                  color: ColoresAplicacion.colorLetrasPrincipal,
-                  fontFamily: 'Inter',
-                  fontSize: 20,
-                  letterSpacing: 0,
-                  fontWeight: FontWeight.normal,
-                  height: 1,
-                ),
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.03,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: Text(
-                  'Modificar Contraseña',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: ColoresAplicacion.colorLetrasPrincipal,
-                      fontFamily: 'Inter',
-                      fontSize: tamTitulos,
-                      letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.bold,
-                      height: 1),
-                )),
-            Column(
-              children: [
-                if (_contrasenaErrorText.isNotEmpty)
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.01,
-                        left: MediaQuery.of(context).size.width * 0.04),
-                    child: Text(
-                      _contrasenaErrorText,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.01,
-                        left: MediaQuery.of(context).size.width * 0.05),
-                    child: Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
-                          ),
-                          border: Border.all(
-                            color: ColoresAplicacion.colorLetrasPrincipal,
-                            width: 2,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width * 0.02),
-                          child: TextField(
-                            controller: _contrasenaController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: '* * * * * * *',
-                                hintStyle: TextStyle(
-                                    color:
-                                        ColoresAplicacion.colorLetrasPrincipal,
-                                    fontFamily: 'Inter',
-                                    fontSize: 15,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1)),
-                            onChanged: (text) {
-                              setState(() {
-                                if (text.length < 5) {
-                                  _contrasenaErrorText =
-                                      'La contraseña debe tener al menos 5 caracteres';
-                                } else {
-                                  _contrasenaErrorText = '';
-                                }
-                              });
-                            },
-                          ),
-                        )))
-              ],
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.03,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: Text(
-                  'Repetir Contraseña',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: ColoresAplicacion.colorLetrasPrincipal,
-                      fontFamily: 'Inter',
-                      fontSize: tamTitulos,
-                      letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.bold,
-                      height: 1),
-                )),
-            Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.01,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: Container(
+                child: GestureDetector(
+                  onTap: () {
+                    Controlador().cargaSelectorFavoritas(context);
+                  },
+                  child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: MediaQuery.of(context).size.width * 0.15,
+                    height: MediaQuery.of(context).size.height * 0.07,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
@@ -384,60 +558,90 @@ class _MiCuentaState extends State<MiCuenta> {
                         bottomLeft: Radius.circular(10),
                         bottomRight: Radius.circular(10),
                       ),
+                      color: ColoresAplicacion.colorPrimario,
                       border: Border.all(
-                        color: ColoresAplicacion.colorLetrasPrincipal,
+                        color: ColoresAplicacion.colorFondo,
                         width: 2,
                       ),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.02),
-                      child: TextField(
-                          controller: _contrasenaRepController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: '* * * * * * *',
-                              hintStyle: TextStyle(
-                                  color: ColoresAplicacion.colorLetrasPrincipal,
-                                  fontFamily: 'Inter',
-                                  fontSize: 15,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.normal,
-                                  height: 1))),
-                    ))),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.03,
-                  left: MediaQuery.of(context).size.width * 0.05),
-              child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.05,
+                              right: MediaQuery.of(context).size.width * 0.06),
+                          child: Icon(Icons.favorite,
+                              color: ColoresAplicacion.colorFondo),
                         ),
-                        color: ColoresAplicacion.colorPrimario,
+                        Center(
+                            child: Text(
+                          AppLocalizations.of(context)!.misRutasFavoritas,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: ColoresAplicacion.colorFondo,
+                              fontFamily: 'Inter',
+                              fontSize: 20,
+                              letterSpacing:
+                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              fontWeight: FontWeight.bold,
+                              height: 1),
+                        ))
+                      ],
+                    ),
+                  ),
+                )),
+            // Botón Mis Rutas Creadas
+            Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.02,
+                    left: MediaQuery.of(context).size.width * 0.05),
+                child: GestureDetector(
+                  onTap: () {
+                    Controlador().cargarSelectorModificarRutas(
+                        context, Controlador().getUsuario());
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
                       ),
-                      child: const Center(
-                          child: Text(
-                        'Enviar Cambios',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColoresAplicacion.colorFondo,
-                            fontFamily: 'Inter',
-                            fontSize: 30,
-                            letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
-                            fontWeight: FontWeight.bold,
-                            height: 1),
-                      )))),
-            ),
+                      color: ColoresAplicacion.colorFondo,
+                      border: Border.all(
+                        color: ColoresAplicacion.colorPrimario,
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.05,
+                              right: MediaQuery.of(context).size.width * 0.06),
+                          child: Icon(Icons.settings,
+                              color: ColoresAplicacion.colorPrimario),
+                        ),
+                        Center(
+                            child: Text(
+                          AppLocalizations.of(context)!.modificarRutas,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: ColoresAplicacion.colorPrimario,
+                              fontFamily: 'Inter',
+                              fontSize: 20,
+                              letterSpacing:
+                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              fontWeight: FontWeight.bold,
+                              height: 1),
+                        ))
+                      ],
+                    ),
+                  ),
+                ))
           ]),
     ));
   }
