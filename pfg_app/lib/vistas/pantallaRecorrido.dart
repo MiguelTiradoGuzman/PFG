@@ -5,8 +5,12 @@ import 'package:pfg_app/vistas/elementos/mapaRuta.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'package:pfg_app/modelo/rutaTuristica.dart';
 import 'package:pfg_app/controlador/controlador.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// PantallaRecorrido: El usuario puede ver el mapa y obtener indicaciones
+// ignore: must_be_immutable
 class PantallaRecorrido extends StatefulWidget {
+  // Ruta que se está realizando
   RutaTuristica ruta;
   PantallaRecorrido({super.key, required this.ruta});
 
@@ -15,23 +19,30 @@ class PantallaRecorrido extends StatefulWidget {
 }
 
 class _PantallaRecorridoState extends State<PantallaRecorrido> {
+  // Índice del lugar que se va a visitar
   int indice = 0;
+  // Obtener el lugar que marca el índice actual
   LugarInteres getLugarActual() {
     return widget.ruta.getLugares.elementAt(indice);
   }
 
+  // Manejador del botón: Siguiente Lugar.
+  // Suma 1 en el índice, marcando al siguiente lugar de interés en la ruta.
   void setSiguienteIndice() {
     setState(() {
       indice = (indice + 1) % (widget.ruta.lugares.length);
     });
   }
 
+  // Manejador del botón: Anterior Lugar.
+  // Resta 1 en el índice, marcando al anterior lugar de interés en la ruta.
   void setAnteriorIndice() {
     setState(() {
       indice = (indice - 1) % (widget.ruta.lugares.length);
     });
   }
 
+  // Comprobación para saber si es el último lugar de interés a visitar en la ruta.
   bool esUltimoLugar() {
     return indice == (widget.ruta.lugares.length - 1);
   }
@@ -48,13 +59,15 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            // Etiqueta: Dirígete hacia
             Padding(
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.02,
                   left: MediaQuery.of(context).size.width * 0.05,
                   bottom: MediaQuery.of(context).size.height * 0.01),
               child: Text(
-                'Dirígete hacia ${getLugarActual().getNombre}',
+                AppLocalizations.of(context)!
+                    .dirigeteHacia(getLugarActual().getNombre),
                 style: const TextStyle(
                   color: ColoresAplicacion.colorLetrasPrincipal,
                   fontFamily: 'Inter',
@@ -65,6 +78,7 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                 ),
               ),
             ),
+            // MapaRuta
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.02,
@@ -92,6 +106,7 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                 child: MapaRuta(getLugarActual()),
               ),
             ),
+            // Botones siguiente lugar y anterior lugar
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.02,
@@ -128,8 +143,8 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                                     color: ColoresAplicacion.colorFondo,
                                     size: MediaQuery.of(context).size.height *
                                         0.03),
-                                const Text(
-                                  'Anterior Lugar',
+                                Text(
+                                  AppLocalizations.of(context)!.anteriorLugar,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: ColoresAplicacion.colorFondo,
@@ -144,6 +159,7 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                             ),
                           )))),
                 ),
+                // Si es el último lugar de interés, se carga botón de finalizar ruta.
                 esUltimoLugar()
                     ? Padding(
                         padding: EdgeInsets.only(
@@ -151,7 +167,7 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                             left: MediaQuery.of(context).size.width * 0.1),
                         child: GestureDetector(
                             onTap: () {
-                              Controlador().cargaPaginaInicial(context);
+                              Controlador().cargaPantallaInicial(context);
                             },
                             child: Container(
                                 width: MediaQuery.of(context).size.width * 0.4,
@@ -179,8 +195,8 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                                                   .size
                                                   .height *
                                               0.03),
-                                      const Text(
-                                        'Finalizar',
+                                      Text(
+                                        AppLocalizations.of(context)!.finalizar,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: ColoresAplicacion.colorFondo,
@@ -229,8 +245,9 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                                                   .size
                                                   .height *
                                               0.03),
-                                      const Text(
-                                        'Siguiente Lugar',
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .siguienteLugar,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: ColoresAplicacion.colorFondo,
@@ -247,13 +264,14 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                       )
               ]),
             ),
+            // Botón Más Información
             Padding(
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.02,
                   left: MediaQuery.of(context).size.width * 0.05),
               child: GestureDetector(
                 onTap: () {
-                  Controlador().cargaPaginaLugarInteres(
+                  Controlador().cargaPantallaLugarInteres(
                       context, getLugarActual(), widget.ruta);
                 },
                 child: Container(
@@ -282,9 +300,9 @@ class _PantallaRecorridoState extends State<PantallaRecorrido> {
                         child: Icon(Icons.info,
                             color: ColoresAplicacion.colorPrimario),
                       ),
-                      const Center(
+                      Center(
                           child: Text(
-                        'He llegado',
+                        AppLocalizations.of(context)!.heLlegado,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: ColoresAplicacion.colorPrimario,

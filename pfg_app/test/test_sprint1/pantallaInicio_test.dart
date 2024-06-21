@@ -19,6 +19,7 @@ void main() {
             rutas: [
               ClaseTest().ruta,
             ],
+            posicionActual: null,
           ),
         ),
       );

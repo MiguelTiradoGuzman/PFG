@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from api.modelo.lugarInteres import LugarInteres
+from api.modelo.usuario import Usuario
 from typing import List, Optional
 
 
@@ -10,3 +11,4 @@ class RutaTuristica (BaseModel):
     duracion: str
     ruta_imagen: Optional[str]
     lugares: List[LugarInteres]
+    autor : Optional[str]

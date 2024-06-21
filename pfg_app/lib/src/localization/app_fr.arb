@@ -1,0 +1,448 @@
+{
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "appTitle": "pfg_app",
+
+  "@idioma": {
+    "description": "Current language"
+  },
+  "idioma": "Français",
+
+  "@etiquetaCorreo": {
+    "description": "Label for the email field"
+  },
+  "etiquetaCorreo": "Email",
+
+  "@contrasenia": {
+    "description": "Password text"
+  },
+  "contrasenia": "Mot de passe",
+
+  "@errorInicioSesion": {
+    "description": "Login error message"
+  },
+  "errorInicioSesion": "Email ou mot de passe incorrect",
+
+  "@botonIniciarSesion": {
+    "description": "Text for the login button"
+  },
+  "botonIniciarSesion": "Se connecter",
+
+  "@botonRegistrarme": {
+    "description": "Text for the sign up button"
+  },
+  "botonRegistrarme": "S'inscrire",
+
+  "@cerrar": {
+    "description": "Close"
+  },
+  "cerrar": "Fermer",
+
+  "@nombreLugar": {
+    "description": "Field for the place name"
+  },
+  "nombreLugar": "Nom du lieu",
+
+  "@descripcion": {
+    "description": "Field for the place description"
+  },
+  "descripcion": "Description",
+
+  "@editarDescripcion": {
+    "description": "Text to edit the description"
+  },
+  "editarDescripcion": "Modifier la description",
+
+  "@anadirImagen": {
+    "description": "Text to add an image"
+  },
+  "anadirImagen": "Ajouter une image",
+
+  "@nombreLugarExiste": {
+    "description": "Error message for a place name that already exists in the route"
+  },
+  "nombreLugarExiste": "Le nom du lieu existe déjà dans l'itinéraire",
+
+  "@latitud": {
+    "description": "Field for the place latitude"
+  },
+  "latitud": "Latitude",
+
+  "@longitud": {
+    "description": "Field for the place longitude"
+  },
+  "longitud": "Longitude",
+
+  "@cancelar": {
+    "description": "Text to cancel"
+  },
+  "cancelar": "Annuler",
+
+  "@guardar": {
+    "description": "Text to save"
+  },
+  "guardar": "Enregistrer",
+
+  "@error": {
+    "description": "Generic error message"
+  },
+  "error": "Erreur",
+
+  "@errorCamposVacios": {
+    "description": "Error message for empty fields"
+  },
+  "errorCamposVacios": "Veuillez remplir tous les champs et ajouter au moins une image.",
+
+  "@errorFormatoCoordenadas": {
+    "description": "Error message for incorrect coordinate format"
+  },
+  "errorFormatoCoordenadas": "La latitude et la longitude doivent être des valeurs numériques.",
+
+  "@errorRangoLatitud": {
+    "description": "Error message for out of range latitude"
+  },
+  "errorRangoLatitud": "La latitude doit être comprise entre [-90, 90].",
+
+  "@errorRangoLongitud": {
+    "description": "Error message for out of range longitude"
+  },
+  "errorRangoLongitud": "La longitude doit être comprise entre [-180, 180].",
+
+  "@ingreseNuevaDescripcion": {
+    "description": "Message indicating to enter the description"
+  },
+  "ingreseNuevaDescripcion": "Entrez une nouvelle description",
+
+  "@avisoDobleTapBorraImagen": {
+    "description": "Message indicating that double-tapping the image will delete it"
+  },
+  "avisoDobleTapBorraImagen": "* Double tapez sur l'image pour la supprimer",
+
+  "@establerUbicacion": {
+    "description": "Label message to set location"
+  },
+  "establerUbicacion": "Définir l'emplacement",
+
+  "@calcularDistanciaTiempo": {
+    "description": "Text to calculate distance and time"
+  },
+  "calcularDistanciaTiempo": "Calculer la distance et le temps",
+
+  "@introducirRuta": {
+    "description": "Text to enter a new route"
+  },
+  "introducirRuta": "Entrer l'itinéraire",
+
+  "@errorCamposIncompletos": {
+    "description": "Error message for incomplete fields"
+  },
+  "errorCamposIncompletos": "Veuillez remplir tous les champs et ajouter une image.",
+
+  "@errorRutaExistente": {
+    "description": "Error message for an already existing route"
+  },
+  "errorRutaExistente": "Un itinéraire avec ce nom existe déjà, veuillez essayer un autre nom.",
+
+  "@hintIntroduceNombre": {
+    "description": "Hint to enter a name"
+  },
+  "hintIntroduceNombre": "Entrez un nom",
+
+  "@modificarImagen": {
+    "description": "Button title, modify image"
+  },
+  "modificarImagen": "Modifier l'image",
+
+  "@modificarDescripcion": {
+    "description": "Button title, modify description"
+  },
+  "modificarDescripcion": "Modifier la description",
+
+  "@etiquetaLugaresDeInteres": {
+    "description": "Label for places of interest"
+  },
+  "etiquetaLugaresDeInteres": "Lieux d'intérêt",
+
+  "@contrasenaNoCoincide": {
+    "description": "Error message for non-matching passwords"
+  },
+  "contrasenaNoCoincide": "Les mots de passe ne correspondent pas",
+
+  "@contrasenaDemasiadoCorta": {
+    "description": "Error message for too short passwords"
+  },
+  "contrasenaDemasiadoCorta": "Mot de passe trop court",
+
+  "@introducirAntiguaContrasena": {
+    "description": "Text to enter the old password"
+  },
+  "introducirAntiguaContrasena": "Entrez l'ancien mot de passe",
+
+  "@modificarContrasenia": {
+    "description": "Text to modify the password"
+  },
+  "modificarContrasenia": "Modifier le mot de passe",
+
+  "@repetirContrasenia": {
+    "description": "Text to repeat the password"
+  },
+  "repetirContrasenia": "Répéter le mot de passe",
+
+  "@contrasenaTooShort": {
+    "description": "Error message for too short password"
+  },
+  "contrasenaTooShort": "Le mot de passe doit comporter au moins 5 caractères",
+
+  "@cambiarPerfil": {
+    "description": "Text to change the profile"
+  },
+  "cambiarPerfil": "Changer de profil",
+
+  "@nombreDeUsuario": {
+    "description": "Text for username"
+  },
+  "nombreDeUsuario": "Nom d'utilisateur",
+
+  "@modificarRutas": {
+    "description": "Button title, modify routes"
+  },
+  "modificarRutas": "Modifier mes itinéraires",
+
+  "@confirmarBorrado": {
+    "description": "Delete confirmation dialog title"
+  },
+  "confirmarBorrado": "Confirmer la suppression",
+
+  "@mensajeBorradoUsuario": {
+    "description": "Delete confirmation dialog message"
+  },
+  "mensajeBorradoUsuario": "Êtes-vous sûr de vouloir supprimer l'utilisateur ?",
+
+  "@aceptar": {
+    "description": "Text for the accept button"
+  },
+  "aceptar": "Accepter",
+
+  "@seleccioneIdioma": {
+    "description": "Text to select the language"
+  },
+  "seleccioneIdioma": "Sélectionner la langue",
+
+  "@espanol": {
+    "description": "Spanish language option"
+  },
+  "espanol": "Espagnol",
+
+  "@english": {
+    "description": "English language option"
+  },
+  "english": "Anglais",
+
+  "@tamanoLetra": {
+    "description": "Text to select the font size"
+  },
+  "tamanoLetra": "Taille de la police",
+
+  "@normal": {
+    "description": "Normal font size option"
+  },
+  "normal": "Normal",
+
+  "@grande": {
+    "description": "Large font size option"
+  },
+  "grande": "Grand",
+
+  "@borrarUsuario": {
+    "description": "Text to delete the user"
+  },
+  "borrarUsuario": "Supprimer l'utilisateur",
+
+  "@seguroBorrar": {
+    "description": "Message for delete confirmation"
+  },
+  "seguroBorrar": "Êtes-vous sûr de vouloir supprimer l'utilisateur ?",
+
+  "@rutasDisponibles": {
+    "description": "Title for the available routes section"
+  },
+  "rutasDisponibles": "Itinéraires disponibles",
+
+  "@tituloRutaTuristica": {
+    "description": "Title of a tourist route card"
+  },
+  "tituloRutaTuristica": "Itinéraire touristique",
+
+  "@cargarPaginaRuta": {
+    "description": "Text to load a route page"
+  },
+  "cargarPaginaRuta": "Charger la page de l'itinéraire",
+
+  "@descubre": {
+    "description": "Discover word"
+  },
+  "descubre": "Découvrir",
+
+  "@descripcion": {
+    "description": "Title for the description section"
+  },
+  "descripcion": "Description",
+
+  "@anteriorImagen": {
+    "description": "Text for the previous image button"
+  },
+  "anteriorImagen": "Image précédente",
+
+  "@siguienteImagen": {
+    "description": "Text for the next image button"
+  },
+  "siguienteImagen": "Image suivante",
+
+  "@volveraHome": {
+    "description": "Text for the button to go back to home"
+  },
+  "volveraHome": "Retourner à l'accueil",
+
+  "@botonInicioSesion": {
+    "description": "Text for the login button"
+  },
+  "botonInicioSesion": "Se connecter",
+
+  "@volverAlInicio": {
+    "description": "Text for the button to go back to the beginning"
+  },
+  "volverAlInicio": "Retourner au début",
+
+  "@rutaModificada": {
+    "description": "Message indicating the route has been modified"
+  },
+  "rutaModificada": "L'itinéraire a été modifié avec succès",
+
+  "@descripcion": {
+    "description": "Description"
+  },
+  "descripcion": "Description",
+
+  "@irA": {
+    "description": "Text for the go button"
+  },
+  "irA": "Aller à",
+
+  "@irseAlDestino": {
+    "description": "Text for the button to go to destination"
+  },
+  "irseAlDestino": "Aller à la destination",
+
+  "@ubicacionActual": {
+    "description": "Current location"
+  },
+  "ubicacionActual": "Position actuelle",
+
+  "@anadirRuta": {
+    "description": "Text for the button to add a route"
+  },
+  "anadirRuta": "Ajouter un itinéraire",
+
+  "@anadirLugar": {
+    "description": "Text for the button to add a place"
+  },
+  "anadirLugar": "Ajouter un lieu",
+
+  "@rutaNoTieneLugares": {
+    "description": "Error message indicating that the route does not have any places"
+  },
+  "rutaNoTieneLugares": "L'itinéraire ne contient aucun lieu",
+
+  "@eliminarRuta": {
+    "description": "Text for the button to delete a route"
+  },
+  "eliminarRuta": "Supprimer l'itinéraire",
+
+  "@seguroEliminar": {
+    "description": "Confirmation message for deleting a route"
+  },
+  "seguroEliminar": "Êtes-vous sûr de vouloir supprimer l'itinéraire ?",
+  "@reproducir": {
+    "description": "Jouer"
+  },
+  "reproducir": "Jouer",
+  "@pausar": {
+    "description": "Pause"
+  },
+  "pausar": "Pause",
+
+  "@iniciar": {
+    "description": "Texte pour démarrer"
+  },
+  "iniciar": "Démarrer",
+
+  "mensajeError": "Une erreur s'est produite. Veuillez réessayer.",
+  "siguienteLugar": "Prochain Endroit",
+  "duracionFormato": "Durée (h:mm)",
+  "siguienteLugar": "Prochain Endroit",
+  "nombreDeLaRuta": "Nom du Circuit",
+  "finalizar": "Terminer",
+  "contrasena": "Mot de passe",
+  "nombreDeLugar": "Filtrer par lieu",
+  "minima": "Minimum",
+  "ajustes": "Paramètres",
+  "contrasenasNoCoinciden": "Les mots de passe ne correspondent pas",
+  "finalizar": "Terminer",
+  "correoElectronico": "E-mail",
+  "heLlegado": "J'ai Arrivé",
+  "nombreUsuario": "Nom d'utilisateur",
+  "duracionFormato": "Durée (h:mm)",
+  "heLlegado": "J'ai Arrivé",
+  "filtrosDeBusqueda": "Filtres de Recherche",
+  "distanciaFormato": "Distance (km)",
+  "mensajeError": "Une erreur s'est produite. Veuillez réessayer.",
+  "lugar": "Lieu",
+  "filtrosDeBusqueda": "Filtres de Recherche",
+  "mensajeBuscador": "Entrez le chemin à rechercher",
+  "dirigeteHacia": "Dirigez-vous vers",
+  "maxima": "Maximum",
+  "cerrarSesion": "Déconnexion",
+  "anteriorLugar": "Lieu Précédent",
+  "correoInvalido": "E-mail invalide!",
+  "maxima": "Maximum",
+  "bienvenido": "Bienvenue!",
+  "volverRuta": "Retourner au Circuit",
+  "dirigeteHacia": "Dirigez-vous vers",
+  "misRutasFavoritas": "Mes Circuits Préférés",
+  "masInfo": "Plus d'Informations",
+  "masInfo": "Plus d'Informations",
+  "seleccionaRuta": "Sélectionnez le circuit à modifier",
+  "bienvenido": "Bienvenue!",
+  "datosPersonales": "Informations Personnelles",
+  "aplicar": "Appliquer",
+  "minima": "Minimum",
+  "distanciaFormato": "Distance (km)",
+  "datosPersonales": "Informations Personnelles",
+  "inicio": "Accueil",
+  "misRutasFavoritas": "Mes Circuits Préférés",
+  "aplicar": "Appliquer",
+  "registrarme": "S'inscrire",
+  "inicio": "Accueil",
+  "anteriorLugar": "Lieu Précédent",
+  "repetirContrasena": "Répéter le Mot de passe",
+  "lugar": "Lieu",
+  "miCuenta": "Mon Compte",
+  "contrasena": "Mot de passe",
+  "correoInvalido": "E-mail invalide!",
+  "cerrarSesion": "Déconnexion",
+  "repetirContrasena": "Répéter le Mot de passe",
+  "mensajeBuscador": "Entrez le chemin à rechercher",
+  "volverRuta": "Retourner au Circuit",
+  "registrarme": "S'inscrire",
+  "nombreDeLaRuta": "Nom du Circuit",
+  "contrasenaCorta": "Mot de passe trop court",
+  "seleccionaRuta": "Sélectionnez le circuit à modifier",
+  "contrasenasNoCoinciden": "Les mots de passe ne correspondent pas",
+  "contrasenaCorta": "Mot de passe trop court",
+  "ajustes": "Paramètres",
+  "miCuenta": "Mon Compte",
+  "correoElectronico": "E-mail",
+  "nombreDeLugar": "Filtrer par lieu",
+  "nombreUsuario": "Nom d'utilisateur"
+}

@@ -1,2 +1,5 @@
 mysql_data/
 certs/
+*.crt
+*.csr
+*.key

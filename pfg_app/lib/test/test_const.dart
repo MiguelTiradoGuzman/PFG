@@ -9,7 +9,7 @@ class ClaseTest {
         descripcion: "Descripcion de prueba de la calle Carrera del Darro",
         latitud: 37.1783098,
         longitud: -3.5928579,
-        fotos: [
+        recursos: [
           "http://localhost:8080/recursos/rutas/alhambra_test/carrera_del_darro/carrera_del_darro.jpg",
           "assets/images/carrera_del_darro2.jpeg"
         ]),
@@ -18,7 +18,7 @@ class ClaseTest {
         descripcion: "Descripcion de prueba de la calle Navas",
         latitud: 37.1734542,
         longitud: -3.6003842,
-        fotos: [
+        recursos: [
           "http://localhost:8080/recursos/rutas/alhambra_test/navas/calle_navas.jpg"
         ]),
     LugarInteres(
@@ -26,7 +26,7 @@ class ClaseTest {
         descripcion: "Descripcion de prueba de la calle Reyes Católicos",
         latitud: 37.1753278,
         longitud: -3.6008475,
-        fotos: [
+        recursos: [
           "assets/images/calle_reyes_catolicos.jpeg",
           "assets/images/calle_reyes_catolicos2.jpeg"
         ]),
@@ -35,14 +35,14 @@ class ClaseTest {
         descripcion: "Descripcion de prueba de Plaza Nueva",
         latitud: 37.1767291,
         longitud: -3.5984913,
-        fotos: [
+        recursos: [
           "assets/images/plaza_nueva.jpg",
           "assets/images/plaza_nueva2.jpg"
         ]),
   ];
   late RutaTuristica ruta;
 
-  Usuario user = Usuario(username: "test", email: "test@gmail.com");
+  Usuario user = Usuario(nombreUsuario: "test", correo: "test@gmail.com");
   ClaseTest() {
     ruta = RutaTuristica(
         nombre: 'Alhambra test',

@@ -1,5 +1,3 @@
-//TODO: Mejorar el mapa con navegación turn by turn
-
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,7 +7,9 @@ import 'package:pfg_app/private_config.dart';
 import 'package:mapbox_api/mapbox_api.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
+// Widget MapaRuta. Muestra todas las indicaciones para llegar hasta el lugar de interés
 class MapaRuta extends StatefulWidget {
+  // Lugar de interés sobre el que se ofrecen las indicaciones
   LugarInteres lugar;
   MapaRuta(this.lugar);
 
@@ -18,49 +18,58 @@ class MapaRuta extends StatefulWidget {
 }
 
 class _MapaRutaState extends State<MapaRuta> {
-  MapboxMapController? _controller;
-  Position? _currentPosition;
+  // Controlador del mapa de MapBox
+  MapboxMapController? _controladorMapa;
+  // Posición actual para actualizar el mapa
+  Position? _posicionActual;
+  // Objeto Cliente de la API MapBox
   MapboxApi mapbox = MapboxApi(
+    // Token de acceso de mapbox.
     accessToken: Config.mapboxAccessToken,
   );
 
-  // final mapbox.DirectionsApi _directionsApi = mapbox.DirectionsApi(
-  //   mapbox.DirectionsCriteria.PROFILE_WALKING, // Perfil de caminar
-  //   accessToken: Config.mapboxAccessToken,
-  // );
+  // Recarga del widget cuando se cambia de lugar de interés.
   @override
   void didUpdateWidget(MapaRuta oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.lugar != oldWidget.lugar) {
       _limpiarMapa();
-      _getAndShowRoute(widget.lugar.getLatitud, widget.lugar.getLongitud);
+      _obtenerMostrarRecorrido(
+          widget.lugar.getLatitud, widget.lugar.getLongitud);
     }
   }
 
   // Método para limpiar el mapa
   Future<void> _limpiarMapa() async {
-    if (_controller != null) {
+    if (_controladorMapa != null) {
       // Quitar la línea del mapa
-      await _controller!.clearLines();
+      await _controladorMapa!.clearLines();
       // Quitar el círculo del mapa
-      await _controller!.clearCircles();
+      await _controladorMapa!.clearCircles();
     }
   }
 
-  Future<void> _getAndShowRoute(double latitud, double longitud) async {
-    if (_currentPosition == null) {
+  // Función para obtener y mostrar la ruta en el mapa hacia la posición pasada por parámetro.
+  Future<void> _obtenerMostrarRecorrido(double latitud, double longitud) async {
+    // Obtener la posición actual
+    _posicionActual = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    // Si no se pudiese obtener la ubicación actual se maneja el posible error
+    if (_posicionActual == null) {
       print("No se puede obtener la ruta sin la ubicación actual.");
       return;
     }
 
-    // try {
+    // Petición a la API de Mapboox para obtener indicaciones para ir andando desde la ubicación actual hasta el lugar de interés.
     var response = await mapbox.directions.request(
       profile: NavigationProfile.WALKING,
       steps: true,
       coordinates: <List<double>>[
         <double>[
-          _currentPosition?.latitude ?? 0.0, // Provide a default value if null
-          _currentPosition?.longitude ?? 0.0,
+          _posicionActual?.latitude ?? 0.0, // Provide a default value if null
+          _posicionActual?.longitude ?? 0.0,
         ],
         <double>[
           latitud,
@@ -68,20 +77,21 @@ class _MapaRutaState extends State<MapaRuta> {
         ],
       ],
     );
+    // Manejo de errores. No se mostrará ruta en la pantalla, solo ubicación del lugar de interés
     if (response.error != null)
       print(response.error);
+    // Si responde con una ruta válida
     else if (response != null && response.routes?.isNotEmpty == true) {
-      // Extraer la geometría de la ruta
+      // Extraer la geometría de la ruta. Lugares de paso
       var routeGeometry = response.routes?[0].geometry;
 
-      print(routeGeometry);
-
-      final route = response.routes![0];
+      // Creación de la polilinea que pasa por todos los puntos de la ruta para pintarla sobre el mapa.
       final polyline = PolylinePoints().decodePolyline(routeGeometry);
-      // this path will contains points
-      // from Mapbox Direction API
+
+      // Vector con todas las posiciones que marca la polilínea.
       final path = <LatLng>[];
 
+      // Rellenar el vector con todas las posiciones de la polilínea
       for (var i = 0; i < polyline.length; i++) {
         path.add(
           LatLng(
@@ -91,9 +101,9 @@ class _MapaRutaState extends State<MapaRuta> {
         );
       }
 
-      // draw our line to MapboxMapController
+      // Pintar la polilínea en el mapa de MapBox.
       if (path.length > 0) {
-        await _controller!.addLine(
+        await _controladorMapa!.addLine(
           LineOptions(
             geometry: path,
             lineColor: ColoresAplicacion.colorPrimario.toHexStringRGB(),
@@ -104,51 +114,50 @@ class _MapaRutaState extends State<MapaRuta> {
         );
       }
 
-      _addDestinationMarker(latitud, longitud);
-
-      // Agregar una capa de línea al mapa con la ruta
-      // _controller!.addLine(
-      //   LineOptions(
-      //     geometry: routeGeometry,
-      //     lineColor: ColoresAplicacion.colorPrimario.toHexStringRGB(),
-      //     lineWidth: 3.0,
-      //   ),
-      // );
+      // Añadir en el mapa un marcador en el Lugar de Interés
+      _aniadirMarcadorDestino(latitud, longitud);
     } else {
       print("No se encontró ninguna ruta.");
     }
-    // } catch (e) {
-    //   print("Error al obtener la ruta: $e");
-    // }
   }
 
   @override
   void initState() {
     super.initState();
-    _initLocationService();
+    _iniciarServicioUbicacion();
   }
 
-  Future<void> _initLocationService() async {
+  // Inicializar servicio de ubicación
+  Future<void> _iniciarServicioUbicacion() async {
     try {
+      // Obtiene la posición actual
       var position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
+      // Actualiza el estado del mapa en consecuencia
       setState(() {
-        _currentPosition = position;
-        _getAndShowRoute(widget.lugar.getLatitud, widget.lugar.getLongitud);
+        _posicionActual = position;
+        _obtenerMostrarRecorrido(
+            widget.lugar.getLatitud, widget.lugar.getLongitud);
       });
     } catch (e) {
       print("Error al obtener la ubicación: $e");
     }
   }
 
-  void _moveToCurrentLocation() {
-    if (_controller != null && _currentPosition != null) {
-      _controller!.animateCamera(
+  // Mueve la cámara del mapa a la ubicación actual del usuario
+  void _moverAUbicacionActual() async {
+    // Obtener la posición actual
+    _posicionActual = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    if (_controladorMapa != null && _posicionActual != null) {
+      // Animación de la camara para establecer el foco en la posición actual
+      _controladorMapa!.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(
-            _currentPosition!.latitude,
-            _currentPosition!.longitude,
+            _posicionActual!.latitude,
+            _posicionActual!.longitude,
           ),
           15.0,
         ),
@@ -156,9 +165,11 @@ class _MapaRutaState extends State<MapaRuta> {
     }
   }
 
-  void _addDestinationMarker(double latitud, double longitud) {
-    if (_controller != null) {
-      _controller!.addCircle(
+  // Añade en el mapa un marcador en la ubicación del lugar de interés
+  void _aniadirMarcadorDestino(double latitud, double longitud) {
+    if (_controladorMapa != null) {
+      // Añadir un Círculo en la posición pasada por parámetros
+      _controladorMapa!.addCircle(
         CircleOptions(
             geometry: LatLng(latitud, longitud),
             circleColor: Color.fromRGBO(255, 255, 255, 1)
@@ -171,202 +182,62 @@ class _MapaRutaState extends State<MapaRuta> {
     }
   }
 
+  // Método para establecer la posición inicial de la cámara.
+  void _establecerPosicionCamara() async {
+    if (_controladorMapa != null && _posicionActual != null) {
+      _controladorMapa!.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(
+            _posicionActual!.latitude,
+            _posicionActual!.longitude,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
+      // Inicialización del Widget MapBox map. Se inicia con el token de acceso.
       MapboxMap(
         //Clave privada de mapbox
         accessToken: Config.mapboxAccessToken,
         onMapCreated: (controller) {
+          // Inicialización del estado del mapa.
           setState(() {
-            _controller = controller;
-            _setCameraPosition();
+            _controladorMapa = controller;
+            _establecerPosicionCamara();
           });
-          // _getAndShowRoute(widget.lugar.getLatitud, widget.lugar.getLongitud);
         },
+        // Establece la posición inicial de la cámara. Si no se pudiese obtener la posición actual, se establece una posición por defecto cualquiera.
         initialCameraPosition: CameraPosition(
           target: LatLng(
-            _currentPosition?.latitude ?? 37.7749,
-            _currentPosition?.longitude ?? -122.4194,
+            _posicionActual?.latitude ?? 37.7749,
+            _posicionActual?.longitude ?? -122.4194,
           ),
           zoom: 15.0,
         ),
+        // Opciones del mapa. Puede obtener la ubicación del usuario.
         myLocationEnabled: true,
+        // Se renderiza el icono de ubicación del usuario
         myLocationRenderMode: MyLocationRenderMode.GPS,
+        // Se hace un seguimiento continuo de la ubicación del usuario y se actualiza el mapa en consecuencia
         myLocationTrackingMode: MyLocationTrackingMode.Tracking,
         //Url hacia el estilo elegido para los mapas
         styleString: Config.styleMapboxUrl,
       ),
+      // Botón para reestablecer el mapa a la ubicación actual.
       Positioned(
         top: 16.0,
         right: 16.0,
         child: FloatingActionButton(
           backgroundColor: ColoresAplicacion.colorPrimario,
-          onPressed: _moveToCurrentLocation,
+          onPressed: _moverAUbicacionActual,
           child:
               Icon(Icons.my_location, color: Color.fromRGBO(255, 255, 255, 1)),
         ),
       ),
     ]);
   }
-
-  void _setCameraPosition() {
-    if (_controller != null && _currentPosition != null) {
-      _controller!.animateCamera(
-        CameraUpdate.newLatLng(
-          LatLng(
-            _currentPosition!.latitude,
-            _currentPosition!.longitude,
-          ),
-        ),
-      );
-    }
-  }
 }
-
-// import 'package:flutter/material.dart';
-// import 'dart:async';
-// import 'dart:io' as io;
-// import 'package:geolocator/geolocator.dart';
-// import 'package:pfg_app/constants/color.dart';
-// import 'package:pfg_app/modelo/lugarInteres.dart';
-// import '../../private_config.dart';
-// import 'package:mapbox_api/mapbox_api.dart';
-// import 'package:navigation_with_mapbox/navigation_with_mapbox.dart';
-
-// class MapaRuta extends StatefulWidget {
-//   LugarInteres lugar;
-//   MapaRuta(this.lugar);
-
-//   @override
-//   _MapaRutaState createState() => _MapaRutaState();
-// }
-
-// class _MapaRutaState extends State<MapaRuta> {
-//   Position? _currentPosition;
-//   MapboxApi mapbox = MapboxApi(
-//     accessToken: Config.mapboxAccessToken,
-//   );
-//   final _navigationWithMapboxPlugin = NavigationWithMapbox();
-//   bool _isNavigating = false;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _initLocationService();
-//   }
-
-//   Future<void> _initLocationService() async {
-//     try {
-//       var position = await Geolocator.getCurrentPosition(
-//         desiredAccuracy: LocationAccuracy.high,
-//       );
-//       setState(() {
-//         _currentPosition = position;
-//       });
-//     } catch (e) {
-//       print("Error al obtener la ubicación: $e");
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         body: Center(
-//           child: Column(
-//             children: [
-//               Flexible(
-//                 child: Stack(
-//                   children: [
-//                     Center(
-//                       child: Column(
-//                         mainAxisAlignment: MainAxisAlignment.center,
-//                         children: [
-//                           ElevatedButton(
-//                             onPressed: io.Platform.isAndroid
-//                                 ? () async {
-//                                     await _navigationWithMapboxPlugin
-//                                         .startNavigation(
-//                                       origin: WayPoint(
-//                                           latitude:
-//                                               _currentPosition?.latitude ?? 0.0,
-//                                           longitude:
-//                                               _currentPosition?.longitude ??
-//                                                   0.0),
-//                                       destination: WayPoint(
-//                                           latitude: widget.lugar.getLatitud,
-//                                           longitude: widget.lugar.getLongitud),
-//                                       setDestinationWithLongTap: true,
-//                                       simulateRoute: false,
-//                                       alternativeRoute: true,
-//                                       style: 'traffic_night',
-//                                       language: 'es',
-//                                       profile: 'walking',
-//                                       voiceUnits: 'metric',
-//                                       msg:
-//                                           '¡Buen viaje, disfruta de tu recorrido!',
-//                                     );
-//                                   }
-//                                 : null,
-//                             child: const Text('Start Navigation Android'),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildOriginalScreen() {
-//     return Stack(
-//       children: [
-//         Positioned(
-//           top: 16.0,
-//           right: 16.0,
-//           child: FloatingActionButton(
-//             backgroundColor: ColoresAplicacion.colorPrimario,
-//             onPressed: _startNavigation,
-//             child: Icon(Icons.navigation, color: Colors.white),
-//           ),
-//         ),
-//         // Other UI elements for your original screen
-//       ],
-//     );
-//   }
-
-//   void _startNavigation() async {
-//     setState(() {
-//       _isNavigating = true;
-//     });
-
-//     // Start navigation
-//     await _navigationWithMapboxPlugin.startNavigation(
-//       origin: WayPoint(
-//           latitude: _currentPosition?.latitude ?? 0.0,
-//           longitude: _currentPosition?.longitude ?? 0.0),
-//       destination: WayPoint(latitude: 4.759335, longitude: -75.923914),
-//       setDestinationWithLongTap: true,
-//       simulateRoute: false,
-//       alternativeRoute: true,
-//       style: 'traffic_night',
-//       language: 'es',
-//       profile: 'walking',
-//       voiceUnits: 'metric',
-//       msg: '¡Buen viaje, disfruta de tu recorrido!',
-//     );
-//   }
-
-//   void _stopNavigation() {
-//     setState(() {
-//       _isNavigating = false;
-//     });
-//   }
-// }

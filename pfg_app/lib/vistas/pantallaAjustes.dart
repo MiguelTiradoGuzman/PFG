@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pfg_app/controlador/controlador.dart';
 import 'package:pfg_app/constants/color.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:pfg_app/src/localeProvider.dart';
+import 'package:pfg_app/src/localization/l10.dart';
 
+// Pantalla ajustes. El usuario puede borrar su perfil o cambiar de idioma la aplicación
 class PantallaAjustes extends StatefulWidget {
   const PantallaAjustes({super.key});
 
@@ -11,9 +16,6 @@ class PantallaAjustes extends StatefulWidget {
 }
 
 class _PantallaAjustesState extends State<PantallaAjustes> {
-  final Controlador _controlador = Controlador();
-  String _idioma = "Español";
-
   String _tamanioLetra = "Normal";
 
   @override
@@ -21,14 +23,16 @@ class _PantallaAjustesState extends State<PantallaAjustes> {
     super.initState();
   }
 
-  void _asegurarDeBorrarUsuario() {
+  // Manejador Evento: Usuario pulsa botón 'Borrar Usuario'
+  // Se muestra un mensaje al usuario para que ratifique su decisión y no borre la cuenta por un error en la pulsación del botón.
+  void _asegurarBorradoUsuario() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: ColoresAplicacion.colorFondo,
-          title: const Text('Confirmar borrado',
-              style: TextStyle(
+          title: Text(AppLocalizations.of(context)!.confirmarBorrado,
+              style: const TextStyle(
                   color: ColoresAplicacion.colorPrimario,
                   fontFamily: 'Inter',
                   fontSize: 20,
@@ -36,8 +40,8 @@ class _PantallaAjustesState extends State<PantallaAjustes> {
                       0 /*percentages not used in flutter. defaulting to zero*/,
                   fontWeight: FontWeight.bold,
                   height: 1)),
-          content: const Text('¿Está seguro de que desea borrar el usuario?',
-              style: TextStyle(
+          content: Text(AppLocalizations.of(context)!.seguroBorrar,
+              style: const TextStyle(
                   color: ColoresAplicacion.colorLetrasPrincipal,
                   fontFamily: 'Inter',
                   fontSize: 20,
@@ -49,17 +53,19 @@ class _PantallaAjustesState extends State<PantallaAjustes> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancelar',
-                  style: TextStyle(color: ColoresAplicacion.colorPrimario)),
+              child: Text(AppLocalizations.of(context)!.cancelar,
+                  style:
+                      const TextStyle(color: ColoresAplicacion.colorPrimario)),
             ),
+            // Si pulsa el botón de aceptar, se borra el usuario del sistema
             TextButton(
               onPressed: () {
                 // Aquí puedes realizar la acción de borrado
                 Controlador().borrarUsuario(context);
-                Navigator.of(context).pop();
               },
-              child: const Text('Aceptar',
-                  style: TextStyle(color: ColoresAplicacion.colorPrimario)),
+              child: Text(AppLocalizations.of(context)!.aceptar,
+                  style:
+                      const TextStyle(color: ColoresAplicacion.colorPrimario)),
             ),
           ],
         );
@@ -69,35 +75,23 @@ class _PantallaAjustesState extends State<PantallaAjustes> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LocaleProvider>(context, listen: false);
+
+    final localesDisponibles = AppLocalizations.supportedLocales;
     return Scaffold(
         body: SingleChildScrollView(
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Padding(
-            //     padding: EdgeInsets.only(
-            //         top: MediaQuery.of(context).size.height * 0.1,
-            //         left: MediaQuery.of(context).size.width * 0.05),
-            //     child: const Text(
-            //       'Ajustes',
-            //       textAlign: TextAlign.left,
-            //       style: TextStyle(
-            //           color: ColoresAplicacion.colorLetrasPrincipal,
-            //           fontFamily: 'Inter',
-            //           fontSize: 40,
-            //           letterSpacing:
-            //               0 /*percentages not used in flutter. defaulting to zero*/,
-            //           fontWeight: FontWeight.bold,
-            //           height: 1),
-            //     )),
+            // Etiqueta: Selección de idioma
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.05,
                     left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text(
-                  'Seleccione Idioma',
+                child: Text(
+                  AppLocalizations.of(context)!.seleccioneIdioma,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: ColoresAplicacion.colorLetrasPrincipal,
                       fontFamily: 'Inter',
                       fontSize: 20,
@@ -106,66 +100,33 @@ class _PantallaAjustesState extends State<PantallaAjustes> {
                       fontWeight: FontWeight.bold,
                       height: 1),
                 )),
+            // Selector de idioma. Se despliegan todos los idiomas en los que está disponible la aplicación. Cambia el idioma de todos los botones y etiquetas de la aplicación.
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.03,
                     left: MediaQuery.of(context).size.width * 0.05),
-                child: DropdownButton<String>(
-                  value: _idioma,
-                  items: <String>["Español", "English"]
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
+                child: DropdownButton<Locale>(
+                  value: LocaleProvider().locale,
+                  items: L10n.all.map<DropdownMenuItem<Locale>>((Locale value) {
+                    return DropdownMenuItem(
+                      child: Text(value.languageCode),
                       value: value,
-                      child: Text(value),
                     );
                   }).toList(),
-                  onChanged: (String? nuevoValor) {
+                  onChanged: (value) {
                     setState(() {
-                      _idioma = nuevoValor!;
+                      provider.setLocale(value!);
                     });
                   },
                 )),
-            Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.03,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: const Text(
-                  'Tamaño de la letra',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: ColoresAplicacion.colorLetrasPrincipal,
-                      fontFamily: 'Inter',
-                      fontSize: 20,
-                      letterSpacing:
-                          0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.bold,
-                      height: 1),
-                )),
-            Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.03,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                child: DropdownButton<String>(
-                  value: _tamanioLetra,
-                  items: <String>["Normal", "Grande"]
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? nuevoValor) {
-                    setState(() {
-                      _tamanioLetra = nuevoValor!;
-                    });
-                  },
-                )),
+
+            // Botón borrar usuario
             Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.03,
                     left: MediaQuery.of(context).size.width * 0.05),
                 child: GestureDetector(
-                  onTap: _asegurarDeBorrarUsuario,
+                  onTap: _asegurarBorradoUsuario,
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: MediaQuery.of(context).size.height * 0.07,
@@ -182,18 +143,29 @@ class _PantallaAjustesState extends State<PantallaAjustes> {
                         width: 2,
                       ),
                     ),
-                    child: const Center(
-                        child: Text(
-                      'Borrar Usuario',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: ColoresAplicacion.colorPrimario,
-                          fontFamily: 'Inter',
-                          fontSize: 20,
-                          letterSpacing:
-                              0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.bold,
-                          height: 1),
+                    child: Center(
+                        child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.25,
+                              right: MediaQuery.of(context).size.width * 0.02),
+                          child: Icon(Icons.delete,
+                              color: ColoresAplicacion.colorPrimario, size: 25),
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.borrarUsuario,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: ColoresAplicacion.colorPrimario,
+                              fontFamily: 'Inter',
+                              fontSize: 20,
+                              letterSpacing:
+                                  0 /*percentages not used in flutter. defaulting to zero*/,
+                              fontWeight: FontWeight.bold,
+                              height: 1),
+                        )
+                      ],
                     )),
                   ),
                 ))
