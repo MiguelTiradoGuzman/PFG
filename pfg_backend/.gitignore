@@ -3,3 +3,4 @@ certs/
 *.crt
 *.csr
 *.key
+*.pem
