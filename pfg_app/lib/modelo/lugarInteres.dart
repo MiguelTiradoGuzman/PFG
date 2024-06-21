@@ -27,7 +27,7 @@ class LugarInteres {
   List<String> get getRecursos => recursos;
 
   //Método factoría de la clase. Crea una instancia a partir del contenido de un archivo en formato Json
-  factory LugarInteres.fromJson(Map<String, dynamic> json) {
+  factory LugarInteres.serializacion(Map<String, dynamic> json) {
     // Mapear las fotos y agregar el baseUrl
     List<String> recursos = List<String>.from(json['fotos'] ?? []);
     recursos = recursos
@@ -43,7 +43,7 @@ class LugarInteres {
     );
   }
   // Convierte una instancia de la clase a archivo en formato Json.
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> deserializacion() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['nombre'] = this.nombre;
     data['descripcion'] = this.descripcion;

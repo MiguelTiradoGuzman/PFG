@@ -10,7 +10,8 @@ class FiltroNombreLugar extends Filtro {
   List<RutaTuristica> aplicar(List<RutaTuristica> rutas) {
     // Filtrar las rutas que tienen algún lugar de interés cuyo nombre coincide con 'nombre'
     return rutas
-        .where((ruta) => ruta.getLugares.any((lugar) => lugar.nombre == nombre))
+        .where((ruta) =>
+            ruta.getLugares.any((lugar) => lugar.nombre.contains(nombre)))
         .toList();
   }
 }

@@ -309,11 +309,11 @@ class ManejadorBD:
             raise e
         
     # Inserta una imagen de un lugar de interés en la BD
-    def insertarimagenLugar(self, nuevo_lugar: str,ruta : str, dir_img : str):
+    def insertarRecursoLugar(self, nuevo_lugar: str,ruta : str, dir_rec : str):
         try:
             
             query_imagen = "INSERT INTO imagenLugar (lugarImagen, nombreLugar, nombreRuta) VALUES (%s, %s,%s)"
-            values_imagen = (dir_img,nuevo_lugar,ruta )
+            values_imagen = (dir_rec,nuevo_lugar,ruta )
             self.cursor.execute(query_imagen, values_imagen)
 
             # Confirmar los cambios en la base de datos

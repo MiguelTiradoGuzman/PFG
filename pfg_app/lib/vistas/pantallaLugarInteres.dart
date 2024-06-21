@@ -256,10 +256,14 @@ class _PantallaLugarInteresState extends State<PantallaLugarInteres> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           (ttsState == TtsState.paused || ttsState == TtsState.stopped)
-              ? _construirBoton(Colors.green, Colors.greenAccent,
-                  Icons.play_arrow, 'Reproducir', _speak)
-              : _construirBoton(
-                  Colors.blue, Colors.blueAccent, Icons.pause, 'Pausar', _pause)
+              ? _construirBoton(
+                  Colors.green,
+                  Colors.greenAccent,
+                  Icons.play_arrow,
+                  AppLocalizations.of(context)!.reproducir,
+                  _speak)
+              : _construirBoton(Colors.blue, Colors.blueAccent, Icons.pause,
+                  AppLocalizations.of(context)!.pausar, _pause)
         ],
       ),
     );

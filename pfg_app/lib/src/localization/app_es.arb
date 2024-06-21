@@ -436,9 +436,7 @@
     "description": "Mensaje de error genérico para la pantalla de registro"
   },
   "mensajeError": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
-
-
-
+  
   "@masInfo": {
     "description": "Texto de más información"
   },
@@ -448,9 +446,6 @@
     "description": "Texto de iniciar"
   },
   "iniciar": "Iniciar",
-
-
-
 
 "@inicio": {
     "description": "Texto para el botón 'Inicio' en el menú lateral"
@@ -545,5 +540,14 @@
   "@aplicar": {
     "description": "Aplicar"
   },
-  "aplicar": "Aplicar"
+  "aplicar": "Aplicar",
+
+  "@reproducir": {
+    "description": "Reproducir"
+  },
+  "reproducir": "Reproducir",
+  "@pausar": {
+    "description": "Pausar"
+  },
+  "pausar": "Pausar"
 }

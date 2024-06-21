@@ -3,6 +3,7 @@ import 'package:pfg_app/controlador/controlador.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'elementos/tarjetaRuta.dart';
 import 'package:pfg_app/modelo/rutaTuristica.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectorModificarRuta extends StatefulWidget {
   final List<RutaTuristica>? rutas;
@@ -37,8 +38,8 @@ class _SelectorModificarRutaState extends State<SelectorModificarRuta> {
                   top: MediaQuery.of(context).size.height * 0.02,
                   left: MediaQuery.of(context).size.width * 0.05,
                   bottom: MediaQuery.of(context).size.height * 0.01),
-              child: const Text(
-                'Rutas disponibles',
+              child: Text(
+                AppLocalizations.of(context)!.rutasDisponibles,
                 style: TextStyle(
                   color: ColoresAplicacion.colorLetrasPrincipal,
                   fontFamily: 'Inter',

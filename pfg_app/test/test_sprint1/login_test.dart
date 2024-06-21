@@ -32,7 +32,7 @@ void main() {
           'fotos': ['foto1.jpg', 'foto2.jpg'],
         };
 
-        final lugar = LugarInteres.fromJson(json);
+        final lugar = LugarInteres.serializacion(json);
 
         expect(lugar.getNombre, 'Lugar de interés');
         expect(lugar.getDescripcion, 'Descripción del lugar de interés');
@@ -54,7 +54,7 @@ void main() {
           recursos: ['foto1.jpg', 'foto2.jpg'],
         );
 
-        final json = lugar.toJson();
+        final json = lugar.deserializacion();
 
         expect(json['nombre'], 'Lugar de interés');
         expect(json['descripcion'], 'Descripción del lugar de interés');

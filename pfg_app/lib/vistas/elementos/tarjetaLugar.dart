@@ -57,10 +57,12 @@ class TarjetaLugarInteres extends StatelessWidget {
                   topLeft: Radius.circular(30),
                   bottomLeft: Radius.circular(30),
                 ),
-                image: DecorationImage(
-                  image: FileImage(_imgs.elementAt(0)),
-                  fit: BoxFit.cover,
-                ),
+                image: !_imgs.isEmpty
+                    ? DecorationImage(
+                        image: FileImage(_imgs.elementAt(0)),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
             ),
             Expanded(

@@ -32,7 +32,7 @@ class ClienteAPI {
 
     // Por cada una de las rutas en formato Json crea un objeto del tipo RutaTuristica
     List<RutaTuristica> rutas = data.map((rutaJson) {
-      return RutaTuristica.fromJson(rutaJson);
+      return RutaTuristica.serializacion(rutaJson);
     }).toList();
 
     return rutas;
@@ -70,7 +70,7 @@ class ClienteAPI {
       // Si el código de respuesta es 200 OK, se procesa la respuesta
       if (response.statusCode == 200) {
         // Se construye el objeto usuario desde los datos obtenidos
-        Usuario usuario = Usuario.fromJson(response.data['user_info']);
+        Usuario usuario = Usuario.serializacion(response.data['user_info']);
 
         // Se establece el token de sesión del usuario para usarlo en futuras peticiones.
         _token = response.data['access_token']!;
@@ -199,7 +199,7 @@ class ClienteAPI {
 
       // Si la respuesta tiene código 200 OK, se construye la ruta a devolver
       if (response.statusCode == 200) {
-        RutaTuristica ruta = RutaTuristica.fromJson(response.data['ruta']);
+        RutaTuristica ruta = RutaTuristica.serializacion(response.data['ruta']);
         dio.close();
         return ruta;
         // Si no se ha encontrado (Código 404 en protocolo HTTP) se devuelve null.
@@ -238,7 +238,7 @@ class ClienteAPI {
     dio.options.headers['Authorization'] = 'Bearer $_token';
 
     // // Crear un string en formato Json con los datos de la ruta.
-    String rutaJson = jsonEncode(ruta.toJson());
+    String rutaJson = jsonEncode(ruta.deserializacion());
 
     // Realizar la solicitud POST a la URL /ruta/.
     try {
@@ -341,7 +341,7 @@ class ClienteAPI {
     dio.options.headers['Authorization'] = 'Bearer $_token';
 
     // // Crear un string en formato Json con los datos de la ruta.
-    String rutaJson = jsonEncode(ruta.toJson());
+    String rutaJson = jsonEncode(ruta.deserializacion());
 
     // Realizar la solicitud PUT para modificar la ruta.
     try {

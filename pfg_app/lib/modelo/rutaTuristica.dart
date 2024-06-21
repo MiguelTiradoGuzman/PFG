@@ -35,7 +35,7 @@ class RutaTuristica {
   List<LugarInteres> get getLugares => lugares;
   String? get getAutor => autor;
 
-  factory RutaTuristica.fromJson(Map<String, dynamic> json) {
+  factory RutaTuristica.serializacion(Map<String, dynamic> json) {
     String img = json['ruta_imagen'];
     // Construye y devuelve una instancia de RutaTuristica
     return RutaTuristica(
@@ -45,19 +45,21 @@ class RutaTuristica {
       duracion: json['duracion'],
       rutaImagen: '${NetworkConst.baseUrlImagenes}/$img',
       lugares: List<LugarInteres>.from(
-        json['lugares'].map((lugarJson) => LugarInteres.fromJson(lugarJson)),
+        json['lugares']
+            .map((lugarJson) => LugarInteres.serializacion(lugarJson)),
       ),
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> deserializacion() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['nombre'] = this.nombre;
     data['descripcion'] = this.descripcion;
     data['distancia'] = this.distancia;
     data['duracion'] = this.duracion;
     data['ruta_imagen'] = this.rutaImagen;
-    data['lugares'] = this.lugares.map((lugar) => lugar.toJson()).toList();
+    data['lugares'] =
+        this.lugares.map((lugar) => lugar.deserializacion()).toList();
     if (this.getAutor != null) {
       data['autor'] = this.getAutor;
     } else {

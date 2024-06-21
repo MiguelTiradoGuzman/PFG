@@ -18,7 +18,7 @@ class Usuario {
         _correo = correo;
 
   // Metodo factoría de la clase Usuario. Construye una instancia de la clase Usuario a través de la información obtenida desde un documento Json.
-  factory Usuario.fromJson(Map<String, dynamic> json) {
+  factory Usuario.serializacion(Map<String, dynamic> json) {
     return Usuario(nombreUsuario: json['nombre'], correo: json['email']);
   }
 

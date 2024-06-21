@@ -403,26 +403,30 @@ class _PantallaInicioState extends State<PantallaInicio> {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.minima,
-                        ),
-                        onChanged: (value) {
-                          distanciaMinima = double.tryParse(value) ?? null;
-                        },
-                      ),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.minima,
+                          ),
+                          onChanged: (value) {
+                            distanciaMinima = double.tryParse(value) ?? null;
+                          },
+                          initialValue: distanciaMinima != null
+                              ? distanciaMinima.toString()
+                              : ""),
                     ),
                     SizedBox(width: 20),
                     Expanded(
                       child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.maxima,
-                        ),
-                        onChanged: (value) {
-                          distanciaMaxima = double.tryParse(value) ?? null;
-                        },
-                      ),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.maxima,
+                          ),
+                          onChanged: (value) {
+                            distanciaMaxima = double.tryParse(value) ?? null;
+                          },
+                          initialValue: distanciaMaxima != null
+                              ? distanciaMaxima.toString()
+                              : ""),
                     ),
                   ],
                 ),

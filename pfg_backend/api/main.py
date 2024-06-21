@@ -277,7 +277,7 @@ def obtener_ruta(ruta : str, user=Depends(manager)):
 # Sólo es necesario pasar el token del usuario y el nombre de la ruta.
 @app.delete("/ruta/{ruta}")
 def borrar_ruta(ruta : str, user=Depends(manager)):
-    rutaBorrar = manejador_bd.obtenerRuta(ruta.nombre)
+    rutaBorrar = manejador_bd.obtenerRuta(ruta)
     if(rutaBorrar is None):
         try:
             
@@ -387,7 +387,7 @@ def insertar_imagen_lugar(ruta :Annotated[str, Form()], lugar :Annotated[str, Fo
                 # Guarda la imagen dentro del directorio perteneciente al lugar de interés.
                 dir_img = guardar_recurso_lugar(rutaParam=r,lugarInteres=lugar, archivo=imagen_lugar)
                 # Registra en la BD la ruta de la nueva imagen para dicho lugar de interés
-                manejador_bd.insertarImagenLugar(lugar,ruta, dir_img)
+                manejador_bd.insertarRecursoLugar(lugar,ruta, dir_img)
                 return {"message": "Imagenes de ruta registradas exitosamente"}
             except ValueError as ve:
                 raise HTTPException(status_code=401, detail="No se ha podido insertar")

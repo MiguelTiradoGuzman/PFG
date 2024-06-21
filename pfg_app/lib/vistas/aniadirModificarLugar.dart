@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pfg_app/constants/color.dart';
 import 'package:pfg_app/modelo/lugarInteres.dart';
 import 'package:pfg_app/modelo/rutaTuristica.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:pfg_app/private_config.dart';
+import 'package:file_picker/file_picker.dart';
 
 double tamTitulos = 23;
 
@@ -116,25 +116,46 @@ class _AniadirModificarLugarState extends State<AniadirModificarLugar> {
   }
 
   // Método para abrir el selector de imágenes del dispositivo móvil.
+  // Future<File?> seleccionarImagen() async {
+  //   try {
+  //     // Abre la galería del dispositivo móvil
+  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (image == null) return null;
+  //     // Crea un File a partir de la imagen seleccionado. Este tipo de archivo después se mandará al servidor
+  //     final imageTemp = File(image.path);
+  //     return imageTemp;
+  //   } on PlatformException catch (e) {
+  //     print('Failed to pick image: $e');
+  //   }
+  //   return null;
+  // }
+
+  // Método para abrir el selector de archivos del móvil
   Future<File?> seleccionarImagen() async {
-    try {
-      // Abre la galería del dispositivo móvil
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return null;
-      // Crea un File a partir de la imagen seleccionado. Este tipo de archivo después se mandará al servidor
-      final imageTemp = File(image.path);
-      return imageTemp;
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      return file;
+    } else {
+      return null;
     }
-    return null;
+  }
+
+  // Método para comprobar si un archivo tiene extensión de imagen o no
+  bool esArchivoImagen(String fileName) {
+    final imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+    final extension = fileName.split('.').last.toLowerCase();
+    return imageExtensions.contains(extension);
   }
 
   // Método para comprobar que no existe ningún otro lugar de interés con el mismo nombre en la ruta.
   bool _nombreEnRuta() {
     bool existe = false;
     for (int i = 0; i < this.widget._ruta.lugares.length && !existe; i++) {
-      if (this.widget._ruta.lugares.elementAt(i) == this._nombreLugar)
+      if (this.widget._ruta.lugares.elementAt(i).nombre ==
+              this._nombreLugar.text &&
+          this.widget._ruta.lugares.elementAt(i) != this.widget._lugar)
         existe = true;
     }
 
@@ -455,29 +476,41 @@ class _AniadirModificarLugarState extends State<AniadirModificarLugar> {
                         children: List.generate(images.length, (index) {
                           return GestureDetector(
                             child: Container(
-                                width: MediaQuery.of(context).size.width * 0.17,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.05,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30),
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 4,
-                                    )
-                                  ],
+                              width: MediaQuery.of(context).size.width * 0.17,
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                  bottomLeft: Radius.circular(30),
+                                  bottomRight: Radius.circular(30),
                                 ),
-                                clipBehavior: Clip.hardEdge,
-                                child: Image.file(
-                                  images.elementAt(index),
-                                  fit: BoxFit.cover,
-                                )),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(0, 0, 0, 0.25),
+                                    offset: Offset(0, 4),
+                                    blurRadius: 4,
+                                  )
+                                ],
+                              ),
+                              clipBehavior: Clip.hardEdge,
+                              child:
+                                  esArchivoImagen(images.elementAt(index).path)
+                                      ? Image.file(
+                                          images.elementAt(index),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Center(
+                                          child: Text(
+                                            images
+                                                .elementAt(index)
+                                                .path
+                                                .split('/')
+                                                .last,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                            ),
                             onDoubleTap: () {
                               setState(() {
                                 images.remove(images.elementAt(index));
