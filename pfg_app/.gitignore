@@ -10,6 +10,7 @@
 .svn/
 migrate_working_dir/
 /lib/private_config.dart
+/lib/constants/network_const.dart
 
 # IntelliJ related
 *.iml

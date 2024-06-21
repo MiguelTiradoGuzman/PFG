@@ -4,3 +4,4 @@ certs/
 *.csr
 *.key
 *.pem
+.env
