@@ -53,12 +53,12 @@ Una forma de proporcionar tu token público al SDK de Mapbox es agregándolo com
 
 Para hacerlo, crea un nuevo archivo de recursos de cadena en tu módulo de la aplicación (por ejemplo, `app/src/main/res/values/developer-config.xml`) con tu token público de la API de Mapbox:
 
-    ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <resources xmlns:tools="http://schemas.android.com/tools">
-        <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">TU_TOKEN_PÚBLICO_MAPBOX_ACCESS_TOKEN</string>
-    </resources>
-    ```
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">TU_TOKEN_PÚBLICO_MAPBOX_ACCESS_TOKEN</string>
+</resources>
+```
 
 En este caso, si deseas rotar un token de acceso, necesitarás volver a lanzar tu aplicación. Para obtener más información sobre la rotación de tokens de acceso, consulta la [página de Información de Tokens de Acceso](https://docs.mapbox.com/help/glossary/access-token/).
 
@@ -115,55 +115,55 @@ proxy_pass http://TU_IP:8080;
 Una vez se ha levantado el servicio de MySQL se debe crear un usuario y la base de datos llamada 'pfg' y ejecutar los siguientes comandos para crear la estructura de la base de datos:
 
 ```sql
-    CREATE TABLE `Usuario` (
-            `email` varchar(50) NOT NULL,
-            `nombreUsuario` varchar(50) NOT NULL,
-            `contrasenia` varchar(100) NOT NULL,
-            PRIMARY KEY (`email`),
-            UNIQUE KEY `uq_nombreUsuario` (`nombreUsuario`)
-        );
+CREATE TABLE `Usuario` (
+    `email` varchar(50) NOT NULL,
+    `nombreUsuario` varchar(50) NOT NULL,
+    `contrasenia` varchar(100) NOT NULL,
+    PRIMARY KEY (`email`),
+    UNIQUE KEY `uq_nombreUsuario` (`nombreUsuario`)
+);
 
-    CREATE TABLE `RutaTuristica` (
-            `nombre` varchar(50) NOT NULL,
-            `descripcion` text NOT NULL,
-            `distancia` float NOT NULL,
-            `duracion` time NOT NULL,
-            `imagenPortada` varchar(500) DEFAULT NULL,
-            `autor` varchar(50) DEFAULT NULL,
-            PRIMARY KEY (`nombre`),
-            KEY `fk_usuario_email` (`autor`),
-            CONSTRAINT `fk_usuario_email` FOREIGN KEY (`autor`) REFERENCES `Usuario` (`email`) ON DELETE SET NULL
-        );
+CREATE TABLE `RutaTuristica` (
+    `nombre` varchar(50) NOT NULL,
+    `descripcion` text NOT NULL,
+    `distancia` float NOT NULL,
+    `duracion` time NOT NULL,
+    `imagenPortada` varchar(500) DEFAULT NULL,
+    `autor` varchar(50) DEFAULT NULL,
+    PRIMARY KEY (`nombre`),
+    KEY `fk_usuario_email` (`autor`),
+    CONSTRAINT `fk_usuario_email` FOREIGN KEY (`autor`) REFERENCES `Usuario` (`email`) ON DELETE SET NULL
+);
 
-    CREATE TABLE `LugarInteres` (
-            `nombre` varchar(50) NOT NULL,
-            `nombreRuta` varchar(50) NOT NULL,
-            `longitud` float NOT NULL,
-            `latitud` float NOT NULL,
-            `descripcion` text NOT NULL,
-            PRIMARY KEY (`nombre`,`nombreRuta`),
-            KEY `lugarinteres_ibfk_1` (`nombreRuta`),
-            CONSTRAINT `lugarinteres_ibfk_1` FOREIGN KEY (`nombreRuta`) REFERENCES `RutaTuristica` (`nombre`) ON DELETE CASCADE
-        );
+CREATE TABLE `LugarInteres` (
+    `nombre` varchar(50) NOT NULL,
+    `nombreRuta` varchar(50) NOT NULL,
+    `longitud` float NOT NULL,
+    `latitud` float NOT NULL,
+    `descripcion` text NOT NULL,
+    PRIMARY KEY (`nombre`,`nombreRuta`),
+    KEY `lugarinteres_ibfk_1` (`nombreRuta`),
+    CONSTRAINT `lugarinteres_ibfk_1` FOREIGN KEY (`nombreRuta`) REFERENCES `RutaTuristica` (`nombre`) ON DELETE CASCADE
+);
 
-    CREATE TABLE `ImagenLugar` (
-            `lugarImagen` varchar(500) NOT NULL,
-            `nombreLugar` varchar(50) NOT NULL,
-            `nombreRuta` varchar(50) NOT NULL,
-            PRIMARY KEY (`lugarImagen`,`nombreLugar`, `nombreRuta`),
-            KEY `FK_nombreRuta` (`nombreRuta`),
-            KEY `FK_nombreLugar` (`nombreLugar`),
-            CONSTRAINT FK_nombreLugar_nombreRuta FOREIGN KEY (`nombre`,`nombreRuta`) REFERENCES LugarInteres (`nombreLugar`,`nombreRuta`) ON DELETE CASCADE
-        );
+CREATE TABLE `ImagenLugar` (
+    `lugarImagen` varchar(500) NOT NULL,
+    `nombreLugar` varchar(50) NOT NULL,
+    `nombreRuta` varchar(50) NOT NULL,
+    PRIMARY KEY (`lugarImagen`,`nombreLugar`, `nombreRuta`),
+    KEY `FK_nombreRuta` (`nombreRuta`),
+    KEY `FK_nombreLugar` (`nombreLugar`),
+    CONSTRAINT FK_nombreLugar_nombreRuta FOREIGN KEY (`nombre`,`nombreRuta`) REFERENCES LugarInteres (`nombreLugar`,`nombreRuta`) ON DELETE CASCADE
+);
 
-    CREATE TABLE `UsuarioRutaFavorita` (
-            `usuario` varchar(50) NOT NULL,
-            `ruta` varchar(50) NOT NULL,
-            PRIMARY KEY (`usuario`,`ruta`),
-            KEY `fk_usuariorutafavorita_ruta` (`ruta`),
-            CONSTRAINT `usuariorutafavorita_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`email`),
-            CONSTRAINT `usuariorutafavorita_ibfk_2` FOREIGN KEY (`ruta`) REFERENCES `RutaTuristica` (`nombre`)
-          );
+CREATE TABLE `UsuarioRutaFavorita` (
+    `usuario` varchar(50) NOT NULL,
+    `ruta` varchar(50) NOT NULL,
+    PRIMARY KEY (`usuario`,`ruta`),
+    KEY `fk_usuariorutafavorita_ruta` (`ruta`),
+    CONSTRAINT `usuariorutafavorita_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`email`),
+    CONSTRAINT `usuariorutafavorita_ibfk_2` FOREIGN KEY (`ruta`) REFERENCES `RutaTuristica` (`nombre`)
+);
 ```
 
 ### Configuración de las variables de entorno
