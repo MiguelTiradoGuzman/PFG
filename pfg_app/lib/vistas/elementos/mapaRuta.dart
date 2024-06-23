@@ -225,7 +225,7 @@ class _MapaRutaState extends State<MapaRuta> {
         // Se hace un seguimiento continuo de la ubicación del usuario y se actualiza el mapa en consecuencia
         myLocationTrackingMode: MyLocationTrackingMode.Tracking,
         //Url hacia el estilo elegido para los mapas
-        styleString: Config.styleMapboxUrl,
+        styleString: MapboxStyles.MAPBOX_STREETS,
       ),
       // Botón para reestablecer el mapa a la ubicación actual.
       Positioned(

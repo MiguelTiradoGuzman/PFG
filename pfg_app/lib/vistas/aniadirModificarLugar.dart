@@ -360,7 +360,7 @@ class _AniadirModificarLugarState extends State<AniadirModificarLugar> {
               // Se hace un seguimiento continuo de la ubicación del usuario y se actualiza el mapa en consecuencia
               myLocationTrackingMode: MyLocationTrackingMode.Tracking,
               //Url hacia el estilo elegido para los mapas
-              styleString: Config.styleMapboxUrl,
+              styleString: MapboxStyles.MAPBOX_STREETS,
               onMapLongClick: (point, coordinates) {
                 latitud = coordinates.latitude;
                 longitud = coordinates.longitude;
@@ -521,26 +521,26 @@ class _AniadirModificarLugarState extends State<AniadirModificarLugar> {
                       ),
               ),
             ),
-            // Etiqueta: Con dos toques se borra la imagen de la selección.
-            Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.02,
-                  left: MediaQuery.of(context).size.width * 0.05),
-              child: Expanded(
-                child: Text(
-                  AppLocalizations.of(context)!.avisoDobleTapBorraImagen,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                    color: ColoresAplicacion.colorPrimario,
-                    fontFamily: 'Inter',
-                    fontSize: 18,
-                    letterSpacing: 0,
-                    fontWeight: FontWeight.bold,
-                    height: 1,
-                  ),
-                ),
-              ),
-            ),
+            // // Etiqueta: Con dos toques se borra la imagen de la selección.
+            // Padding(
+            //   padding: EdgeInsets.only(
+            //       top: MediaQuery.of(context).size.height * 0.02,
+            //       left: MediaQuery.of(context).size.width * 0.05),
+            //   child: Expanded(
+            //     child: Text(
+            //       AppLocalizations.of(context)!.avisoDobleTapBorraImagen,
+            //       textAlign: TextAlign.left,
+            //       style: const TextStyle(
+            //         color: ColoresAplicacion.colorPrimario,
+            //         fontFamily: 'Inter',
+            //         fontSize: 18,
+            //         letterSpacing: 0,
+            //         fontWeight: FontWeight.bold,
+            //         height: 1,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             // Botón añadir imagen
             Padding(
                 padding: EdgeInsets.only(

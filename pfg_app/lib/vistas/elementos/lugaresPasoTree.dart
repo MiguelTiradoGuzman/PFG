@@ -66,6 +66,8 @@ class ListaLugares extends StatelessWidget {
                                 _lugares[index].nombre,
                                 style: TextStyle(
                                     fontSize: 25, fontWeight: FontWeight.bold),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                               ),
                             )),
                           ],

@@ -4,9 +4,15 @@ Este repositorio contiene el software desarrollado para el Trabajo Final de Grad
 
 Con esta aplicación los usuarios pueden realizar rutas turísticas en las cuales se visitan diversos lugares de interés. La información de estos lugares puede ser obtenido vía imágenes, objetos 3D y audio.
 
-Esta aplicación se ha construido con Flutter, obteniendo la información de mapas a través de Mapbox. Para la construcción del backend se ha utilizado Docker, sobre la que se construye una API con Fast-API y una base de datos MySQL.
+Esta aplicación se ha construido con Flutter, obteniendo la información de mapas a través de Mapbox. Para la construcción del backend se ha utilizado Docker, sobre la que se construye una API con FastAPI y una base de datos MySQL.
 
 # Configurar y lanzar el proyecto
+
+## Dependencias previas
+
+Para poder ejecutar este proyecto es necesario tener instalado una imagen Android en Android Studio así como el sdk de Flutter.
+
+Al mismo tiempo, para la parte del servidor es necesario disponer de Docker.
 
 ## Configuración de la conexión de la aplicación al backend
 
@@ -102,4 +108,80 @@ En el archivo /pfg_backend/nginx.conf se debe alterar la siguiente línea para q
 
 ```
 proxy_pass http://TU_IP:8080;
+```
+
+### Configuración de la Base de datos
+
+Una vez se ha levantado el servicio de MySQL se debe crear un usuario y la base de datos llamada 'pfg' y ejecutar los siguientes comandos para crear la estructura de la base de datos:
+
+```sql
+    CREATE TABLE `Usuario` (
+            `email` varchar(50) NOT NULL,
+            `nombreUsuario` varchar(50) NOT NULL,
+            `contrasenia` varchar(100) NOT NULL,
+            PRIMARY KEY (`email`),
+            UNIQUE KEY `uq_nombreUsuario` (`nombreUsuario`)
+        );
+
+    CREATE TABLE `RutaTuristica` (
+            `nombre` varchar(50) NOT NULL,
+            `descripcion` text NOT NULL,
+            `distancia` float NOT NULL,
+            `duracion` time NOT NULL,
+            `imagenPortada` varchar(500) DEFAULT NULL,
+            `autor` varchar(50) DEFAULT NULL,
+            PRIMARY KEY (`nombre`),
+            KEY `fk_usuario_email` (`autor`),
+            CONSTRAINT `fk_usuario_email` FOREIGN KEY (`autor`) REFERENCES `Usuario` (`email`) ON DELETE SET NULL
+        );
+
+    CREATE TABLE `LugarInteres` (
+            `nombre` varchar(50) NOT NULL,
+            `nombreRuta` varchar(50) NOT NULL,
+            `longitud` float NOT NULL,
+            `latitud` float NOT NULL,
+            `descripcion` text NOT NULL,
+            PRIMARY KEY (`nombre`,`nombreRuta`),
+            KEY `lugarinteres_ibfk_1` (`nombreRuta`),
+            CONSTRAINT `lugarinteres_ibfk_1` FOREIGN KEY (`nombreRuta`) REFERENCES `RutaTuristica` (`nombre`) ON DELETE CASCADE
+        );
+
+    CREATE TABLE `ImagenLugar` (
+            `lugarImagen` varchar(500) NOT NULL,
+            `nombreLugar` varchar(50) NOT NULL,
+            `nombreRuta` varchar(50) NOT NULL,
+            PRIMARY KEY (`lugarImagen`,`nombreLugar`, `nombreRuta`),
+            KEY `FK_nombreRuta` (`nombreRuta`),
+            KEY `FK_nombreLugar` (`nombreLugar`),
+            CONSTRAINT FK_nombreLugar_nombreRuta FOREIGN KEY (`nombre`,`nombreRuta`) REFERENCES LugarInteres (`nombreLugar`,`nombreRuta`) ON DELETE CASCADE
+        );
+
+    CREATE TABLE `UsuarioRutaFavorita` (
+            `usuario` varchar(50) NOT NULL,
+            `ruta` varchar(50) NOT NULL,
+            PRIMARY KEY (`usuario`,`ruta`),
+            KEY `fk_usuariorutafavorita_ruta` (`ruta`),
+            CONSTRAINT `usuariorutafavorita_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `Usuario` (`email`),
+            CONSTRAINT `usuariorutafavorita_ibfk_2` FOREIGN KEY (`ruta`) REFERENCES `RutaTuristica` (`nombre`)
+          );
+```
+
+### Configuración de las variables de entorno
+
+Por último, se debe crear un archivo .env en la carpeta /pfg_backend con las siguientes variables:
+
+```
+# MySQL Configuration
+MYSQL_ROOT_PASSWORD=tuContraseniaBD
+MYSQL_DATABASE=pfg
+MYSQL_USER=tuUsuarioBD
+MYSQL_PASSWORD=tuContraseniaUsuarioBD
+
+# Configuracion API
+DB_HOST=mysql
+DB_PORT=3306
+DB_USER=tuUsuarioBD
+DB_PASSWORD=tuContraseniaUsuarioBD
+DB_DATABASE=pfg
+API_SECRET_KEY=tuClaveSecretaAPI
 ```

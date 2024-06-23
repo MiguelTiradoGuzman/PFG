@@ -247,7 +247,7 @@ class Controlador {
 
   // Obtener una ruta desde el servidor por su nombre. Si no la encuentra devuelve null.
   Future<RutaTuristica?> getRuta(String nombreRuta) async {
-    Future<RutaTuristica?> r = _api.getRuta(nombreRuta);
+    RutaTuristica? r = await _api.getRuta(nombreRuta);
     try {
       RutaTuristica? ruta = await r;
       return ruta;

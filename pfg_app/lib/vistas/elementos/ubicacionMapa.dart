@@ -61,7 +61,7 @@ class _UbicacionMapaState extends State<UbicacionMapa> {
       myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
       trackCameraPosition: true,
       //Url hacia el estilo elegido para los mapas
-      styleString: Config.styleMapboxUrl,
+      styleString: MapboxStyles.MAPBOX_STREETS,
     );
   }
 

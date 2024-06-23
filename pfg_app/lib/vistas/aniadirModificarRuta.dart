@@ -36,7 +36,7 @@ class _AniadirModificarRutaState extends State<AniadirModificarRuta> {
 
   // Lista de lugares de interés a crear o modificar
   late List<LugarInteres> lugaresInteres;
-  // Lista de lista de imágendes de cada lugar de interés a modificar o crear
+  // Lista de lista de imágenes de cada lugar de interés a modificar o crear
   late List<List<File>> imagenesLugares = [];
   bool estaCargando = false;
 
@@ -312,8 +312,15 @@ class _AniadirModificarRutaState extends State<AniadirModificarRuta> {
   }
 
   // Función a pasar por parámetro para cada tarjeta de lugar de interés. De esta forma se borra el lugar de interés del recorrido turístico
-  void funcionBorrarLugar(RutaTuristica r, LugarInteres l) {
+  void funcionBorrarLugar(
+      RutaTuristica r, LugarInteres l, List<List<File>> imgsTotal, int indice) {
     setState(() {
+      print(imagenesLugares);
+      print("BORRO     --------- $indice");
+      // imgsTotal.remove(indice);
+      imagenesLugares.removeAt(indice);
+      print(imagenesLugares);
+
       r.lugares.remove(l);
     });
   }
@@ -598,6 +605,8 @@ class _AniadirModificarRutaState extends State<AniadirModificarRuta> {
                                     lugarInteres: lugar,
                                     imgs: imagenesLugares.elementAt(
                                         index), // Usamos null-aware operator para manejar el caso en que snapshot.data sea null
+                                    imgsTotal: imagenesLugares,
+                                    indice: index,
                                     onTapFuncion: funcionAniadirLugar,
                                     onTapFuncion2: funcionBorrarLugar,
                                   );

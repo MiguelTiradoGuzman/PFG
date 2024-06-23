@@ -9,17 +9,24 @@ class TarjetaLugarInteres extends StatelessWidget {
   final RutaTuristica _ruta;
   final LugarInteres _lugarInteres;
   final List<File> _imgs;
+  final List<List<File>> _imgsTotal;
+  final int _indice;
   final Function(RutaTuristica, LugarInteres, List<File> imgs) onTapFuncion;
-  final Function(RutaTuristica, LugarInteres) onTapFuncion2;
+  final Function(RutaTuristica, LugarInteres, List<List<File>>, int)
+      onTapFuncion2;
   const TarjetaLugarInteres(
       {required LugarInteres lugarInteres,
       required RutaTuristica ruta,
       required List<File> imgs,
+      required List<List<File>> imgsTotal,
+      required int indice,
       required this.onTapFuncion,
       required this.onTapFuncion2})
       : _imgs = imgs,
         _lugarInteres = lugarInteres,
-        _ruta = ruta;
+        _ruta = ruta,
+        _imgsTotal = imgsTotal,
+        _indice = indice;
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +101,8 @@ class TarjetaLugarInteres extends StatelessWidget {
                                 top: MediaQuery.of(context).size.height * 0.0,
                                 left: MediaQuery.of(context).size.width * 0.0),
                             child: GestureDetector(
-                                onTap: () =>
-                                    onTapFuncion2(_ruta, _lugarInteres),
+                                onTap: () => onTapFuncion2(
+                                    _ruta, _lugarInteres, _imgsTotal, _indice),
                                 child: Container(
                                     width:
                                         MediaQuery.of(context).size.width * 0.2,

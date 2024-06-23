@@ -343,6 +343,9 @@ class ClienteAPI {
     // // Crear un string en formato Json con los datos de la ruta.
     String rutaJson = jsonEncode(ruta.deserializacion());
 
+    print("-----------  ORDEN DE ENVÍO -------------");
+    print(ruta.lugares);
+
     // Realizar la solicitud PUT para modificar la ruta.
     try {
       Response response = await dio.put(
